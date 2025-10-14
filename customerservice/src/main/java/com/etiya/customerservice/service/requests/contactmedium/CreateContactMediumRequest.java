@@ -11,23 +11,23 @@ import jakarta.validation.constraints.Size;
 @ContactFormat( // 🎯 İŞTE YENİ ANOTASYONU BURADA KULLANIYORUZ
         typeField = "type",
         valueField = "value",
-        message = "Entered value is not in the correct format for the specified communication type."
+        message = "{notCorrectCommunicationFormat}"
 )
 public class CreateContactMediumRequest {
-    @NotBlank(message = "Type couldn't be empty")
+    @NotBlank(message = "{typeCannotBeEmpty}")
     @EnumValidator(
             enumClass = ContactMediumType.class,
-            message = "Invalid contact type please choose one of these: EMAIL, PHONE, FAX, MOBILE"
+            message = "{invalidContactType}"
     )
     private String type;
 
-    @NotBlank
-    @Size(max = 150, message = "Value can't be longer than 150 characters")
+    @NotBlank(message = "{valueCannotBeEmpty}")
+    @Size(max = 150, message = "{valueLengthConstraint}")
     private String value;
-    @NotNull
+    @NotNull(message = "{isPrimaryCannotBeEmpty}")
     private boolean isPrimary;
-    @NotNull
-    @Positive(message = "CityId must be positive")
+    @NotNull(message = "{customerIdCannotBeNull}")
+    @Positive(message = "{customerIdMustBePositive}")
     private Integer customerId;
 
     public String getType() {

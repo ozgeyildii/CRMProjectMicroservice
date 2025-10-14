@@ -6,20 +6,20 @@ import jakarta.validation.constraints.*;
 public class CreateBillingAccountRequest {
 
 
-    @NotBlank(message = "Account name is required")
-    @Size(min = 3,max = 100,message = "Account name must be between 3 and 100 characters")
-    @Pattern(regexp = "^[a-zA-Z0-9şıüğöçŞİÜĞÖÇ -]+$", message = "Account name can only contain letters, numbers, spaces, and hyphens")
+    @NotBlank(message = "{accountNameIsRequired}")
+    @Size(min = 3,max = 100,message = "{accountNameLengthConstraint}")
+    @Pattern(regexp = "^[a-zA-Z0-9şıüğöçŞİÜĞÖÇ -]+$", message = "{accountNameContentConstraint}")
     private String accountName;
 
-    @NotNull(message = "Account Type is required")
+    @NotNull(message = "{accountTypeIsRequired}")
     private BillingAccountType type;
 
-    @NotNull(message = "CustomerId cannot be null")
-    @Positive(message = "CustomerId must be a positive")
+    @NotNull(message = "{customerIdCannotBeNull}")
+    @Positive(message = "{customerIdMustBePositive}")
     private int customerId;
 
-    @NotNull(message = "AddressId cannot be null")
-    @Positive(message = "AddressId must be a positive")
+    @NotNull(message = "{AddressIdCanNotBeNull}")
+    @Positive(message = "{AddressIdMustBePositive}")
     private int addressId;
 
     public String getAccountName() {
