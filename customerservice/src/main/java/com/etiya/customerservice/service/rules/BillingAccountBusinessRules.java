@@ -1,6 +1,7 @@
 package com.etiya.customerservice.service.rules;
 
 import com.etiya.common.crosscuttingconcerns.exceptions.types.BusinessException;
+import com.etiya.common.localization.LocalizationService;
 import com.etiya.customerservice.domain.entities.Address;
 import com.etiya.customerservice.domain.entities.BillingAccount;
 import com.etiya.customerservice.domain.enums.BillingAccountStatus;
@@ -8,6 +9,7 @@ import com.etiya.customerservice.domain.enums.BillingAccountType;
 import com.etiya.customerservice.repository.AddressRepository;
 import com.etiya.customerservice.repository.BillingAccountRepository;
 import com.etiya.customerservice.service.abstracts.CustomerService;
+import com.etiya.customerservice.service.messages.Messages;
 import org.springframework.stereotype.Service;
 
 
@@ -16,38 +18,40 @@ public class BillingAccountBusinessRules {
     private final BillingAccountRepository billingAccountRepository;
     private final AddressRepository addressRepository;
     private final CustomerService customerService;  // ← EKLE!
+    private final LocalizationService localizationService;
 
 
-    public BillingAccountBusinessRules(BillingAccountRepository billingAccountRepository, AddressRepository addressRepository, CustomerService customerService) {
+    public BillingAccountBusinessRules(BillingAccountRepository billingAccountRepository, AddressRepository addressRepository, CustomerService customerService, LocalizationService localizationService) {
         this.billingAccountRepository = billingAccountRepository;
         this.addressRepository = addressRepository;
         this.customerService = customerService;
+        this.localizationService = localizationService;
     }
 
     public void checkIfBillingAccountCanBeDeleted(int id){
-        BillingAccount billingAccount = billingAccountRepository.findById(id).orElseThrow(() -> new RuntimeException("Billing account with id " + id + " does not exist"));
+        BillingAccount billingAccount = billingAccountRepository.findById(id).orElseThrow(() -> new BusinessException(localizationService.getMessage(Messages.BillingNotExist)));
         if(billingAccount.getStatus() == BillingAccountStatus.ACTIVE){
-            throw new BusinessException("Active billing account cannot be deleted");
+            throw new BusinessException(localizationService.getMessage(Messages.ActiveBillingCannotBeDeleted));
         }
     }
 
     public void checkIfTypeCanBeChanged(int id, BillingAccountType newType){
-        BillingAccount existingBillingAccount = billingAccountRepository.findById(id).orElseThrow(() -> new RuntimeException("Billing account with id " + id + " does not exist"));
+        BillingAccount existingBillingAccount = billingAccountRepository.findById(id).orElseThrow(() -> new BusinessException(localizationService.getMessage(Messages.BillingNotExist)));
 
         if(existingBillingAccount.getType() != newType){
-            throw new BusinessException("Billing account type cannot be changed");
+            throw new BusinessException(localizationService.getMessage(Messages.BillingAccountTypeCannotBeChanged));
         }
     }
 
     public void checkIfAddressBelongsToCustomer(int addressId, int customerId){
-        Address address = addressRepository.findById(addressId).orElseThrow(() -> new BusinessException("Address with id " + addressId + " does not exist"));
+        Address address = addressRepository.findById(addressId).orElseThrow(() -> new BusinessException(localizationService.getMessage(Messages.AddressNotExist)));
         if(address.getCustomer().getId() != customerId){
-            throw new BusinessException("Address does not belong to the specified customer");
+            throw new BusinessException(localizationService.getMessage(Messages.AddressNotBelongToCustomer));
         }
     }
 
     public void checkIfStatusTransitionIsValid(int id, BillingAccountStatus newStatus){
-       BillingAccount existingBillingAccount = billingAccountRepository.findById(id).orElseThrow(() -> new RuntimeException("Billing account with id " + id + " does not exist"));
+       BillingAccount existingBillingAccount = billingAccountRepository.findById(id).orElseThrow(() -> new BusinessException(localizationService.getMessage(Messages.BillingNotExist)));
          BillingAccountStatus currentStatus = existingBillingAccount.getStatus();
 
          if(currentStatus == newStatus){
@@ -55,7 +59,7 @@ public class BillingAccountBusinessRules {
          }
 
          if(currentStatus == BillingAccountStatus.CLOSED){
-                throw new BusinessException("Cannot change status of a closed billing account");
+                throw new BusinessException(localizationService.getMessage(Messages.CannotChangeBillingAccountStatusFromClosed));
          }
 
     }
@@ -65,13 +69,13 @@ public class BillingAccountBusinessRules {
 
         if (customerType.equals("INDIVIDUAL") && accountType != BillingAccountType.INDIVIDUAL) {
             throw new BusinessException(
-                    "Individual customers can only have INDIVIDUAL billing accounts"
+                    localizationService.getMessage(Messages.IndividualCustomerBillingAccountRelation)
             );
         }
 
         if (customerType.equals("CORPORATE") && accountType != BillingAccountType.CORPORATE) {
             throw new BusinessException(
-                    "Corporate customers can only have CORPORATE billing accounts"
+                    localizationService.getMessage(Messages.CorporateCustomerBillingAccountRelation)
             );
         }
     }

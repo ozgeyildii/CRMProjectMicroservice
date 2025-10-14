@@ -13,7 +13,7 @@ public class IndividualCustomerBusinessRules extends CustomerBusinessRules<Indiv
     private final LocalizationService localizationService;
 
     public IndividualCustomerBusinessRules(IndividualCustomerRepository individualCustomerRepository, LocalizationService localizationService) {
-        super(individualCustomerRepository);
+        super(individualCustomerRepository,localizationService);
         this.individualCustomerRepository = individualCustomerRepository;
         this.localizationService = localizationService;
     }

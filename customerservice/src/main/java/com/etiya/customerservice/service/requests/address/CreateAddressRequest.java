@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 
 public class CreateAddressRequest {
 
-    @NotBlank(message = "Street is required")
+    @NotBlank(message = "{streetIsRequired}")
     private String street;
     @NotBlank(message = "House number is required")
     private String houseNumber;
