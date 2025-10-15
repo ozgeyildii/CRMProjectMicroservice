@@ -41,11 +41,11 @@ public class CreateBillingAccountRequest {
         this.type = type;
     }
 
-    public int getCustomerId() {
+    public UUID getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(UUID customerId) {
         this.customerId = customerId;
     }
 
@@ -57,7 +57,7 @@ public class CreateBillingAccountRequest {
         this.addressId = addressId;
     }
 
-    public CreateBillingAccountRequest(String accountName, BillingAccountType type, int customerId, int addressId) {
+    public CreateBillingAccountRequest(String accountName, BillingAccountType type, UUID customerId, int addressId) {
         this.accountName = accountName;
         this.type = type;
         this.customerId = customerId;
