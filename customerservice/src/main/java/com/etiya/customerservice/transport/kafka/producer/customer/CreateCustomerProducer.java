@@ -1,7 +1,6 @@
 package com.etiya.customerservice.transport.kafka.producer.customer;
 
-import com.etiya.common.events.CreateCustomerEvent;
-import com.etiya.customerservice.domain.entities.Customer;
+import com.etiya.common.events.address.CreateCustomerEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;

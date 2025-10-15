@@ -11,7 +11,6 @@ import java.util.UUID;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Customer extends BaseEntity {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
@@ -19,7 +18,6 @@ public class Customer extends BaseEntity {
 
     @Column(name = "customer_number")
     private String customerNumber;
-
 
     //navigation property
 

@@ -9,7 +9,6 @@ public class Address {
     private String description;
     private boolean isDefault;
     private int districtId;
-    private UUID customerId;
 
     public int getId() {
         return id;
@@ -59,22 +58,14 @@ public class Address {
         this.districtId = districtId;
     }
 
-    public UUID getCustomerId() {
-        return customerId;
-    }
 
-    public void setCustomerId(UUID customerId) {
-        this.customerId = customerId;
-    }
-
-    public Address(int id, String street, String houseNumber, String description, boolean isDefault, int districtId, UUID customerId) {
+    public Address(int id, String street, String houseNumber, String description, boolean isDefault, int districtId) {
         this.id = id;
         this.street = street;
         this.houseNumber = houseNumber;
         this.description = description;
         this.isDefault = isDefault;
         this.districtId = districtId;
-        this.customerId = customerId;
     }
 
     public Address() {

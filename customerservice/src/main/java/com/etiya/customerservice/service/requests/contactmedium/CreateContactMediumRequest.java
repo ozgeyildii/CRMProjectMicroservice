@@ -29,7 +29,6 @@ public class CreateContactMediumRequest {
     @NotNull(message = "{isPrimaryCannotBeEmpty}")
     private boolean isPrimary;
     @NotNull(message = "{customerIdCannotBeNull}")
-    @Positive(message = "{customerIdMustBePositive}")
     private UUID customerId;
 
     public String getType() {

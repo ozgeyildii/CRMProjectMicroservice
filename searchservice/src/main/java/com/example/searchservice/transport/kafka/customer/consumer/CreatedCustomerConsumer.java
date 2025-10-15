@@ -1,6 +1,6 @@
 package com.example.searchservice.transport.kafka.customer.consumer;
 
-import com.etiya.common.events.CreateCustomerEvent;
+import com.etiya.common.events.address.CreateCustomerEvent;
 import com.example.searchservice.domain.CustomerSearch;
 import com.example.searchservice.service.CustomerSearchService;
 import org.slf4j.Logger;

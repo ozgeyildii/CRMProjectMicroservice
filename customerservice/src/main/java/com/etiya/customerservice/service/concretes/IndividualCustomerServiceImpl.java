@@ -1,6 +1,6 @@
 package com.etiya.customerservice.service.concretes;
 
-import com.etiya.common.events.CreateCustomerEvent;
+import com.etiya.common.events.address.CreateCustomerEvent;
 import com.etiya.customerservice.domain.entities.IndividualCustomer;
 import com.etiya.customerservice.repository.IndividualCustomerRepository;
 import com.etiya.customerservice.service.abstracts.IndividualCustomerService;

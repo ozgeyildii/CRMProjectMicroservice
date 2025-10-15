@@ -1,6 +1,7 @@
 package com.example.searchservice.service;
 
 import com.example.searchservice.domain.Address;
+import com.example.searchservice.domain.ContactMedium;
 import com.example.searchservice.domain.CustomerSearch;
 
 import java.util.List;
@@ -12,7 +13,11 @@ public interface CustomerSearchService {
     List<CustomerSearch> findAll();
     void delete(String id);
     //CustomerSearch getCustomerSearchById(UUID id);
-    void addAddress(Address address);
-    void updateAddress(Address address);
+    void addAddress(Address address,UUID customerId);
+    void updateAddress(Address address, UUID customerId);
     void deleteAddress(int id,UUID customerId);
+
+    void addContactMedium(ContactMedium contactMedium, UUID customerId);
+    void updateContactMedium(ContactMedium contactMedium, UUID customerId);
+    void deleteContactMedium(int id,UUID customerId);
 }

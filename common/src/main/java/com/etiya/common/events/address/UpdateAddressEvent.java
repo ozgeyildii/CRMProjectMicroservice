@@ -1,4 +1,4 @@
-package com.etiya.common.events;
+package com.etiya.common.events.address;
 
 import java.util.UUID;
 
