@@ -16,9 +16,10 @@ public class CreateBillingAccountRequest {
     @NotNull(message = "Account Type is required")
     private BillingAccountType type;
 
-    @NotNull(message = "CustomerId cannot be null")
-    @Positive(message = "CustomerId must be a positive")
+    @NotNull(message = "{customerIdCannotBeNull}")
+    @Positive(message = "{customerIdMustBePositive}")
     private UUID customerId;
+
 
     @NotNull(message = "AddressId cannot be null")
     @Positive(message = "AddressId must be a positive")
@@ -40,11 +41,11 @@ public class CreateBillingAccountRequest {
         this.type = type;
     }
 
-    public UUID getCustomerId() {
+    public int getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(UUID customerId) {
+    public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 
@@ -56,7 +57,7 @@ public class CreateBillingAccountRequest {
         this.addressId = addressId;
     }
 
-    public CreateBillingAccountRequest(String accountName, BillingAccountType type, UUID customerId, int addressId) {
+    public CreateBillingAccountRequest(String accountName, BillingAccountType type, int customerId, int addressId) {
         this.accountName = accountName;
         this.type = type;
         this.customerId = customerId;

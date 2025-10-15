@@ -7,11 +7,9 @@ import java.util.UUID;
 
 public class UpdateAddressRequest {
     private int id;
-    @NotBlank(message = "Street is required")
     private String street;
-    @NotBlank(message = "House number is required")
     private String houseNumber;
-    @Size(max = 255, message = "Description can't be longer than 255 characters")
+    @Size(max = 255, message = "{descriptionCannotBeLong}")
     private String description;
     private Boolean isDefault;
     private int districtId;

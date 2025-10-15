@@ -8,17 +8,17 @@ import java.time.LocalDateTime;
 
 public class CreateIndividualCustomerRequest {
 
-    @NotBlank(message = "Firstname is required")
-    @Size(min = 2,max = 50,message = "FirstName must be between 2 and 50 characters")
+    @NotBlank(message = "{firstNameIsRequired}")
+    @Size(min = 2,max = 50,message = "{firstNameLengthConstraint}")
     private String firstName;
 
     private String lastName;
 
     private String middleName;
 
-    @NotBlank(message = "Identity number is required")
-    @Size(min = 11,max = 11,message = "Identity number must be 11 characters")
-    @Pattern(regexp = "^[0-9]+$",message = "Identity number must contain only numbers")
+    @NotBlank(message = "{natIdIsRequired}")
+    @Size(min = 11,max = 11,message = "{natIdLengthConstraint}")
+    @Pattern(regexp = "^[0-9]+$",message = "{natIdContentConstraint}")
     private String nationalId;
 
     private LocalDateTime dateOfBirth;

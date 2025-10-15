@@ -9,9 +9,9 @@ public class CreateAddressRequest {
 
     @NotBlank(message = "{streetIsRequired}")
     private String street;
-    @NotBlank(message = "House number is required")
+    @NotBlank(message = "{houseNumberIsRequired}")
     private String houseNumber;
-    @Size(max = 255, message = "Description can't be longer than 255 characters")
+    @Size(max = 255, message = "{descriptionCannotBeLong}")
     private String description;
     private boolean isDefault;
     private int districtId;

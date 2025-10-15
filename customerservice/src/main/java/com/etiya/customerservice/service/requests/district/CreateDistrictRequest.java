@@ -7,12 +7,12 @@ import jakarta.validation.constraints.Size;
 
 public class CreateDistrictRequest {
 
-    @NotBlank(message = "Name is required")
-    @Size(max = 255, message = "Description can't be longer than 255 characters")
+    @NotBlank(message = "{nameIsRequired}")
+    @Size(max = 255, message = "{descriptionCannotBeLong}")
     private String name;
 
-    @NotNull(message = "CityId is required")
-    @Positive(message = "CityId must be positive")
+    @NotNull(message = "{cityIdIsRequired}")
+    @Positive(message = "{cityIdMustBePositive}")
     private Integer cityId;
 
     public String getName() {

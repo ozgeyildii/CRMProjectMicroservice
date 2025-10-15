@@ -8,8 +8,8 @@ import jakarta.validation.constraints.Pattern;
 public class UpdateCityRequest {
 
     private int id;
-    @NotBlank(message = "Name is required")
-    @Pattern(regexp = "^[a-zA-ZçÇşŞğĞıİüÜöÖ]+", message = "Name must contain only letters.")
+    @NotBlank(message = "{nameIsRequired}")
+    @Pattern(regexp = "^[a-zA-ZçÇşŞğĞıİüÜöÖ]+", message = "{nameMustContainOnlyLetters}")
     private String name;
 
     public int getId() {
