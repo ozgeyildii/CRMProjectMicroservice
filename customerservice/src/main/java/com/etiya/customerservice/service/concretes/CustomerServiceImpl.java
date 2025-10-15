@@ -5,6 +5,8 @@ import com.etiya.customerservice.repository.IndividualCustomerRepository;
 import com.etiya.customerservice.service.abstracts.CustomerService;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -18,12 +20,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public boolean existsById(int id) {
+    public boolean existsById(UUID id) {
         return false;
     }
 
     @Override
-    public String getCustomerType(int id) {
+    public String getCustomerType(UUID id) {
         // Individual Customer mı?
         if (individualCustomerRepository.existsById(id)) {
             return "INDIVIDUAL";

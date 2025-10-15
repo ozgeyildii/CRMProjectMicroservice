@@ -3,12 +3,14 @@ package com.etiya.customerservice.service.requests.contactmedium;
 
 import com.etiya.customerservice.domain.enums.ContactMediumType;
 
+import java.util.UUID;
+
 public class UpdateContactMediumRequest {
     private int id;
     private ContactMediumType type;
     private String value;
     private boolean isPrimary;
-    private int customerId;
+    private UUID customerId;
 
     public int getId() {
         return id;
@@ -42,15 +44,15 @@ public class UpdateContactMediumRequest {
         isPrimary = primary;
     }
 
-    public int getCustomerId() {
+    public UUID getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(UUID customerId) {
         this.customerId = customerId;
     }
 
-    public UpdateContactMediumRequest(int id, ContactMediumType type, String value, boolean isPrimary, int customerId) {
+    public UpdateContactMediumRequest(int id, ContactMediumType type, String value, boolean isPrimary, UUID customerId) {
         this.id = id;
         this.type = type;
         this.value = value;

@@ -1,6 +1,9 @@
 package com.etiya.customerservice.service.requests.corporateCustomer;
 
+import java.util.UUID;
+
 public class UpdateCorporateCustomerRequest {
+    private UUID id;
     private String companyName;
     private String taxNumber;
     private String companyType;
@@ -29,7 +32,16 @@ public class UpdateCorporateCustomerRequest {
         this.companyType = companyType;
     }
 
-    public UpdateCorporateCustomerRequest(String companyName, String taxNumber, String companyType) {
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public UpdateCorporateCustomerRequest(UUID id, String companyName, String taxNumber, String companyType) {
+        this.id=id;
         this.companyName = companyName;
         this.taxNumber = taxNumber;
         this.companyType = companyType;

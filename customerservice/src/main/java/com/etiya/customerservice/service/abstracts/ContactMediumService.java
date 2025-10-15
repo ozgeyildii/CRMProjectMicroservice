@@ -8,6 +8,7 @@ import com.etiya.customerservice.service.responses.contactmedium.GetListContactM
 import com.etiya.customerservice.service.responses.contactmedium.UpdatedContactMediumResponse;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ContactMediumService {
     CreatedContactMediumResponse add(CreateContactMediumRequest request);
@@ -21,5 +22,5 @@ public interface ContactMediumService {
     GetByIdContactMediumResponse getById(int id);
     GetByIdContactMediumResponse getByValue(String value);
     List<GetListContactMediumResponse> getListByType(String type);
-    List<GetListContactMediumResponse> getListByCustomerId(int customerId);
+    List<GetListContactMediumResponse> getListByCustomerId(int id);
 }

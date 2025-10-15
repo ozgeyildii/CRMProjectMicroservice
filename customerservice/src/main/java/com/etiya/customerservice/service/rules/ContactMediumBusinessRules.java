@@ -8,6 +8,7 @@ import com.etiya.customerservice.service.messages.Messages;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ContactMediumBusinessRules {
@@ -22,7 +23,7 @@ public class ContactMediumBusinessRules {
 
     public void checkIsPrimaryOnlyOne(ContactMedium contactMedium) {
         if (contactMedium.isPrimary()) {
-            int ownerCustomerId = contactMedium.getCustomer().getId();
+            UUID ownerCustomerId = contactMedium.getCustomer().getId();
             List<ContactMedium> contactMediumList = contactMediumRepository.findByCustomerId(ownerCustomerId);
             if (!contactMediumList.isEmpty()) {
                 for (ContactMedium cm : contactMediumList) {

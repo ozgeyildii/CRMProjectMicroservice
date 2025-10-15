@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
+import java.util.UUID;
+
 @ContactFormat( // 🎯 İŞTE YENİ ANOTASYONU BURADA KULLANIYORUZ
         typeField = "type",
         valueField = "value",
@@ -28,7 +30,7 @@ public class CreateContactMediumRequest {
     private boolean isPrimary;
     @NotNull
     @Positive(message = "CityId must be positive")
-    private Integer customerId;
+    private UUID customerId;
 
     public String getType() {
         return type;
@@ -54,15 +56,15 @@ public class CreateContactMediumRequest {
         isPrimary = primary;
     }
 
-    public Integer getCustomerId() {
+    public UUID getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(Integer customerId) {
+    public void setCustomerId(UUID customerId) {
         this.customerId = customerId;
     }
 
-    public CreateContactMediumRequest(String type, String value, boolean isPrimary, Integer customerId) {
+    public CreateContactMediumRequest(String type, String value, boolean isPrimary, UUID customerId) {
         this.type = type;
         this.value = value;
         this.isPrimary = isPrimary;

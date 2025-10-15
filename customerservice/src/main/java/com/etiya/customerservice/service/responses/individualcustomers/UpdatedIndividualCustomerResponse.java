@@ -1,9 +1,10 @@
 package com.etiya.customerservice.service.responses.individualcustomers;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class UpdatedIndividualCustomerResponse {
-    private int id;
+    private UUID id;
     private String firstName;
 
     private String lastName;
@@ -20,11 +21,11 @@ public class UpdatedIndividualCustomerResponse {
 
     private String gender;
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -92,7 +93,7 @@ public class UpdatedIndividualCustomerResponse {
         this.gender = gender;
     }
 
-    public UpdatedIndividualCustomerResponse(int id, String firstName, String lastName, String middleName, String nationalId, LocalDateTime dateOfBirth, String motherName, String fatherName, String gender) {
+    public UpdatedIndividualCustomerResponse(UUID id, String firstName, String lastName, String middleName, String nationalId, LocalDateTime dateOfBirth, String motherName, String fatherName, String gender) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

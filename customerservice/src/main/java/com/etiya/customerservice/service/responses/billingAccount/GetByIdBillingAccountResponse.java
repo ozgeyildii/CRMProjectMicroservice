@@ -4,13 +4,15 @@ package com.etiya.customerservice.service.responses.billingAccount;
 import com.etiya.customerservice.domain.enums.BillingAccountStatus;
 import com.etiya.customerservice.domain.enums.BillingAccountType;
 
+import java.util.UUID;
+
 public class GetByIdBillingAccountResponse {
     private int id;
     private BillingAccountType type;
     private BillingAccountStatus status;
     private String accountName;
     private String accountNumber;
-    private int customerId;
+    private UUID customerId;
     private int addressId;
 
     public int getId() {
@@ -53,11 +55,11 @@ public class GetByIdBillingAccountResponse {
         this.accountNumber = accountNumber;
     }
 
-    public int getCustomerId() {
+    public UUID getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(UUID customerId) {
         this.customerId = customerId;
     }
 
@@ -69,7 +71,7 @@ public class GetByIdBillingAccountResponse {
         this.addressId = addressId;
     }
 
-    public GetByIdBillingAccountResponse(int id, BillingAccountType type, BillingAccountStatus status, String accountName, String accountNumber, int customerId, int addressId) {
+    public GetByIdBillingAccountResponse(int id, BillingAccountType type, BillingAccountStatus status, String accountName, String accountNumber, UUID customerId, int addressId) {
         this.id = id;
         this.type = type;
         this.status = status;

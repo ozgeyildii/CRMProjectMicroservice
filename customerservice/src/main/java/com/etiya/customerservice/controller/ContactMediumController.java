@@ -71,8 +71,8 @@ public class ContactMediumController {
     }
     @GetMapping("{customerId}/customerId") // <-- BU KURAL KESİNLİKLE KALMALI
     @ResponseStatus(HttpStatus.OK)
-    public List<GetListContactMediumResponse> getListByCustomerId(@PathVariable int customerId) {
-        return contactMediumService.getListByCustomerId(customerId);
+    public List<GetListContactMediumResponse> getListByCustomerId(@PathVariable int id) {
+        return contactMediumService.getListByCustomerId(id);
     }
 
 

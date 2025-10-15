@@ -2,6 +2,8 @@ package com.etiya.customerservice.domain.entities;
 
 import jakarta.persistence.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "corporate_customers")
 @PrimaryKeyJoinColumn(name = "customer_id")
@@ -52,7 +54,7 @@ public class CorporateCustomer extends Customer {
         this.companyType = companyType;
     }
 
-    public CorporateCustomer(int id, String customerNumber, Customer customer, String companyName, String taxNumber, String companyType) {
+    public CorporateCustomer(UUID id, String customerNumber, Customer customer, String companyName, String taxNumber, String companyType) {
         super(id, customerNumber);
         this.customer = customer;
         this.companyName = companyName;

@@ -6,6 +6,8 @@ import com.etiya.customerservice.domain.entities.Customer;
 import com.etiya.customerservice.repository.CustomerRepository;
 import com.etiya.customerservice.service.messages.Messages;
 
+import java.util.UUID;
+
 public abstract class CustomerBusinessRules<T extends Customer> {
 
     private final CustomerRepository<T> customerRepository;
@@ -17,7 +19,7 @@ public abstract class CustomerBusinessRules<T extends Customer> {
     }
 
 
-    public void checkIfCustomerExists(int id){
+    public void checkIfCustomerExists(UUID id){
         if (!customerRepository.existsById(id)){
             throw new BusinessException(localizationService.getMessage(Messages.CustomerNotExist));
         }

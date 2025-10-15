@@ -1,7 +1,9 @@
 package com.etiya.customerservice.service.responses.corporateCustomer;
 
+import java.util.UUID;
+
 public class CreatedCorporateCustomerResponse {
-    private int id;
+    private UUID id;
     private String companyName;
     private String taxNumber;
     private String companyType;
@@ -10,7 +12,7 @@ public class CreatedCorporateCustomerResponse {
     public CreatedCorporateCustomerResponse() {
     }
 
-    public CreatedCorporateCustomerResponse(int id, String companyName, String taxNumber, String companyType, String customerNumber) {
+    public CreatedCorporateCustomerResponse(UUID id, String companyName, String taxNumber, String companyType, String customerNumber) {
         this.id = id;
         this.companyName = companyName;
         this.taxNumber = taxNumber;
@@ -18,11 +20,11 @@ public class CreatedCorporateCustomerResponse {
         this.customerNumber = customerNumber;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

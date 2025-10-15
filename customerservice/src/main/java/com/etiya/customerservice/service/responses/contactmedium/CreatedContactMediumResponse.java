@@ -2,11 +2,14 @@ package com.etiya.customerservice.service.responses.contactmedium;
 
 import com.etiya.customerservice.domain.enums.ContactMediumType;
 
+import java.util.UUID;
+
 public class CreatedContactMediumResponse {
     private int id;
     private ContactMediumType type;
     private String value;
     private boolean isPrimary;
+    private UUID customerId;
 
     public int getId() {
         return id;
@@ -40,11 +43,20 @@ public class CreatedContactMediumResponse {
         isPrimary = primary;
     }
 
-    public CreatedContactMediumResponse(int id, ContactMediumType type, String value, boolean isPrimary) {
+    public UUID getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(UUID customerId) {
+        this.customerId = customerId;
+    }
+
+    public CreatedContactMediumResponse(int id, ContactMediumType type, String value, boolean isPrimary, UUID customerId) {
         this.id = id;
         this.type = type;
         this.value = value;
         this.isPrimary = isPrimary;
+        this.customerId = customerId;
     }
 
     public CreatedContactMediumResponse() {

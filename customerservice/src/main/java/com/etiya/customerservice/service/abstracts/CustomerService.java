@@ -1,8 +1,10 @@
 package com.etiya.customerservice.service.abstracts;
 
 
-public interface CustomerService {
-    boolean existsById(int id);
+import java.util.UUID;
 
-    String getCustomerType(int customerId);
+public interface CustomerService {
+    boolean existsById(UUID id);
+
+    String getCustomerType(UUID customerId);
 }

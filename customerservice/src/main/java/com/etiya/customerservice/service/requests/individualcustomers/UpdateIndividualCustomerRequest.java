@@ -5,8 +5,10 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class UpdateIndividualCustomerRequest {
+    private UUID id;
     @NotBlank(message = "Firstname is required")
     @Size(min = 2,max = 50,message = "FirstName must be between 2 and 50 characters")
     private String firstName;
@@ -90,5 +92,28 @@ public class UpdateIndividualCustomerRequest {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public UpdateIndividualCustomerRequest(UUID id, String firstName, String lastName, String middleName, String nationalId, LocalDateTime dateOfBirth, String motherName, String fatherName, String gender) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleName = middleName;
+        this.nationalId = nationalId;
+        this.dateOfBirth = dateOfBirth;
+        this.motherName = motherName;
+        this.fatherName = fatherName;
+        this.gender = gender;
+    }
+
+    public UpdateIndividualCustomerRequest() {
     }
 }

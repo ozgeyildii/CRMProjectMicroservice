@@ -3,6 +3,8 @@ package com.etiya.customerservice.service.requests.address;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.UUID;
+
 public class CreateAddressRequest {
 
     @NotBlank(message = "{streetIsRequired}")
@@ -13,7 +15,7 @@ public class CreateAddressRequest {
     private String description;
     private boolean isDefault;
     private int districtId;
-    private int customerId;
+    private UUID customerId;
 
     public String getStreet() {
         return street;
@@ -55,15 +57,15 @@ public class CreateAddressRequest {
         this.districtId = districtId;
     }
 
-    public int getCustomerId() {
+    public UUID getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(UUID customerId) {
         this.customerId = customerId;
     }
 
-    public CreateAddressRequest(String street, String houseNumber, String description, boolean isDefault, int districtId, int customerId) {
+    public CreateAddressRequest(String street, String houseNumber, String description, boolean isDefault, int districtId, UUID customerId) {
         this.street = street;
         this.houseNumber = houseNumber;
         this.description = description;

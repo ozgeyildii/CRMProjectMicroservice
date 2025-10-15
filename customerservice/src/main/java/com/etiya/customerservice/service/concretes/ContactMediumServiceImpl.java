@@ -104,7 +104,8 @@ public class ContactMediumServiceImpl implements ContactMediumService {
 
     @Override
     public List<GetListContactMediumResponse> getListByCustomerId(int id) {
-        List<ContactMedium> contactMediums = contactMediumRepository.findByCustomerId(id);
+        ContactMedium contactMedium= contactMediumRepository.findById(id).orElseThrow(()->new RuntimeException("Contact medium does not exist"));
+        List<ContactMedium> contactMediums=contactMediumRepository.findByCustomerId(contactMedium.getCustomer().getId());
         List<GetListContactMediumResponse> responses = ContactMediumMapper.INSTANCE.getListContactMediumResponsesFromContactMedium(contactMediums);
         return responses;
     }
