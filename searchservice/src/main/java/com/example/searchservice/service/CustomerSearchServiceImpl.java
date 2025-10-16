@@ -6,6 +6,7 @@ import com.example.searchservice.domain.CustomerSearch;
 import com.example.searchservice.repository.CustomerSearchRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -150,6 +151,36 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
         } else {
             throw new RuntimeException("Customer not found");
         }
+    }
+
+    @Override
+    public List<CustomerSearch> searchAllFields(String keyword) {
+        return customerSearchRepository.searchAllFields(keyword);
+    }
+
+    @Override
+    public List<CustomerSearch> searchByMatchedName(String name) {
+        return customerSearchRepository.findByFirstNameMatch(name);
+    }
+
+    @Override
+    public List<CustomerSearch> searchByExactValue(String nationalId) {
+        return customerSearchRepository.findByExactValue(nationalId);
+    }
+
+    @Override
+    public List<CustomerSearch> searchBySimilarName(String name) {
+        return customerSearchRepository.findBySimilarName(name);
+    }
+
+    @Override
+    public List<CustomerSearch> searchByDateRange(LocalDateTime start, LocalDateTime end) {
+        return customerSearchRepository.findByDateRange(start, end);
+    }
+
+    @Override
+    public List<CustomerSearch> searchByNameAndGender(String name, String gender) {
+        return customerSearchRepository.findFirstNameAndGender(name, gender);
     }
 
 

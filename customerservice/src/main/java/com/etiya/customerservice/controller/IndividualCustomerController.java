@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/individual-customers/")
+@RequestMapping("/api/individual-customers")
 public class IndividualCustomerController {
     private final IndividualCustomerService individualCustomerService;
 

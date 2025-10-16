@@ -1,15 +1,17 @@
-package com.example.searchservice.transport.kafka.contactmedium;
+package com.example.searchservice.transport.kafka.consumer.contactmedium;
 
 import com.etiya.common.events.contactmedium.CreateContactMediumEvent;
 import com.example.searchservice.domain.ContactMedium;
 import com.example.searchservice.service.CustomerSearchService;
-import com.example.searchservice.transport.kafka.customer.consumer.CreatedCustomerConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-@Service
+import java.util.function.Consumer;
+
+//@Service
+@Configuration
 public class CreatedContactMediumConsumer {
 
     private final CustomerSearchService customerSearchService;
@@ -19,7 +21,20 @@ public class CreatedContactMediumConsumer {
         this.customerSearchService = customerSearchService;
     }
 
-    @KafkaListener(topics = "create-contactmedium", groupId = "create-contactmedium-group")
+    @Bean
+    public Consumer<CreateContactMediumEvent> contactCreated() {
+        return event -> {
+            ContactMedium contactMedium = new ContactMedium(
+                    event.id(),
+                    event.type(),
+                    event.value(),
+                    event.isPrimary()
+            );
+            customerSearchService.addContactMedium(contactMedium, event.customerId());
+            LOGGER.info(String.format("Consumed Contact Medium => %s", event.id()));
+        };
+    }
+   /* @KafkaListener(topics = "create-contactmedium", groupId = "create-contactmedium-group")
     public void consume(CreateContactMediumEvent event) {
         LOGGER.info(String.format("Consumed Contact Medium => %s", event.id()));
         ContactMedium contactMedium = new ContactMedium(
@@ -30,5 +45,5 @@ public class CreatedContactMediumConsumer {
         );
         customerSearchService.addContactMedium(contactMedium, event.customerId());
 
-    }
+    }*/
 }

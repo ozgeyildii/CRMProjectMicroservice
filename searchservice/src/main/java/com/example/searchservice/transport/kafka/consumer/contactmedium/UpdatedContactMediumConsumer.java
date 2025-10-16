@@ -1,15 +1,16 @@
-package com.example.searchservice.transport.kafka.contactmedium;
+package com.example.searchservice.transport.kafka.consumer.contactmedium;
 
 import com.etiya.common.events.contactmedium.UpdateContactMediumEvent;
 import com.example.searchservice.domain.ContactMedium;
 import com.example.searchservice.service.CustomerSearchService;
-import com.example.searchservice.transport.kafka.customer.consumer.CreatedCustomerConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-@Service
+import java.util.function.Consumer;
+
+@Configuration
 public class UpdatedContactMediumConsumer {
 
     private final CustomerSearchService customerSearchService;
@@ -19,6 +20,18 @@ public class UpdatedContactMediumConsumer {
         this.customerSearchService = customerSearchService;
     }
 
+    @Bean
+    public Consumer<UpdateContactMediumEvent> contactUpdated() {
+        return event->{ContactMedium contactMedium = new ContactMedium(
+                event.id(),
+                event.type(),
+                event.value(),
+                event.isPrimary()
+        );
+        LOGGER.info(String.format("Consumed Contact Medium => %s", event.id()));
+        customerSearchService.updateContactMedium(contactMedium, event.customerId());
+        };}
+/*
     @KafkaListener(topics = "update-contactmedium", groupId = "update-contactmedium-group")
     public void consume(UpdateContactMediumEvent event) {
         LOGGER.info(String.format("Consumed Contact Medium => %s", event.id()));
@@ -30,5 +43,5 @@ public class UpdatedContactMediumConsumer {
         );
         customerSearchService.updateContactMedium(contactMedium, event.customerId());
 
-    }
+    }*/
 }

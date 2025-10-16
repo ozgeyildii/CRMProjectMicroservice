@@ -1,16 +1,17 @@
-package com.example.searchservice.transport.kafka.address;
+package com.example.searchservice.transport.kafka.consumer.address;
 
 import com.etiya.common.events.address.CreateAddressEvent;
 import com.example.searchservice.domain.Address;
 import com.example.searchservice.service.CustomerSearchService;
-import com.example.searchservice.transport.kafka.customer.consumer.CreatedCustomerConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.util.function.Consumer;
 
 
-    @Service
+@Configuration
     public class CreatedAddressConsumer {
 
         private final CustomerSearchService customerSearchService;
@@ -19,8 +20,22 @@ import org.springframework.stereotype.Service;
         public CreatedAddressConsumer(CustomerSearchService customerSearchService) {
             this.customerSearchService = customerSearchService;
         }
-
-        @KafkaListener(topics = "create-address", groupId = "create-address-group")
+       @Bean
+        public Consumer<CreateAddressEvent> addressCreated(){
+            return event->{
+            Address address = new Address(
+                    event.id(),
+                    event.houseNumber(),
+                    event.description(),
+                    event.street(),
+                    event.isDefault(),
+                    event.districtId()
+            );
+            customerSearchService.addAddress(address, event.customerId());
+            LOGGER.info(String.format("Consumed Address => %s", event.id()));
+            };
+        }
+       /* @KafkaListener(topics = "create-address", groupId = "create-address-group")
         public void consume(CreateAddressEvent event) {
             LOGGER.info(String.format("Consumed Address => %s", event.id()));
             Address address = new Address(
@@ -33,5 +48,5 @@ import org.springframework.stereotype.Service;
             );
             customerSearchService.addAddress(address, event.customerId());
 
-        }
+        }*/
     }
