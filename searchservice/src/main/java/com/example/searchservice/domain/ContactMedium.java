@@ -8,6 +8,8 @@ public class ContactMedium {
     private String type;
     private String value;
     private boolean isPrimary;
+    private UUID customerId;
+    private String deletedDate=null;
 
     public int getId() {
         return id;
@@ -41,12 +43,37 @@ public class ContactMedium {
         isPrimary = primary;
     }
 
+    public UUID getCustomerId() {
+        return customerId;
+    }
 
-    public ContactMedium(int id, String type, String value, boolean isPrimary) {
+    public void setCustomerId(UUID customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getDeletedDate() {
+        return deletedDate;
+    }
+
+    public void setDeletedDate(String deletedDate) {
+        this.deletedDate = deletedDate;
+    }
+
+    public ContactMedium(int id, String type, String value, boolean isPrimary, UUID customerId, String deletedDate) {
         this.id = id;
         this.type = type;
         this.value = value;
         this.isPrimary = isPrimary;
+        this.customerId = customerId;
+        this.deletedDate = deletedDate;
+    }
+
+    public ContactMedium(int id, String type, String value, boolean isPrimary, UUID customerId) {
+        this.id = id;
+        this.type = type;
+        this.value = value;
+        this.isPrimary = isPrimary;
+        this.customerId = customerId;
     }
 
     public ContactMedium() {

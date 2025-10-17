@@ -2,6 +2,7 @@ package com.etiya.customerservice.service.concretes;
 
 import com.etiya.common.events.address.CreateAddressEvent;
 import com.etiya.common.events.address.DeleteAddressEvent;
+import com.etiya.common.events.address.SoftDeleteAddressEvent;
 import com.etiya.common.events.address.UpdateAddressEvent;
 import com.etiya.customerservice.domain.entities.Address;
 import com.etiya.customerservice.repository.AddressRepository;
@@ -16,6 +17,7 @@ import com.etiya.customerservice.service.responses.address.UpdatedAddressRespons
 import com.etiya.customerservice.service.rules.AddressBusinessRules;
 import com.etiya.customerservice.transport.kafka.producer.address.CreateAddressProducer;
 import com.etiya.customerservice.transport.kafka.producer.address.DeleteAddressProducer;
+import com.etiya.customerservice.transport.kafka.producer.address.SoftDeleteAddressProducer;
 import com.etiya.customerservice.transport.kafka.producer.address.UpdateAddressProducer;
 import org.springframework.stereotype.Service;
 
@@ -30,13 +32,15 @@ public class AddressServiceImpl implements AddressService {
     private final CreateAddressProducer createAddressProducer;
     private final UpdateAddressProducer updateAddressProducer;
     private final DeleteAddressProducer deleteAddressProducer;
+    private final SoftDeleteAddressProducer softDeleteAddressProducer;
 
-    public AddressServiceImpl(AddressRepository addressRepository, AddressBusinessRules addressBusinessRules, CreateAddressProducer createAddressProducer, UpdateAddressProducer updateAddressProducer, DeleteAddressProducer deleteAddressProducer) {
+    public AddressServiceImpl(AddressRepository addressRepository, AddressBusinessRules addressBusinessRules, CreateAddressProducer createAddressProducer, UpdateAddressProducer updateAddressProducer, DeleteAddressProducer deleteAddressProducer, SoftDeleteAddressProducer softDeleteAddressProducer) {
         this.addressBusinessRules  = addressBusinessRules;
         this.addressRepository = addressRepository;
         this.createAddressProducer = createAddressProducer;
         this.updateAddressProducer = updateAddressProducer;
         this.deleteAddressProducer = deleteAddressProducer;
+        this.softDeleteAddressProducer = softDeleteAddressProducer;
     }
 
    // @Override
@@ -75,7 +79,6 @@ public class AddressServiceImpl implements AddressService {
         addressRepository.deleteById(id);
         DeleteAddressEvent event=new DeleteAddressEvent(id, address.getCustomer().getId());
         deleteAddressProducer.produceAddressDeleted(event);
-
     }
 
     @Override
@@ -83,8 +86,8 @@ public class AddressServiceImpl implements AddressService {
         Address address = addressRepository.findById(id).orElseThrow(() -> new RuntimeException("Address not found"));
         address.setDeletedDate(LocalDateTime.now());
         addressRepository.save(address);
-        DeleteAddressEvent event=new DeleteAddressEvent(id, address.getCustomer().getId());
-        deleteAddressProducer.produceAddressDeleted(event);
+        SoftDeleteAddressEvent event=new SoftDeleteAddressEvent(id, address.getCustomer().getId(),address.getDeletedDate().toString());
+        softDeleteAddressProducer.produceAddressSoftDeleted(event);
     }
 
     @Override

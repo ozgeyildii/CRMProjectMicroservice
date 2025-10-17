@@ -57,7 +57,7 @@ public class CustomerSearchController {
 
     @GetMapping("search-range")
     @ResponseStatus(HttpStatus.OK)
-    public List<CustomerSearch> searchByDateRange(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start , @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end){
+    public List<CustomerSearch> searchByDateRange(@RequestParam String start , @RequestParam String end){
         return customerSearchService.searchByDateRange(start,end);
     }
 

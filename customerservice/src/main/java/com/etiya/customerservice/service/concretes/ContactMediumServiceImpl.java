@@ -2,6 +2,7 @@ package com.etiya.customerservice.service.concretes;
 
 import com.etiya.common.events.contactmedium.CreateContactMediumEvent;
 import com.etiya.common.events.contactmedium.DeleteContactMediumEvent;
+import com.etiya.common.events.contactmedium.SoftDeleteContactMediumEvent;
 import com.etiya.common.events.contactmedium.UpdateContactMediumEvent;
 import com.etiya.customerservice.domain.entities.ContactMedium;
 import com.etiya.customerservice.repository.ContactMediumRepository;
@@ -18,6 +19,7 @@ import com.etiya.customerservice.service.responses.contactmedium.UpdatedContactM
 import com.etiya.customerservice.service.rules.ContactMediumBusinessRules;
 import com.etiya.customerservice.transport.kafka.producer.contactmedium.CreateContactMediumProducer;
 import com.etiya.customerservice.transport.kafka.producer.contactmedium.DeleteContactMediumProducer;
+import com.etiya.customerservice.transport.kafka.producer.contactmedium.SoftDeleteContactMediumProducer;
 import com.etiya.customerservice.transport.kafka.producer.contactmedium.UpdateContactMediumProducer;
 import org.springframework.stereotype.Service;
 
@@ -32,14 +34,16 @@ public class ContactMediumServiceImpl implements ContactMediumService {
     private final CreateContactMediumProducer createContactMediumProducer;
     private final UpdateContactMediumProducer updateContactMediumProducer;
     private final DeleteContactMediumProducer deleteContactMediumProducer;
+    private final SoftDeleteContactMediumProducer softDeleteContactMediumProducer;
 
-    public ContactMediumServiceImpl(ContactMediumRepository contactMediumRepository, ContactMediumBusinessRules contactMediumBusinessRules, CustomerService customerService, CityService cityService, CreateContactMediumProducer createContactMediumProducer, UpdateContactMediumProducer updateContactMediumProducer, DeleteContactMediumProducer deleteContactMediumProducer) {
+    public ContactMediumServiceImpl(ContactMediumRepository contactMediumRepository, ContactMediumBusinessRules contactMediumBusinessRules, CustomerService customerService, CityService cityService, CreateContactMediumProducer createContactMediumProducer, UpdateContactMediumProducer updateContactMediumProducer, DeleteContactMediumProducer deleteContactMediumProducer, SoftDeleteContactMediumProducer softDeleteContactMediumProducer) {
         this.contactMediumRepository = contactMediumRepository;
         this.contactMediumBusinessRules = contactMediumBusinessRules;
         this.customerService = customerService;
         this.createContactMediumProducer = createContactMediumProducer;
         this.updateContactMediumProducer = updateContactMediumProducer;
         this.deleteContactMediumProducer = deleteContactMediumProducer;
+        this.softDeleteContactMediumProducer = softDeleteContactMediumProducer;
     }
 
     @Override
@@ -107,8 +111,8 @@ public class ContactMediumServiceImpl implements ContactMediumService {
         contactMediumBusinessRules.checkIsPrimary(contactMedium);
         contactMedium.setDeletedDate(LocalDateTime.now());
         contactMediumRepository.save(contactMedium);
-        DeleteContactMediumEvent event = new DeleteContactMediumEvent(id, contactMedium.getCustomer().getId());
-        deleteContactMediumProducer.produceContactMediumDeleted(event);
+        SoftDeleteContactMediumEvent event = new SoftDeleteContactMediumEvent(id, contactMedium.getCustomer().getId(),contactMedium.getDeletedDate().toString());
+        softDeleteContactMediumProducer.produceAddressSoftDeleted(event);
     }
 
     @Override

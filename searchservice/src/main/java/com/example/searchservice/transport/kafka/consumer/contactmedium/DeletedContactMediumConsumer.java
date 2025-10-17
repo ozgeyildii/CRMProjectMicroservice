@@ -10,11 +10,11 @@ import org.springframework.context.annotation.Configuration;
 import java.util.function.Consumer;
 
 @Configuration
-public class DeleteContactMediumConsumer {
+public class DeletedContactMediumConsumer {
     private final CustomerSearchService customerSearchService;
-    private final Logger LOGGER = LoggerFactory.getLogger(DeleteContactMediumConsumer.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(DeletedContactMediumConsumer.class);
 
-    public DeleteContactMediumConsumer(CustomerSearchService customerSearchService) {
+    public DeletedContactMediumConsumer(CustomerSearchService customerSearchService) {
         this.customerSearchService = customerSearchService;
     }
 

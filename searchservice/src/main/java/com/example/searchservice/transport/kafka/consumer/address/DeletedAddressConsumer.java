@@ -10,11 +10,11 @@ import org.springframework.context.annotation.Configuration;
 import java.util.function.Consumer;
 
 @Configuration
-public class DeleteAddressConsumer {
+public class DeletedAddressConsumer {
 private final CustomerSearchService customerSearchService;
-private final Logger LOGGER = LoggerFactory.getLogger(DeleteAddressConsumer.class);
+private final Logger LOGGER = LoggerFactory.getLogger(DeletedAddressConsumer.class);
 
-public DeleteAddressConsumer(CustomerSearchService customerSearchService) {
+public DeletedAddressConsumer(CustomerSearchService customerSearchService) {
     this.customerSearchService = customerSearchService;
 }
 
@@ -22,7 +22,7 @@ public DeleteAddressConsumer(CustomerSearchService customerSearchService) {
 public Consumer<DeleteAddressEvent> addressDeleted() {
    return event->{
     customerSearchService.deleteAddress(event.id(), event.customerId());
-    LOGGER.info(String.format("Consumed Address => %s", event.id()));
+    LOGGER.info(String.format("Consumed Address (deleted) => %s", event.id()));
 };
 }
 

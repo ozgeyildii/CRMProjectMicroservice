@@ -25,14 +25,16 @@ import java.util.function.Consumer;
             return event->{
             Address address = new Address(
                     event.id(),
+                    event.street(),
                     event.houseNumber(),
                     event.description(),
-                    event.street(),
                     event.isDefault(),
-                    event.districtId()
+                    event.districtId(),
+                    event.customerId()
             );
-            customerSearchService.addAddress(address, event.customerId());
-            LOGGER.info(String.format("Consumed Address => %s", event.id()));
+
+            customerSearchService.addAddress(address);
+            LOGGER.info(String.format("Consumed Address (created)=> %s", event.id()));
             };
         }
        /* @KafkaListener(topics = "create-address", groupId = "create-address-group")

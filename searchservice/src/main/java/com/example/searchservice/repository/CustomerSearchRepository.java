@@ -49,30 +49,27 @@ public interface CustomerSearchRepository extends ElasticsearchRepository<Custom
             }
             """)List<CustomerSearch> findBySimilarName(String name);
 
-    //Sorulacak
     @Query("""
             {
             "range":{
                 "dateOfBirth":{
-                    "gte":"0?",
-                    "lte":"1?"
+                    "gte":"?0",
+                    "lte":"?1"
                     }
                 }
             }
-            """)List<CustomerSearch> findByDateRange(LocalDateTime start, LocalDateTime end);
+            """)List<CustomerSearch> findByDateRange(String start, String end);
 
 
     @Query("""
-        {
-          "bool": {
-            "must": [
-              { "match": { "firstName": "?0" } }
-            ],
-            "must_not": [
-              { "match": { "gender": "?1" } }
-            ]
-          }
-        }
+    {
+        "bool": {
+        "must": [
+             { "match": { "firstName": "?0" }},
+             { "match": { "gender": "?1" }}
+                ]
+         }
+    }
     """)
     List<CustomerSearch> findFirstNameAndGender(String firstName, String gender);
 

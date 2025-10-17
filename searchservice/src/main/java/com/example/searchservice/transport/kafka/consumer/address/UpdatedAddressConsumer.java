@@ -28,10 +28,11 @@ public class UpdatedAddressConsumer {
                     event.description(),
                     event.street(),
                     event.isDefault(),
-                    event.districtId()
+                    event.districtId(),
+                    event.customerId()
             );
-            customerSearchService.updateAddress(address, event.customerId());
-            LOGGER.info(String.format("Consumed Address => %s", event.id()));
+            customerSearchService.updateAddress(address);
+            LOGGER.info(String.format("Consumed Address (updated) => %s", event.id()));
         };
     }
 

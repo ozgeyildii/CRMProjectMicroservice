@@ -14,18 +14,20 @@ public interface CustomerSearchService {
     List<CustomerSearch> findAll();
     void delete(String id);
     //CustomerSearch getCustomerSearchById(UUID id);
-    void addAddress(Address address,UUID customerId);
-    void updateAddress(Address address, UUID customerId);
+    void addAddress(Address address);
+    void updateAddress(Address address);
     void deleteAddress(int id,UUID customerId);
+    void softDeleteAddress(int id,UUID customerId,String deletedDate);
 
-    void addContactMedium(ContactMedium contactMedium, UUID customerId);
-    void updateContactMedium(ContactMedium contactMedium, UUID customerId);
+    void addContactMedium(ContactMedium contactMedium);
+    void updateContactMedium(ContactMedium contactMedium);
     void deleteContactMedium(int id,UUID customerId);
+    void softDeleteContactMedium(int id,UUID customerId,String deletedDate);
 
     List<CustomerSearch> searchAllFields(String keyword);
     List<CustomerSearch> searchByMatchedName(String name);
     List<CustomerSearch> searchByExactValue(String nationalId);
     List<CustomerSearch> searchBySimilarName(String name);
-    List<CustomerSearch> searchByDateRange(LocalDateTime start, LocalDateTime end);
+    List<CustomerSearch> searchByDateRange(String start, String end);
     List<CustomerSearch> searchByNameAndGender(String name, String gender);
 }

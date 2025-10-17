@@ -4,6 +4,7 @@ import com.example.searchservice.domain.Address;
 import com.example.searchservice.domain.ContactMedium;
 import com.example.searchservice.domain.CustomerSearch;
 import com.example.searchservice.repository.CustomerSearchRepository;
+import org.springframework.data.elasticsearch.core.index.AliasAction;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -29,7 +30,17 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
 
     @Override
     public List<CustomerSearch> findAll() {
-        return StreamSupport.stream(customerSearchRepository.findAll().spliterator(),false).collect(Collectors.toList());
+       // return StreamSupport.stream(customerSearchRepository.findAll().spliterator(),false).collect(Collectors.toList());
+        return StreamSupport.stream(customerSearchRepository.findAll().spliterator(), false)
+                .map(customer -> {
+                    // deletedDate'i null olmayan adresleri filtrele
+                    List<Address> activeAddresses = customer.getAddresses().stream()
+                            .filter(address -> address.getDeletedDate() == null)
+                            .collect(Collectors.toList());
+                    customer.setAddresses(activeAddresses);
+                    return customer;
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -38,8 +49,10 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
     }
 
     @Override
-    public void addAddress(Address address, UUID customerId) {
-        Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(customerId.toString());
+    public void addAddress(Address address) {
+
+        Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(address.getCustomerId().toString());
+
         if(customerOpt.isPresent()){
             CustomerSearch customer = customerOpt.get();
             customer.getAddresses().add(address);
@@ -47,9 +60,9 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
     }}
 
     @Override
-    public void updateAddress(Address address, UUID customerId) {
+    public void updateAddress(Address address) {
         // Find the customer by ID
-        Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(customerId.toString());
+        Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(address.getCustomerId().toString());
 
         if (customerOpt.isPresent()) {
             CustomerSearch customer = customerOpt.get();
@@ -98,8 +111,28 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
     }
 
     @Override
-    public void addContactMedium(ContactMedium contactMedium, UUID customerId) {
+    public void softDeleteAddress(int id, UUID customerId, String deletedDate) {
         Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(customerId.toString());
+
+        if (customerOpt.isPresent()) {
+            CustomerSearch customer = customerOpt.get();
+
+            // Find the existing address by its ID or some unique identifier (e.g., houseNumber, street)
+          customer.getAddresses().stream().filter(addr -> id==(addr.getId()))
+                   .findFirst()
+                   .ifPresent(addr -> addr.setDeletedDate(LocalDateTime.now().toString()));
+
+            customerSearchRepository.save(customer);
+
+        } else {
+            throw new RuntimeException("Customer not found");
+        }
+
+    }
+
+    @Override
+    public void addContactMedium(ContactMedium contactMedium) {
+        Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(contactMedium.getCustomerId().toString());
         if(customerOpt.isPresent()){
             CustomerSearch customer = customerOpt.get();
             customer.getContactMediums().add(contactMedium);
@@ -107,8 +140,8 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
         }}
 
     @Override
-    public void updateContactMedium(ContactMedium contactMedium, UUID customerId) {
-        Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(customerId.toString());
+    public void updateContactMedium(ContactMedium contactMedium) {
+        Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(contactMedium.getCustomerId().toString());
 
         if (customerOpt.isPresent()) {
             CustomerSearch customer = customerOpt.get();
@@ -142,6 +175,7 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
             // Find the existing address by its ID or some unique identifier (e.g., houseNumber, street)
             boolean contactMediumRemoved = customer.getContactMediums().removeIf(addr -> addr.getId() == id);
 
+
             if (contactMediumRemoved) {
                 // Save the updated customer after address removal
                 customerSearchRepository.save(customer);
@@ -154,33 +188,107 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
     }
 
     @Override
+    public void softDeleteContactMedium(int id, UUID customerId, String deletedDate) {
+        Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(customerId.toString());
+
+        if (customerOpt.isPresent()) {
+            CustomerSearch customer = customerOpt.get();
+
+            // Find the existing address by its ID or some unique identifier (e.g., houseNumber, street)
+            customer.getContactMediums().stream().filter(contact -> id==(contact.getId()))
+                    .findFirst()
+                    .ifPresent(contact -> contact.setDeletedDate(LocalDateTime.now().toString()));
+
+            customerSearchRepository.save(customer);
+
+        } else {
+            throw new RuntimeException("Customer not found");
+        }
+    }
+
+    @Override
     public List<CustomerSearch> searchAllFields(String keyword) {
-        return customerSearchRepository.searchAllFields(keyword);
+        return StreamSupport.stream(customerSearchRepository.searchAllFields(keyword).spliterator(), false)
+                .map(customer -> {
+                    // deletedDate'i null olmayan adresleri filtrele
+                    List<Address> activeAddresses = customer.getAddresses().stream()
+                            .filter(address -> address.getDeletedDate() == null)
+                            .collect(Collectors.toList());
+                    customer.setAddresses(activeAddresses);
+                    return customer;
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<CustomerSearch> searchByMatchedName(String name) {
-        return customerSearchRepository.findByFirstNameMatch(name);
+        return StreamSupport.stream(customerSearchRepository.findByFirstNameMatch(name).spliterator(), false)
+                .map(customer -> {
+                    // deletedDate'i null olmayan adresleri filtrele
+                    List<Address> activeAddresses = customer.getAddresses().stream()
+                            .filter(address -> address.getDeletedDate() == null)
+                            .collect(Collectors.toList());
+                    customer.setAddresses(activeAddresses);
+                    return customer;
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<CustomerSearch> searchByExactValue(String nationalId) {
-        return customerSearchRepository.findByExactValue(nationalId);
+        return StreamSupport.stream(customerSearchRepository.findByExactValue(nationalId).spliterator(), false)
+                .map(customer -> {
+                    // deletedDate'i null olmayan adresleri filtrele
+                    List<Address> activeAddresses = customer.getAddresses().stream()
+                            .filter(address -> address.getDeletedDate() == null)
+                            .collect(Collectors.toList());
+                    customer.setAddresses(activeAddresses);
+                    return customer;
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<CustomerSearch> searchBySimilarName(String name) {
-        return customerSearchRepository.findBySimilarName(name);
+        return StreamSupport.stream(customerSearchRepository.findBySimilarName(name).spliterator(), false)
+                .map(customer -> {
+                    // deletedDate'i null olmayan adresleri filtrele
+                    List<Address> activeAddresses = customer.getAddresses().stream()
+                            .filter(address -> address.getDeletedDate() == null)
+                            .collect(Collectors.toList());
+                    customer.setAddresses(activeAddresses);
+                    return customer;
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<CustomerSearch> searchByDateRange(LocalDateTime start, LocalDateTime end) {
-        return customerSearchRepository.findByDateRange(start, end);
+    public List<CustomerSearch> searchByDateRange(String start, String end) {
+        return StreamSupport.stream(customerSearchRepository.findByDateRange(start, end).spliterator(), false)
+                .map(customer -> {
+                    // deletedDate'i null olmayan adresleri filtrele
+                    List<Address> activeAddresses = customer.getAddresses().stream()
+                            .filter(address -> address.getDeletedDate() == null)
+                            .collect(Collectors.toList());
+                    customer.setAddresses(activeAddresses);
+                    return customer;
+                })
+                .collect(Collectors.toList());
+
     }
 
     @Override
     public List<CustomerSearch> searchByNameAndGender(String name, String gender) {
-        return customerSearchRepository.findFirstNameAndGender(name, gender);
+        return StreamSupport.stream(customerSearchRepository.findFirstNameAndGender(name, gender).spliterator(), false)
+                .map(customer -> {
+                    // deletedDate'i null olmayan adresleri filtrele
+                    List<Address> activeAddresses = customer.getAddresses().stream()
+                            .filter(address -> address.getDeletedDate() == null)
+                            .collect(Collectors.toList());
+                    customer.setAddresses(activeAddresses);
+                    return customer;
+                })
+                .collect(Collectors.toList());
     }
 
 

@@ -26,10 +26,11 @@ public class UpdatedContactMediumConsumer {
                 event.id(),
                 event.type(),
                 event.value(),
-                event.isPrimary()
+                event.isPrimary(),
+                event.customerId()
         );
-        LOGGER.info(String.format("Consumed Contact Medium => %s", event.id()));
-        customerSearchService.updateContactMedium(contactMedium, event.customerId());
+        LOGGER.info(String.format("Consumed Contact Medium (updated) => %s", event.id()));
+        customerSearchService.updateContactMedium(contactMedium);
         };}
 /*
     @KafkaListener(topics = "update-contactmedium", groupId = "update-contactmedium-group")

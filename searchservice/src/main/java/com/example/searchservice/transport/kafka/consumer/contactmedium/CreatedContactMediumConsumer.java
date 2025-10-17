@@ -28,10 +28,11 @@ public class CreatedContactMediumConsumer {
                     event.id(),
                     event.type(),
                     event.value(),
-                    event.isPrimary()
+                    event.isPrimary(),
+                    event.customerId()
             );
-            customerSearchService.addContactMedium(contactMedium, event.customerId());
-            LOGGER.info(String.format("Consumed Contact Medium => %s", event.id()));
+            customerSearchService.addContactMedium(contactMedium);
+            LOGGER.info(String.format("Consumed Contact Medium (created)=> %s", event.id()));
         };
     }
    /* @KafkaListener(topics = "create-contactmedium", groupId = "create-contactmedium-group")
