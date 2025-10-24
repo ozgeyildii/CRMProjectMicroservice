@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "individual_customers")
@@ -25,7 +25,7 @@ public class IndividualCustomer extends Customer {
     private String nationalId;
 
     @Column(name = "dateOfBirth")
-    private LocalDateTime dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @Column(name = "motherName")
     private String motherName;
@@ -68,11 +68,11 @@ public class IndividualCustomer extends Customer {
         this.nationalId = nationalId;
     }
 
-    public LocalDateTime getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDateTime dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -100,7 +100,7 @@ public class IndividualCustomer extends Customer {
         this.gender = gender;
     }
 
-    public IndividualCustomer(String firstName, String lastName, String middleName, String nationalId, LocalDateTime dateOfBirth, String motherName, String fatherName, String gender) {
+    public IndividualCustomer(String firstName, String lastName, String middleName, String nationalId, LocalDate dateOfBirth, String motherName, String fatherName, String gender) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;

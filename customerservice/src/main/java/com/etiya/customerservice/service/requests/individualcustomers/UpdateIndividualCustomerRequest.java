@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 public class UpdateIndividualCustomerRequest {
@@ -22,7 +22,7 @@ public class UpdateIndividualCustomerRequest {
     @Pattern(regexp = "^[0-9]+$",message = "Identity number must contain only numbers")
     private String nationalId;
 
-    private LocalDateTime dateOfBirth;
+    private LocalDate dateOfBirth;
 
     private String motherName;
 
@@ -62,11 +62,11 @@ public class UpdateIndividualCustomerRequest {
         this.nationalId = nationalId;
     }
 
-    public LocalDateTime getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDateTime dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -102,7 +102,7 @@ public class UpdateIndividualCustomerRequest {
         this.id = id;
     }
 
-    public UpdateIndividualCustomerRequest(UUID id, String firstName, String lastName, String middleName, String nationalId, LocalDateTime dateOfBirth, String motherName, String fatherName, String gender) {
+    public UpdateIndividualCustomerRequest(UUID id, String firstName, String lastName, String middleName, String nationalId, LocalDate dateOfBirth, String motherName, String fatherName, String gender) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
