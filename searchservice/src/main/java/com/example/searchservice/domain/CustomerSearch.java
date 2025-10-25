@@ -2,8 +2,9 @@ package com.example.searchservice.domain;
 
 import jakarta.persistence.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class CustomerSearch {
     private String gender;
     private List<Address> addresses=new ArrayList<>();
 
+    @Field(type = FieldType.Nested)
     private List<ContactMedium> contactMediums= new ArrayList<>();
 
     public String getId() {

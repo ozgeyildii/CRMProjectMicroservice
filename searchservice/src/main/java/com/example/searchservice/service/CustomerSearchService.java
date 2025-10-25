@@ -24,6 +24,17 @@ public interface CustomerSearchService {
     void deleteContactMedium(int id,UUID customerId);
     void softDeleteContactMedium(int id,UUID customerId,String deletedDate);
 
+    List<CustomerSearch> searchDynamic(
+            String id,
+            String customerNumber,
+            String nationalId,
+            String firstName,
+            String lastName,
+            String value,
+            int page,
+            int size
+    );
+
     List<CustomerSearch> searchAllFields(String keyword);
     List<CustomerSearch> searchByMatchedName(String name);
     List<CustomerSearch> searchByExactValue(String nationalId);

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface CustomerSearchRepository extends ElasticsearchRepository<CustomerSearch,String> {
+public interface CustomerSearchRepository extends ElasticsearchRepository<CustomerSearch,String>, CustomCustomerSearchRepository{
 
     @Query("""
             {

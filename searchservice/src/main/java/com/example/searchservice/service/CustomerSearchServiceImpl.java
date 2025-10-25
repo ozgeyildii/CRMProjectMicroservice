@@ -140,6 +140,11 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
         }}
 
     @Override
+    public List<CustomerSearch> searchDynamic(String id, String customerNumber, String nationalId, String firstName, String lastName, String value, int page, int size) {
+        return customerSearchRepository.searchDynamic(id,customerNumber,nationalId,firstName,lastName,value, page, size);
+    }
+
+    @Override
     public void updateContactMedium(ContactMedium contactMedium) {
         Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(contactMedium.getCustomerId().toString());
 
