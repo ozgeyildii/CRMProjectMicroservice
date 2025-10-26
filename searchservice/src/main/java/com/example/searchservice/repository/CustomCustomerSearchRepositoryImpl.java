@@ -46,10 +46,20 @@ public class CustomCustomerSearchRepositoryImpl implements CustomCustomerSearchR
             bool.must(m -> m.term(t -> t.field("nationalId.keyword").value(nationalId)));
         }
         if (StringUtils.hasText(firstName)) {
-            bool.must(m -> m.matchPhrase(mp -> mp.field("firstName").query(firstName)));
+            String lowerFirstName = firstName.toLowerCase();
+            bool.must(m -> m.wildcard(w -> w
+                    .field("firstName.keyword")
+                    .caseInsensitive(true)
+                    .value("*" + lowerFirstName + "*")
+            ));
         }
         if (StringUtils.hasText(lastName)) {
-            bool.must(m -> m.matchPhrase(mp -> mp.field("lastName").query(lastName)));
+            String lowerLastName = lastName.toLowerCase();
+            bool.must(m -> m.wildcard(w -> w
+                    .field("lastName.keyword")
+                    .caseInsensitive(true)
+                    .value("*" + lowerLastName + "*")
+            ));
         }
         if (StringUtils.hasText(value)) {
             bool.must(m -> m.nested(n -> n

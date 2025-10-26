@@ -58,7 +58,7 @@ public class Customer extends BaseEntity {
     public void generateCustomerNumber(){
         String prefix = "CUST-";
         String year = String.valueOf(java.time.Year.now().getValue());
-        String randomPart = String.format("%04d",new java.util.Random().nextInt(10000));
+        String randomPart = String.format("%07d",new java.util.Random().nextInt(10000000));
         this.customerNumber = prefix + year + "-" + randomPart;
     }
 }
