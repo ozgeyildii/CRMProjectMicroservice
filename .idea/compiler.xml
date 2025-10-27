@@ -11,6 +11,7 @@
         <module name="apigateway" />
         <module name="configserver" />
         <module name="common" />
+        <module name="authservice" />
         <module name="searchservice" />
       </profile>
       <profile name="Annotation profile for customerservice" enabled="true">
@@ -28,6 +29,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="apigateway" options="-parameters" />
+      <module name="authservice" options="-parameters" />
       <module name="common" options="-parameters" />
       <module name="configserver" options="-parameters" />
       <module name="customerservice" options="-parameters" />
