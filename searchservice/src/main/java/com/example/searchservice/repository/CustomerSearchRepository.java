@@ -12,6 +12,18 @@ import java.util.List;
 public interface CustomerSearchRepository extends ElasticsearchRepository<CustomerSearch,String>, CustomCustomerSearchRepository{
 
     @Query("""
+        {
+          "bool": {
+            "must": [
+              { "term": { "nationalId.keyword": "?0" } }
+            ]
+          }
+        }
+        """)
+    List<CustomerSearch> findByNationalIdExact(String nationalId);
+
+
+    @Query("""
             {
             "query_string":{
             "query" : "*?0*",

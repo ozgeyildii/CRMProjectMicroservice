@@ -145,6 +145,12 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
     }
 
     @Override
+    public boolean existsByNationalId(String nationalId) {
+        List<CustomerSearch> result = customerSearchRepository.findByNationalIdExact(nationalId);
+        return result != null && !result.isEmpty();
+    }
+
+    @Override
     public void updateContactMedium(ContactMedium contactMedium) {
         Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(contactMedium.getCustomerId().toString());
 

@@ -35,6 +35,7 @@ public interface CustomerSearchService {
             int size
     );
 
+    boolean existsByNationalId(String nationalId);
     List<CustomerSearch> searchAllFields(String keyword);
     List<CustomerSearch> searchByMatchedName(String name);
     List<CustomerSearch> searchByExactValue(String nationalId);
