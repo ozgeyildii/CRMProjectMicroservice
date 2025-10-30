@@ -1,5 +1,6 @@
 package com.etiya.customerservice.repository;
 
+import com.etiya.customerservice.domain.entities.City;
 import com.etiya.customerservice.domain.entities.District;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -7,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DistrictRepository extends JpaRepository<District, Integer> {
@@ -23,4 +25,7 @@ public interface DistrictRepository extends JpaRepository<District, Integer> {
 
     void deleteById(int id);
 
+    Optional<District> findByNameAndCity(String name, City city);
+
+    Optional<District> findByName(String name);
 }

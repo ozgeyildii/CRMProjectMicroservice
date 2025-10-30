@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@Table(name = "contactmediums")
+@Table(name = "contact_mediums")
 @SQLRestriction("deleted_date IS NULL")
 
 public class ContactMedium extends BaseEntity {

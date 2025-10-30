@@ -1,5 +1,6 @@
 package com.etiya.customerservice.repository;
 
+import com.etiya.customerservice.domain.entities.Customer;
 import com.etiya.customerservice.domain.entities.IndividualCustomer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
 @Repository //yazmasak da çalışır. extend sayesinde anlıyor.
 //Spring otomatik Impl sınıfını üretiyor.
 public interface IndividualCustomerRepository extends CustomerRepository<IndividualCustomer> {
@@ -37,5 +40,8 @@ public interface IndividualCustomerRepository extends CustomerRepository<Individ
     List<IndividualCustomer> findByCustomerNumberPattern(@Param("pattern") String pattern);
 
     boolean existsByNationalId(String identityNumber);
+
+    Optional<IndividualCustomer> findById(UUID id);
+
 
 }

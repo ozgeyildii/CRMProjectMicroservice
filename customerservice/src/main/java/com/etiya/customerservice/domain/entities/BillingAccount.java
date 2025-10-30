@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@Table(name = "billingAccounts") //-> billing_account
+@Table(name = "billing_accounts") //-> billing_account
 @SQLRestriction("deleted_date IS NULL")
 
 public class BillingAccount extends BaseEntity {

@@ -1,6 +1,7 @@
 package com.etiya.customerservice.service.concretes;
 
 import com.etiya.common.crosscuttingconcerns.exceptions.types.BusinessException;
+import com.etiya.customerservice.domain.entities.Customer;
 import com.etiya.customerservice.repository.IndividualCustomerRepository;
 import com.etiya.customerservice.service.abstracts.CustomerService;
 import org.springframework.stereotype.Service;
@@ -33,4 +34,5 @@ public class CustomerServiceImpl implements CustomerService {
 
         throw new BusinessException("Customer not found with id: " + id);
     }
+
 }

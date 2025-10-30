@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CityRepository extends JpaRepository<City, Integer> {
@@ -26,5 +27,6 @@ public interface CityRepository extends JpaRepository<City, Integer> {
 
     boolean existsById(int id);
 
+    Optional<City> findByNameIgnoreCase(String name);
 
 }

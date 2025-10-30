@@ -1,6 +1,7 @@
 package com.etiya.customerservice.service.concretes;
 
 import com.etiya.common.events.customer.CreateCustomerEvent;
+import com.etiya.customerservice.domain.entities.Customer;
 import com.etiya.customerservice.domain.entities.IndividualCustomer;
 import com.etiya.customerservice.repository.IndividualCustomerRepository;
 import com.etiya.customerservice.service.abstracts.IndividualCustomerService;
@@ -10,6 +11,8 @@ import com.etiya.customerservice.service.responses.individualcustomers.CreatedIn
 import com.etiya.customerservice.service.rules.IndividualCustomerBusinessRules;
 import com.etiya.customerservice.transport.kafka.producer.customer.CreateCustomerProducer;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class IndividualCustomerServiceImpl implements IndividualCustomerService {
@@ -42,5 +45,12 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
         CreatedIndividualCustomerResponse response =
                 IndividualCustomerMapper.INSTANCE.createdIndividualCustomerResponseFromIndividualCustomer(createdIndividualCustomer);
         return response;
+    }
+
+
+    @Override
+    public Customer findById(UUID id) {
+        return individualCustomerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Customer not found with id: " + id));
     }
 }

@@ -5,11 +5,16 @@ import com.etiya.common.events.address.DeleteAddressEvent;
 import com.etiya.common.events.address.SoftDeleteAddressEvent;
 import com.etiya.common.events.address.UpdateAddressEvent;
 import com.etiya.customerservice.domain.entities.Address;
+import com.etiya.customerservice.domain.entities.District;
 import com.etiya.customerservice.repository.AddressRepository;
 import com.etiya.customerservice.service.abstracts.AddressService;
+import com.etiya.customerservice.service.abstracts.CustomerService;
+import com.etiya.customerservice.service.abstracts.DistrictService;
+import com.etiya.customerservice.service.abstracts.IndividualCustomerService;
 import com.etiya.customerservice.service.mappings.AddressMapper;
 import com.etiya.customerservice.service.requests.address.CreateAddressRequest;
 import com.etiya.customerservice.service.requests.address.UpdateAddressRequest;
+import com.etiya.customerservice.service.requests.addressorchestratorrequest.CreateFullAddressRequest;
 import com.etiya.customerservice.service.responses.address.CreatedAddressResponse;
 import com.etiya.customerservice.service.responses.address.GetByIdAddressResponse;
 import com.etiya.customerservice.service.responses.address.GetListAddressResponse;
@@ -23,18 +28,23 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
+    private final IndividualCustomerService individualCustomerService;
+    private final DistrictService districtService;
     private final AddressBusinessRules addressBusinessRules;
     private final CreateAddressProducer createAddressProducer;
     private final UpdateAddressProducer updateAddressProducer;
     private final DeleteAddressProducer deleteAddressProducer;
     private final SoftDeleteAddressProducer softDeleteAddressProducer;
 
-    public AddressServiceImpl(AddressRepository addressRepository, AddressBusinessRules addressBusinessRules, CreateAddressProducer createAddressProducer, UpdateAddressProducer updateAddressProducer, DeleteAddressProducer deleteAddressProducer, SoftDeleteAddressProducer softDeleteAddressProducer) {
+    public AddressServiceImpl(AddressRepository addressRepository, CustomerService customerService, IndividualCustomerService individualCustomerService, DistrictService districtService, AddressBusinessRules addressBusinessRules, CreateAddressProducer createAddressProducer, UpdateAddressProducer updateAddressProducer, DeleteAddressProducer deleteAddressProducer, SoftDeleteAddressProducer softDeleteAddressProducer) {
+        this.individualCustomerService = individualCustomerService;
+        this.districtService = districtService;
         this.addressBusinessRules  = addressBusinessRules;
         this.addressRepository = addressRepository;
         this.createAddressProducer = createAddressProducer;
@@ -112,6 +122,19 @@ public class AddressServiceImpl implements AddressService {
         Address address = addressRepository.findById(id).orElseThrow(() -> new RuntimeException("Address not found"));
         GetByIdAddressResponse response = AddressMapper.INSTANCE.getAddressResponseFromAddress(address);
         return response;
+    }
+
+    @Override
+    public void addForCustomer(UUID customerId, CreateFullAddressRequest request) {
+        Address address = new Address();
+        address.setStreet(request.getStreet());
+        address.setHouseNumber(request.getHouseNumber());
+        address.setDescription(request.getDescription());
+        address.setDefault(request.isDefault());
+        District district = districtService.findByName(request.getDistrict());
+        address.setDistrict(district);
+        address.setCustomer(individualCustomerService.findById(customerId));
+        addressRepository.save(address);
     }
 
 

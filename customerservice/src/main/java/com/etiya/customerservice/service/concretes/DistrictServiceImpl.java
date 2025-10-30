@@ -1,5 +1,6 @@
 package com.etiya.customerservice.service.concretes;
 
+import com.etiya.customerservice.domain.entities.City;
 import com.etiya.customerservice.domain.entities.District;
 import com.etiya.customerservice.repository.DistrictRepository;
 import com.etiya.customerservice.service.abstracts.CityService;
@@ -98,5 +99,21 @@ public class DistrictServiceImpl implements DistrictService {
 
         List<GetListDistrictResponse> responses = DistrictMapper.INSTANCE.getListDistrictResponseFromDistrict(districts);
         return responses;
+    }
+
+    @Override
+    public District findOrCreateByNameAndCity(String name, City city) {
+        return districtRepository.findByNameAndCity(name, city)
+                .orElseGet(() -> {
+                    District d = new District();
+                    d.setName(name);
+                    d.setCity(city);
+                    return districtRepository.save(d);
+                });   }
+
+    @Override
+    public District findByName(String name) {
+        return districtRepository.findByName(name)
+                .orElseThrow(() -> new RuntimeException("District not found with id: " + name));
     }
 }
