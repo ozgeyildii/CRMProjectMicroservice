@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void add(RegisterUserRequest request) {
         User user = new User();
-        user.setEmail(request.getEmail());
+        user.setUsername(request.getUsername());
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -33,6 +33,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByEmail(username).orElseThrow(() -> new AccessDeniedException("Login is not allowed"));
+        return userRepository.findByUsername(username).orElseThrow(() -> new AccessDeniedException("Login is not allowed"));
     }
 }

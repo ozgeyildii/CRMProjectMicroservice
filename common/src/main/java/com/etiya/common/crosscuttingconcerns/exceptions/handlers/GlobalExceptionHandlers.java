@@ -1,10 +1,8 @@
 package com.etiya.common.crosscuttingconcerns.exceptions.handlers;
 
 import com.etiya.common.crosscuttingconcerns.exceptions.constants.ExceptionMessages;
-import com.etiya.common.crosscuttingconcerns.exceptions.problemdetails.BusinessProblemDetails;
-import com.etiya.common.crosscuttingconcerns.exceptions.problemdetails.InternalServerProblemDetails;
-import com.etiya.common.crosscuttingconcerns.exceptions.problemdetails.ProblemDetails;
-import com.etiya.common.crosscuttingconcerns.exceptions.problemdetails.ValidationProblemDetails;
+import com.etiya.common.crosscuttingconcerns.exceptions.problemdetails.*;
+import com.etiya.common.crosscuttingconcerns.exceptions.types.AuthenticationException;
 import com.etiya.common.crosscuttingconcerns.exceptions.types.BusinessException;
 import com.etiya.common.crosscuttingconcerns.exceptions.types.InternalServerException;
 import org.springframework.http.HttpStatus;
@@ -45,5 +43,13 @@ public class GlobalExceptionHandlers {
         exception.getBindingResult().getFieldErrors().forEach(error->validationErrors.put(error.getField(),error.getDefaultMessage()));
         validationProblemDetails.setValidationErrors(validationErrors);
         return validationProblemDetails;
+    }
+
+    @ExceptionHandler({AuthenticationException.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ProblemDetails handleAuthenticationException(AuthenticationException exception) {
+        AuthenticationProblemDetails problemDetails = new AuthenticationProblemDetails();
+        problemDetails.setDetail(exception.getMessage());
+        return problemDetails;
     }
 }

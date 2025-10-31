@@ -4,6 +4,7 @@ import com.etiya.authservice.service.abstracts.AuthService;
 import com.etiya.authservice.service.dtos.requests.LoginRequest;
 import com.etiya.authservice.service.dtos.requests.RegisterUserRequest;
 import com.etiya.authservice.service.dtos.responses.LoginResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public LoginResponse login(@RequestBody LoginRequest request){
+    public LoginResponse login(@RequestBody @Valid LoginRequest request){
         return authService.login(request);
     }
 }

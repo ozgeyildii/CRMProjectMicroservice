@@ -17,4 +17,6 @@ public class ExceptionMessages {
     public static final String VALIDATION_ERROR = "Validation Rule Violation";
     public static final String VALIDATION_ERRORS = "Validation Errors";
 
+    public static final String AUTHENTICATION_ERROR="Authentication Error";
+    public static final String TYPE_AUTHENTICATION = "https://example.com/probs/authentication";
 }

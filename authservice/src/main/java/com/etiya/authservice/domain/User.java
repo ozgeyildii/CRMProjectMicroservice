@@ -22,13 +22,13 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "lastName")
     private String lastName;
 
-    @Column(name = "email")
-    private String email;
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "password")
     private String password;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<UserRole> authorities;
 
 
@@ -56,12 +56,8 @@ public class User extends BaseEntity implements UserDetails {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
@@ -74,11 +70,11 @@ public class User extends BaseEntity implements UserDetails {
     }
 
 
-    public User(UUID id, String firstName, String lastName, String email, String password) {
+    public User(UUID id, String firstName, String lastName, String username, String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+        this.username = username;
         this.password = password;
     }
 
@@ -93,7 +89,7 @@ public class User extends BaseEntity implements UserDetails {
     }
     @Override
     public String getUsername() {
-        return this.email;
+        return this.username;
     }
 
     @Override
