@@ -44,6 +44,11 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
     }
 
     @Override
+    public CustomerSearch getById(String id) {
+        return customerSearchRepository.findById(id).orElseThrow(()->new RuntimeException("Id bulunamadı"));
+    }
+
+    @Override
     public void delete(String id) {
         customerSearchRepository.deleteById(id);
     }

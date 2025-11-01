@@ -12,6 +12,7 @@ public interface CustomerSearchService {
 
     void add(CustomerSearch customerSearch);
     List<CustomerSearch> findAll();
+    CustomerSearch getById(String id);
     void delete(String id);
     //CustomerSearch getCustomerSearchById(UUID id);
     void addAddress(Address address);

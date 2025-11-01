@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/customer-search/")
@@ -20,6 +21,11 @@ public class CustomerSearchController {
 
     public CustomerSearchController(CustomerSearchService customerSearchService) {
         this.customerSearchService = customerSearchService;
+    }
+
+    @GetMapping("/get-customer-by-id")
+    public CustomerSearch getCustomerById(@RequestParam String id) {
+        return customerSearchService.getById(id);
     }
 
     @GetMapping("/check-national-id")
