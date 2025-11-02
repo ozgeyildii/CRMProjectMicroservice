@@ -28,6 +28,5 @@ public interface AddressService {
 
     GetByIdAddressResponse getById(int id);
 
-    void addForCustomer(UUID customerId, CreateFullAddressRequest request);
 
 }

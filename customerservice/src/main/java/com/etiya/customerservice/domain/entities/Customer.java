@@ -3,6 +3,7 @@ package com.etiya.customerservice.domain.entities;
 import com.etiya.common.entities.BaseEntity;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -21,8 +22,11 @@ public class Customer extends BaseEntity {
 
     //navigation property
 
-   /* @OneToMany(mappedBy = "customer",fetch = FetchType.LAZY)
-    private List<Address> addresses;*/
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addresses;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ContactMedium> contactMediums;
 
     //Getter-Setter
 
@@ -38,13 +42,25 @@ public class Customer extends BaseEntity {
         return customerNumber;
     }
 
- /*   public List<Address> getAddresses() {
+    public void setCustomerNumber(String customerNumber) {
+        this.customerNumber = customerNumber;
+    }
+
+    public List<Address> getAddresses() {
         return addresses;
     }
 
     public void setAddresses(List<Address> addresses) {
         this.addresses = addresses;
-    }*/
+    }
+
+    public List<ContactMedium> getContactMediums() {
+        return contactMediums;
+    }
+
+    public void setContactMediums(List<ContactMedium> contactMediums) {
+        this.contactMediums = contactMediums;
+    }
 
     public Customer(UUID id, String customerNumber) {
         this.id = id;

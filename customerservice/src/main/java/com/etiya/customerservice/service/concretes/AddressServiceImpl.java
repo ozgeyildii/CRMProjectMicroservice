@@ -124,18 +124,6 @@ public class AddressServiceImpl implements AddressService {
         return response;
     }
 
-    @Override
-    public void addForCustomer(UUID customerId, CreateFullAddressRequest request) {
-        Address address = new Address();
-        address.setStreet(request.getStreet());
-        address.setHouseNumber(request.getHouseNumber());
-        address.setDescription(request.getDescription());
-        address.setDefault(request.isDefault());
-        District district = districtService.findByName(request.getDistrict());
-        address.setDistrict(district);
-        address.setCustomer(individualCustomerService.findById(customerId));
-        addressRepository.save(address);
-    }
 
 
 /*

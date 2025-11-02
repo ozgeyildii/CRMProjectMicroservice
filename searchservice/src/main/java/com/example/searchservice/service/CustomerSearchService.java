@@ -1,5 +1,6 @@
 package com.example.searchservice.service;
 
+import com.etiya.common.events.customer.UpdateCustomerEvent;
 import com.example.searchservice.domain.Address;
 import com.example.searchservice.domain.ContactMedium;
 import com.example.searchservice.domain.CustomerSearch;
@@ -15,6 +16,10 @@ public interface CustomerSearchService {
     CustomerSearch getById(String id);
     void delete(String id);
     //CustomerSearch getCustomerSearchById(UUID id);
+
+    CustomerSearch updateCustomer(CustomerSearch customerSearch);
+    void deleteCustomer(UUID id);
+
     void addAddress(Address address);
     void updateAddress(Address address);
     void deleteAddress(int id,UUID customerId);

@@ -22,7 +22,7 @@ public class CreatedCustomerConsumer {
     @Bean
     public Consumer<CreateCustomerEvent> customerCreated(){
         return event -> {
-            CustomerSearch customerSearch = new CustomerSearch(event.customerId(),
+            CustomerSearch customerSearch = new CustomerSearch(event.customerId().toString(),
                     event.customerNumber(),
                     event.firstName(),
                     event.lastName(),event.nationalId(),event.dateOfBirth(), event.motherName(), event.fatherName(), event.gender());

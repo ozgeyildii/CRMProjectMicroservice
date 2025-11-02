@@ -1,5 +1,7 @@
 package com.example.searchservice.service;
 
+import com.etiya.common.crosscuttingconcerns.exceptions.types.BusinessException;
+import com.etiya.common.events.customer.UpdateCustomerEvent;
 import com.example.searchservice.domain.Address;
 import com.example.searchservice.domain.ContactMedium;
 import com.example.searchservice.domain.CustomerSearch;
@@ -54,6 +56,42 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
     }
 
     @Override
+    public CustomerSearch updateCustomer(CustomerSearch customerSearch) {
+        Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(customerSearch.getId());
+        if (customerOpt.isPresent()) {
+            CustomerSearch existingCustomer = customerOpt.get();
+            existingCustomer.setFirstName(customerSearch.getFirstName());
+            existingCustomer.setLastName(customerSearch.getLastName());
+            existingCustomer.setNationalId(customerSearch.getNationalId());
+            existingCustomer.setDateOfBirth(customerSearch.getDateOfBirth());
+            existingCustomer.setMotherName(customerSearch.getMotherName());
+            existingCustomer.setFatherName(customerSearch.getFatherName());
+            existingCustomer.setGender(customerSearch.getGender());
+
+            if (customerSearch.getAddresses() != null && !customerSearch.getAddresses().isEmpty()) {
+                existingCustomer.setAddresses(customerSearch.getAddresses());
+            }
+
+            if (customerSearch.getContactMediums() != null & !customerSearch.getContactMediums().isEmpty()) {
+                existingCustomer.setContactMediums(customerSearch.getContactMediums());
+            }
+            customerSearchRepository.save(existingCustomer);
+        } else {
+            throw new RuntimeException("Customer not found in Elastic: " + customerSearch.getId());
+        }
+
+        return customerSearch;
+    }
+
+    @Override
+    public void deleteCustomer(UUID id) {
+        CustomerSearch customerSearch = customerSearchRepository.findById(id.toString())
+                .orElseThrow(() -> new BusinessException("Customer not found"));
+        customerSearchRepository.delete(customerSearch);
+    }
+
+
+    @Override
     public void addAddress(Address address) {
 
         Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(address.getCustomerId().toString());
@@ -66,13 +104,11 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
 
     @Override
     public void updateAddress(Address address) {
-        // Find the customer by ID
         Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(address.getCustomerId().toString());
 
         if (customerOpt.isPresent()) {
             CustomerSearch customer = customerOpt.get();
 
-            // Find the existing address by its ID or some unique identifier
             Address existingAddress = customer.getAddresses().stream()
                     .filter(addr -> addr.getId() == address.getId()) // Assuming "id" is the unique identifier for an address
                     .findFirst()

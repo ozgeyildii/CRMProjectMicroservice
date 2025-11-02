@@ -28,6 +28,8 @@ public class CustomerSearch {
     private String fatherName;
 
     private String gender;
+
+    @Field(type = FieldType.Nested)
     private List<Address> addresses=new ArrayList<>();
 
     @Field(type = FieldType.Nested)

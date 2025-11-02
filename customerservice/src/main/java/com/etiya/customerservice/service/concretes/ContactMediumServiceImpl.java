@@ -160,7 +160,14 @@ public class ContactMediumServiceImpl implements ContactMediumService {
         cm.setPrimary(request.isPrimary());
         cm.setCustomer(individualCustomerService.findById(customerId));
         contactMediumRepository.save(cm);
+        CreateContactMediumEvent event = new CreateContactMediumEvent(
+                cm.getId(),
+                cm.getType().name(),
+                cm.getValue(),
+                cm.isPrimary(),
+                cm.getCustomer().getId()
+        );
+        createContactMediumProducer.produceContactMediumCreated(event);
     }
-
 
 }

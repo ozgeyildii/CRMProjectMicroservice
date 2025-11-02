@@ -37,7 +37,7 @@ public class Address extends BaseEntity {
     @JoinColumn(name = "customerId")
     private Customer customer;
 
-    @OneToMany(mappedBy = "address")
+    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<BillingAccount> billingAccounts;
 
     public int getId() {

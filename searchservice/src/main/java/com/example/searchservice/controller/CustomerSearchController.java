@@ -24,11 +24,13 @@ public class CustomerSearchController {
     }
 
     @GetMapping("/get-customer-by-id")
+    @ResponseStatus(HttpStatus.OK)
     public CustomerSearch getCustomerById(@RequestParam String id) {
         return customerSearchService.getById(id);
     }
 
     @GetMapping("/check-national-id")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Map<String, Boolean>> checkNationalId(@RequestParam String nationalId) {
         boolean exists = customerSearchService.existsByNationalId(nationalId);
         Map<String, Boolean> response = new HashMap<>();

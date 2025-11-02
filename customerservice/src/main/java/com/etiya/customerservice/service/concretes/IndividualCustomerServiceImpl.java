@@ -1,15 +1,23 @@
 package com.etiya.customerservice.service.concretes;
 
+import com.etiya.common.events.address.DeleteAddressEvent;
 import com.etiya.common.events.customer.CreateCustomerEvent;
+import com.etiya.common.events.customer.DeleteCustomerEvent;
+import com.etiya.common.events.customer.UpdateCustomerEvent;
+import com.etiya.customerservice.domain.entities.BillingAccount;
 import com.etiya.customerservice.domain.entities.Customer;
 import com.etiya.customerservice.domain.entities.IndividualCustomer;
 import com.etiya.customerservice.repository.IndividualCustomerRepository;
 import com.etiya.customerservice.service.abstracts.IndividualCustomerService;
 import com.etiya.customerservice.service.mappings.IndividualCustomerMapper;
 import com.etiya.customerservice.service.requests.individualcustomers.CreateIndividualCustomerRequest;
+import com.etiya.customerservice.service.requests.individualcustomers.UpdateIndividualCustomerRequest;
 import com.etiya.customerservice.service.responses.individualcustomers.CreatedIndividualCustomerResponse;
+import com.etiya.customerservice.service.responses.individualcustomers.UpdatedIndividualCustomerResponse;
 import com.etiya.customerservice.service.rules.IndividualCustomerBusinessRules;
 import com.etiya.customerservice.transport.kafka.producer.customer.CreateCustomerProducer;
+import com.etiya.customerservice.transport.kafka.producer.customer.DeleteCustomerProducer;
+import com.etiya.customerservice.transport.kafka.producer.customer.UpdateCustomerProducer;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -20,11 +28,15 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
     private final IndividualCustomerRepository individualCustomerRepository;
     private final IndividualCustomerBusinessRules individualCustomerBusinessRules;
     private final CreateCustomerProducer createCustomerProducer;
+    private final UpdateCustomerProducer updateCustomerProducer;
+    private final DeleteCustomerProducer deleteCustomerProducer;
 
-    public IndividualCustomerServiceImpl(IndividualCustomerRepository individualCustomerRepository, IndividualCustomerBusinessRules individualCustomerBusinessRules, CreateCustomerProducer createCustomerProducer) {
+    public IndividualCustomerServiceImpl(IndividualCustomerRepository individualCustomerRepository, IndividualCustomerBusinessRules individualCustomerBusinessRules, CreateCustomerProducer createCustomerProducer, UpdateCustomerProducer updateCustomerProducer, DeleteCustomerProducer deleteCustomerProducer) {
         this.individualCustomerRepository = individualCustomerRepository;
         this.individualCustomerBusinessRules = individualCustomerBusinessRules;
         this.createCustomerProducer = createCustomerProducer;
+        this.updateCustomerProducer = updateCustomerProducer;
+        this.deleteCustomerProducer = deleteCustomerProducer;
     }
 
     @Override
@@ -32,7 +44,7 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
         individualCustomerBusinessRules.checkIfIndividualCustomerExistsByIdentityNumber((request.getNationalId()));
         IndividualCustomer individualCustomer = IndividualCustomerMapper.INSTANCE.individualCustomerFromCreateIndividualCustomerRequest(request);
         IndividualCustomer createdIndividualCustomer = individualCustomerRepository.save(individualCustomer);
-        CreateCustomerEvent event = new CreateCustomerEvent(createdIndividualCustomer.getId().toString(),
+        CreateCustomerEvent event = new CreateCustomerEvent(createdIndividualCustomer.getId(),
                 createdIndividualCustomer.getCustomerNumber(),
                 createdIndividualCustomer.getFirstName(),
                 createdIndividualCustomer.getLastName(),
@@ -49,8 +61,46 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
 
 
     @Override
+    public UpdatedIndividualCustomerResponse update(UpdateIndividualCustomerRequest request) {
+        IndividualCustomer existingCustomer = individualCustomerRepository.findById(request.getId())
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+        IndividualCustomer updatedCustomer =
+                IndividualCustomerMapper.INSTANCE.individualCustomerFromUpdateIndividualCustomerRequest(request, existingCustomer);
+        updatedCustomer = individualCustomerRepository.save(updatedCustomer);
+        UpdateCustomerEvent event = new UpdateCustomerEvent(
+                updatedCustomer.getId(),
+                updatedCustomer.getCustomerNumber(),
+                updatedCustomer.getFirstName(),
+                updatedCustomer.getLastName(),
+                updatedCustomer.getNationalId(),
+                updatedCustomer.getDateOfBirth().toString(),
+                updatedCustomer.getMotherName(),
+                updatedCustomer.getFatherName(),
+                updatedCustomer.getGender()
+        );
+
+        updateCustomerProducer.produceCustomerUpdated(event);
+
+
+        UpdatedIndividualCustomerResponse response =
+                IndividualCustomerMapper.INSTANCE.updatedIndividualCustomerResponseFromIndividualCustomer(updatedCustomer);
+
+        return response;
+    }
+
+
+
+    @Override
     public Customer findById(UUID id) {
         return individualCustomerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Customer not found with id: " + id));
+    }
+
+    @Override
+    public void delete(UUID id) {
+        IndividualCustomer individualCustomer = individualCustomerRepository.findById(id).orElseThrow(() -> new RuntimeException("Individual Customer not found"));
+        individualCustomerRepository.delete(individualCustomer);
+        DeleteCustomerEvent event=new DeleteCustomerEvent(id);
+        deleteCustomerProducer.produceCustomerDeleted(event);
     }
 }
