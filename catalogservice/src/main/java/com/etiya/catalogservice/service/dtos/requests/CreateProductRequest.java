@@ -6,7 +6,7 @@ public class CreateProductRequest {
 
     private String name;
 
-    private String description;
+    private int stock;
 
     private double price;
 
@@ -20,12 +20,12 @@ public class CreateProductRequest {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public int getStock() {
+        return stock;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     public double getPrice() {
@@ -33,6 +33,15 @@ public class CreateProductRequest {
     }
 
     public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public CreateProductRequest() {
+    }
+
+    public CreateProductRequest(String name, int stock, double price) {
+        this.name = name;
+        this.stock = stock;
         this.price = price;
     }
 }
