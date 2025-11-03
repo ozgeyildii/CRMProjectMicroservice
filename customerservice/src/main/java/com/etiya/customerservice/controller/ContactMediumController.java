@@ -34,6 +34,14 @@ public class ContactMediumController {
         return contactMediumService.update(request);
     }
 
+    @PutMapping("/multiple")
+    @ResponseStatus(HttpStatus.OK)
+    public List<UpdatedContactMediumResponse> updateContactMediums(
+            @RequestBody List<UpdateContactMediumRequest> requests) {
+        return contactMediumService.updateMultiple(requests);
+    }
+
+
     @DeleteMapping("{id}")//pathvariable ile anlaşsın diye, mapping yapsın diye
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable int id) {

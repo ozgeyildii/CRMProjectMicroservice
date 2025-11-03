@@ -23,14 +23,18 @@ import com.etiya.customerservice.transport.kafka.producer.contactmedium.CreateCo
 import com.etiya.customerservice.transport.kafka.producer.contactmedium.DeleteContactMediumProducer;
 import com.etiya.customerservice.transport.kafka.producer.contactmedium.SoftDeleteContactMediumProducer;
 import com.etiya.customerservice.transport.kafka.producer.contactmedium.UpdateContactMediumProducer;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
-public class ContactMediumServiceImpl implements ContactMediumService {
+public
+
+class ContactMediumServiceImpl implements ContactMediumService {
     private final ContactMediumRepository contactMediumRepository;
     private final IndividualCustomerService individualCustomerService;
     private final ContactMediumBusinessRules contactMediumBusinessRules;
@@ -87,6 +91,39 @@ public class ContactMediumServiceImpl implements ContactMediumService {
         UpdatedContactMediumResponse response = ContactMediumMapper.INSTANCE.getUpdatedContactMediumResponseFromContactMedium(updated);
 
         return response;
+    }
+
+    @Override
+    @Transactional
+    public List<UpdatedContactMediumResponse> updateMultiple(List<UpdateContactMediumRequest> requests) {
+        List<UpdatedContactMediumResponse> responses = new ArrayList<>();
+
+        for (UpdateContactMediumRequest request : requests) {
+            ContactMedium existing = contactMediumRepository.findById(request.getId())
+                    .orElseThrow(() -> new RuntimeException("Contact Medium not found"));
+
+            ContactMedium updatedEntity = ContactMediumMapper.INSTANCE
+                    .contactMediumFromUpdateContactMediumRequest(request, existing);
+
+            ContactMedium updated = contactMediumRepository.save(updatedEntity);
+
+            // Kafka event
+            UpdateContactMediumEvent event = new UpdateContactMediumEvent(
+                    updated.getId(),
+                    updated.getType().name(),
+                    updated.getValue(),
+                    updated.isPrimary(),
+                    updated.getCustomer().getId()
+            );
+            updateContactMediumProducer.produceContactMediumUpdated(event);
+
+            UpdatedContactMediumResponse response = ContactMediumMapper.INSTANCE
+                    .getUpdatedContactMediumResponseFromContactMedium(updated);
+
+            responses.add(response);
+        }
+
+        return responses;
     }
 
 

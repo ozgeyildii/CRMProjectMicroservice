@@ -13,6 +13,7 @@ import java.util.UUID;
 public interface ContactMediumService {
     CreatedContactMediumResponse add(CreateContactMediumRequest request);
     UpdatedContactMediumResponse update(UpdateContactMediumRequest request);
+    List<UpdatedContactMediumResponse> updateMultiple(List<UpdateContactMediumRequest> requests);
     List<GetListContactMediumResponse> getList();
 
     void delete(int id);

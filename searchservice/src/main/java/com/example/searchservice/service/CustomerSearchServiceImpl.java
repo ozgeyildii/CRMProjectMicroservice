@@ -174,6 +174,7 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
     @Override
     public void addContactMedium(ContactMedium contactMedium) {
         Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(contactMedium.getCustomerId().toString());
+        customerOpt.orElseThrow(() -> new BusinessException("Customer not found"));
         if(customerOpt.isPresent()){
             CustomerSearch customer = customerOpt.get();
             customer.getContactMediums().add(contactMedium);

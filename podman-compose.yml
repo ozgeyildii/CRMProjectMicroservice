@@ -100,7 +100,29 @@ services:
       - POSTGRES_DB=identitydb
     volumes:
       - "auth-data:/var/lib/postgresql"
+  
+  catalogservicedb:
+    container_name: catalogservicedb
+    image: postgres
+    ports:
+      - "5452:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=catalogdb
+    volumes:
+      - "catalog-data:/var/lib/postgresql"
+
+  basketservicedb:
+    container_name: basketservicedb
+    image: redis:7.2
+    ports:
+      - "6379:6379"
+    volumes:
+      - "basket-data:/var/lib/redis"
 
 volumes:
   customer-data:
   auth-data:
+  catalog-data:
+  basket-data:

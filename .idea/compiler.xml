@@ -9,9 +9,11 @@
         <outputRelativeToContentRoot value="true" />
         <module name="eurekaserver" />
         <module name="apigateway" />
-        <module name="configserver" />
         <module name="common" />
         <module name="authservice" />
+        <module name="catalogservice" />
+        <module name="configserver" />
+        <module name="basketservice" />
         <module name="searchservice" />
       </profile>
       <profile name="Annotation profile for customerservice" enabled="true">
@@ -30,6 +32,8 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="apigateway" options="-parameters" />
       <module name="authservice" options="-parameters" />
+      <module name="basketservice" options="-parameters" />
+      <module name="catalogservice" options="-parameters" />
       <module name="common" options="-parameters" />
       <module name="configserver" options="-parameters" />
       <module name="customerservice" options="-parameters" />
