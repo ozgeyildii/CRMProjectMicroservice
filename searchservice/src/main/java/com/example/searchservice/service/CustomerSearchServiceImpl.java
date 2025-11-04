@@ -10,6 +10,7 @@ import org.springframework.data.elasticsearch.core.index.AliasAction;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -47,8 +48,35 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
 
     @Override
     public CustomerSearch getById(String id) {
-        return customerSearchRepository.findById(id).orElseThrow(()->new RuntimeException("Id bulunamadı"));
-    }
+        int retries = 5; // max 5 deneme
+        while (retries-- > 0) {
+            Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(id);
+            if (customerOpt.isPresent()) {
+                CustomerSearch customer = customerOpt.get();
+                System.out.println("✅ [Elastic Result] " + customer);
+                System.out.println("➡️ [Elastic Nested Sizes] addresses=" +
+                        (customer.getAddresses() == null ? "null" : customer.getAddresses().size()) +
+                        ", contactMediums=" +
+                        (customer.getContactMediums() == null ? "null" : customer.getContactMediums().size()));
+
+                if (customer.getAddresses() != null && !customer.getAddresses().isEmpty()) {
+                    List<Address> activeAddresses = customer.getAddresses().stream()
+                            .filter(address -> address.getDeletedDate() == null)
+                            .collect(Collectors.toList());
+                    customer.setAddresses(activeAddresses);
+                }
+
+                return customer;
+            }
+
+            try {
+                Thread.sleep(1000); // 1 saniye bekle
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        throw new RuntimeException("Customer not found in Elastic after retries: " + id);    }
 
     @Override
     public void delete(String id) {
@@ -57,7 +85,7 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
 
     @Override
     public CustomerSearch updateCustomer(CustomerSearch customerSearch) {
-        Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(customerSearch.getId());
+        Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(customerSearch.getId().toString());
         if (customerOpt.isPresent()) {
             CustomerSearch existingCustomer = customerOpt.get();
             existingCustomer.setFirstName(customerSearch.getFirstName());
@@ -93,14 +121,26 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
 
     @Override
     public void addAddress(Address address) {
+        int retries = 5;
+        while (retries-- > 0) {
+            Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(address.getCustomerId().toString());
+            if (customerOpt.isPresent()) {
+                CustomerSearch customer = customerOpt.get();
+                if (customer.getAddresses() == null) {
+                    customer.setAddresses(new ArrayList<>());
+                }
+                customer.getAddresses().add(address);
+                customerSearchRepository.save(customer);
+                return;
+            }
 
-        Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(address.getCustomerId().toString());
-
-        if(customerOpt.isPresent()){
-            CustomerSearch customer = customerOpt.get();
-            customer.getAddresses().add(address);
-            customerSearchRepository.save(customer);
-    }}
+            try {
+                Thread.sleep(1000); // 1 saniye bekle
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
 
     @Override
     public void updateAddress(Address address) {
@@ -118,7 +158,7 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
             existingAddress.setStreet(address.getStreet());
             existingAddress.setHouseNumber(address.getHouseNumber());
             existingAddress.setDescription(address.getDescription());
-            existingAddress.setDefault(address.isDefault());
+            existingAddress.setDefaultValue(address.isDefaultValue());
             existingAddress.setDistrictId(address.getDistrictId());
 
             // Save the updated customer
@@ -173,12 +213,18 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
 
     @Override
     public void addContactMedium(ContactMedium contactMedium) {
-        Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(contactMedium.getCustomerId().toString());
-        customerOpt.orElseThrow(() -> new BusinessException("Customer not found"));
-        if(customerOpt.isPresent()){
-            CustomerSearch customer = customerOpt.get();
-            customer.getContactMediums().add(contactMedium);
-            customerSearchRepository.save(customer);
+        int retries = 5;
+        while (retries-- > 0) {
+            Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(contactMedium.getCustomerId().toString());
+            if (customerOpt.isPresent()) {
+                CustomerSearch customer = customerOpt.get();
+                if (customer.getContactMediums() == null)
+                    customer.setContactMediums(new ArrayList<>());
+                customer.getContactMediums().add(contactMedium);
+                customerSearchRepository.save(customer);
+                return;
+            }
+            try { Thread.sleep(1000); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
         }}
 
     @Override
@@ -208,7 +254,7 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
             // Update the address fields
             existingContactMedium.setType(contactMedium.getType());
             existingContactMedium.setValue(contactMedium.getValue());
-            existingContactMedium.setPrimary(contactMedium.isPrimary());
+            existingContactMedium.setPrimaryValue(contactMedium.isPrimaryValue());
 
             // Save the updated customer
             customerSearchRepository.save(customer);

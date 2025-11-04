@@ -22,6 +22,8 @@ public interface DistrictService {
     List<GetListDistrictResponse> getByCityId(int cityId);
     District findOrCreateByNameAndCity(String name, City city);
     District findByName(String name);
+    District getByEntityId(int id);
+
 
 
 }

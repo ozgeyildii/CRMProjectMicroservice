@@ -17,14 +17,23 @@ public class CreateFullAddressRequest {
 
     private boolean isDefault;
 
-    // Eğer FE isim gönderiyorsa bunları ekle
     @NotBlank(message = "{cityIsRequired}")
     private String city;
 
     @NotBlank(message = "{districtIsRequired}")
     private String district;
 
+    private int districtId;
+
     private UUID customerId;
+
+    public int getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(int districtId) {
+        this.districtId = districtId;
+    }
 
     // Getters & Setters
     public String getStreet() { return street; }

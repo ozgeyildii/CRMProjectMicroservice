@@ -1,14 +1,15 @@
 package com.example.searchservice.domain;
 
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import jakarta.persistence.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Document(indexName = "customer-search")
+@Document(indexName = "customer-search", createIndex = true)
 public class CustomerSearch {
 
     @Id
@@ -29,10 +30,10 @@ public class CustomerSearch {
 
     private String gender;
 
-    @Field(type = FieldType.Nested)
+    @Field(type = FieldType.Nested, includeInParent = true)
     private List<Address> addresses=new ArrayList<>();
 
-    @Field(type = FieldType.Nested)
+    @Field(type = FieldType.Nested, includeInParent = true)
     private List<ContactMedium> contactMediums= new ArrayList<>();
 
     public String getId() {

@@ -1,9 +1,11 @@
 package com.etiya.customerservice.service.concretes;
 
+import com.etiya.common.crosscuttingconcerns.exceptions.types.BusinessException;
 import com.etiya.common.events.address.DeleteAddressEvent;
 import com.etiya.common.events.customer.CreateCustomerEvent;
 import com.etiya.common.events.customer.DeleteCustomerEvent;
 import com.etiya.common.events.customer.UpdateCustomerEvent;
+import com.etiya.common.responses.CustomerResponse;
 import com.etiya.customerservice.domain.entities.BillingAccount;
 import com.etiya.customerservice.domain.entities.Customer;
 import com.etiya.customerservice.domain.entities.IndividualCustomer;
@@ -102,5 +104,16 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
         individualCustomerRepository.delete(individualCustomer);
         DeleteCustomerEvent event=new DeleteCustomerEvent(id);
         deleteCustomerProducer.produceCustomerDeleted(event);
+    }
+
+    @Override
+    public CustomerResponse getById(UUID id) {
+        return individualCustomerRepository.findById(id).stream().map(this::mapToResponse).findFirst().orElseThrow(()->new BusinessException("Customer Not Found"));
+    }
+
+    private CustomerResponse mapToResponse(Customer customer){
+        CustomerResponse response = new CustomerResponse();
+        response.setId(customer.getId());
+        return response;
     }
 }

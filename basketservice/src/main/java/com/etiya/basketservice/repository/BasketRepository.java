@@ -5,6 +5,7 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 import java.util.Map;
+import java.util.UUID;
 
 @Repository
 public class BasketRepository {
@@ -24,7 +25,7 @@ public class BasketRepository {
         this.basketHashOperations.put(Key,basket.getId()+"_"+basket.getCustomerId(),basket);
     }
 
-    public Basket getBasketByCustomerId(String customerId){
+    public Basket getBasketByCustomerId(UUID customerId){
         return basketHashOperations.entries(Key).values().stream().
                 filter(basket -> customerId.equals(basket.getCustomerId())).findFirst().orElse(null);
     }

@@ -28,4 +28,8 @@ public interface DistrictRepository extends JpaRepository<District, Integer> {
     Optional<District> findByNameAndCity(String name, City city);
 
     Optional<District> findByName(String name);
+
+
+
+
 }

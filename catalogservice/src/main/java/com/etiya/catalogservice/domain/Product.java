@@ -13,7 +13,7 @@ public class Product extends BaseEntity {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private int id;
+        private String id;
 
         private String name;
 
@@ -38,11 +38,11 @@ public class Product extends BaseEntity {
         @OneToMany(mappedBy = "product")
         private List<CampaignProduct> campaignProducts = new ArrayList<>();
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -113,7 +113,7 @@ public class Product extends BaseEntity {
     public Product() {
     }
 
-    public Product(int id, String name, double price, int stock, Catalog catalog, ProductSpecification productSpecification, List<ProductOffer> productOffers, List<ProdCharValue> prodCharValues, List<CampaignProduct> campaignProducts) {
+    public Product(String id, String name, double price, int stock, Catalog catalog, ProductSpecification productSpecification, List<ProductOffer> productOffers, List<ProdCharValue> prodCharValues, List<CampaignProduct> campaignProducts) {
         this.id = id;
         this.name = name;
         this.price = price;

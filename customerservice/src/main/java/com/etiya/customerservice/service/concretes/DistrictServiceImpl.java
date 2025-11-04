@@ -12,7 +12,7 @@ import com.etiya.customerservice.service.responses.district.CreatedDistrictRespo
 import com.etiya.customerservice.service.responses.district.GetByIdDistrictResponse;
 import com.etiya.customerservice.service.responses.district.GetListDistrictResponse;
 import com.etiya.customerservice.service.responses.district.UpdatedDistrictResponse;
-import com.etiya.customerservice.service.rules.DistrictBusinessRoles;
+import com.etiya.customerservice.service.rules.DistrictBusinessRules;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,12 +21,12 @@ import java.util.List;
 public class DistrictServiceImpl implements DistrictService {
 
     private final DistrictRepository districtRepository;
-    private final DistrictBusinessRoles districtBusinessRoles;
+    private final DistrictBusinessRules districtBusinessRules;
     private final CityService cityService;
 
-    public DistrictServiceImpl(DistrictRepository districtRepository, DistrictBusinessRoles districtBusinessRoles, CityService cityService) {
+    public DistrictServiceImpl(DistrictRepository districtRepository, DistrictBusinessRules districtBusinessRules, CityService cityService) {
         this.districtRepository = districtRepository;
-        this.districtBusinessRoles = districtBusinessRoles;
+        this.districtBusinessRules = districtBusinessRules;
         this.cityService = cityService;
     }
 
@@ -74,7 +74,7 @@ public class DistrictServiceImpl implements DistrictService {
 
     @Override
     public void deleteById(int id) {
-        districtBusinessRoles.checkIfAddressExists(id);
+        districtBusinessRules.checkIfAddressExists(id);
         districtRepository.deleteById(id);
     }
 
@@ -101,6 +101,12 @@ public class DistrictServiceImpl implements DistrictService {
         return responses;
     }
 
+
+    @Override
+    public District getByEntityId(int id) {
+        return districtRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("District not found"));    }
+
     @Override
     public District findOrCreateByNameAndCity(String name, City city) {
         return districtRepository.findByNameAndCity(name, city)
@@ -116,4 +122,5 @@ public class DistrictServiceImpl implements DistrictService {
         return districtRepository.findByName(name)
                 .orElseThrow(() -> new RuntimeException("District not found with id: " + name));
     }
+
 }

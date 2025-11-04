@@ -11,12 +11,11 @@
         <module name="apigateway" />
         <module name="common" />
         <module name="authservice" />
-        <module name="catalogservice" />
         <module name="configserver" />
         <module name="basketservice" />
         <module name="searchservice" />
       </profile>
-      <profile name="Annotation profile for customerservice" enabled="true">
+      <profile name="Annotation profile for catalogservice" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -24,6 +23,7 @@
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.5.5.Final/mapstruct-processor-1.5.5.Final.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.5.5.Final/mapstruct-1.5.5.Final.jar" />
         </processorPath>
+        <module name="catalogservice" />
         <module name="customerservice" />
       </profile>
     </annotationProcessing>

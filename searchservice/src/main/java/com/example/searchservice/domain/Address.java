@@ -1,15 +1,20 @@
 package com.example.searchservice.domain;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.UUID;
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Address {
     private int id;
     private String street;
     private String houseNumber;
     private String description;
-    private boolean isDefault;
+    @JsonProperty("isDefault")
+    private boolean defaultValue;
     private int districtId;
-    private UUID customerId;
+    private String districtName;
+    private int cityId;
+    private String cityName;
+    private String customerId;
     private String deletedDate=null;
 
     public int getId() {
@@ -44,12 +49,12 @@ public class Address {
         this.description = description;
     }
 
-    public boolean isDefault() {
-        return isDefault;
+    public boolean isDefaultValue() {
+        return defaultValue;
     }
 
-    public void setDefault(boolean aDefault) {
-        isDefault = aDefault;
+    public void setDefaultValue(boolean defaultValue) {
+        this.defaultValue = defaultValue;
     }
 
     public int getDistrictId() {
@@ -60,11 +65,11 @@ public class Address {
         this.districtId = districtId;
     }
 
-    public UUID getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(UUID customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
@@ -76,17 +81,55 @@ public class Address {
         this.deletedDate = deletedDate;
     }
 
+    public String getDistrictName() {
+        return districtName;
+    }
 
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
+    }
 
-    public Address(int id, String street, String houseNumber, String description, boolean isDefault, int districtId, UUID customerId) {
+    public int getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public Address(
+            int id,
+            String street,
+            String houseNumber,
+            String description,
+            @JsonProperty("isDefault")
+            boolean defaultValue,
+            int districtId,
+            String districtName,
+            int cityId,
+            String cityName,
+            String customerId
+    ) {
         this.id = id;
         this.street = street;
         this.houseNumber = houseNumber;
         this.description = description;
-        this.isDefault = isDefault;
+        this.defaultValue = defaultValue;
         this.districtId = districtId;
+        this.districtName = districtName;
+        this.cityId = cityId;
+        this.cityName = cityName;
         this.customerId = customerId;
     }
+
 
     public Address() {
     }

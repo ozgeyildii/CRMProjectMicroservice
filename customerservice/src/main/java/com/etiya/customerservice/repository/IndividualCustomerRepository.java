@@ -43,5 +43,8 @@ public interface IndividualCustomerRepository extends CustomerRepository<Individ
 
     Optional<IndividualCustomer> findById(UUID id);
 
+    boolean existsById(UUID id);
+
+
 
 }

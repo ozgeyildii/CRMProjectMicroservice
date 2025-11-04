@@ -60,20 +60,36 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public CreatedAddressResponse add(CreateAddressRequest request) {
-       Address address = AddressMapper.INSTANCE.addressFromCreateAddressRequest(request);
-       Address createdAddress = addressRepository.save(address);
-       CreateAddressEvent event = new CreateAddressEvent(createdAddress.getId(),
-               createdAddress.getStreet(),
-               createdAddress.getHouseNumber(),
-               createdAddress.getDescription(),
-       createdAddress.isDefault(),
-       createdAddress.getDistrict().getId(),
-       createdAddress.getCustomer().getId());
-       createAddressProducer.produceAddressCreated(event);
+        Address address = AddressMapper.INSTANCE.addressFromCreateAddressRequest(request);
+        Address createdAddress = addressRepository.save(address);
 
-       CreatedAddressResponse response = AddressMapper.INSTANCE.createdAddressResponseFromAddress(createdAddress);
-        return response;
-    }
+        District district = districtService.getByEntityId(createdAddress.getDistrict().getId());
+
+        String districtName = district.getName();
+        String cityName = district.getCity().getName();
+        int cityId = district.getCity().getId();
+
+        if (district.getCity() == null) {
+            throw new RuntimeException("City is not linked to district: " + district.getName());
+        }
+
+        CreateAddressEvent event = new CreateAddressEvent(
+                createdAddress.getId(),
+                createdAddress.getStreet(),
+                createdAddress.getHouseNumber(),
+                createdAddress.getDescription(),
+                createdAddress.isDefault(),
+                createdAddress.getDistrict().getId(),
+                districtName,
+                cityId,
+                cityName,
+                createdAddress.getCustomer().getId()
+        );
+
+        createAddressProducer.produceAddressCreated(event);
+
+        CreatedAddressResponse response = AddressMapper.INSTANCE.createdAddressResponseFromAddress(createdAddress);
+        return response;    }
 
     @Override
     public List<GetListAddressResponse> getList() {
@@ -100,22 +116,36 @@ public class AddressServiceImpl implements AddressService {
         softDeleteAddressProducer.produceAddressSoftDeleted(event);
     }
 
+
     @Override
     public UpdatedAddressResponse update(UpdateAddressRequest request) {
-        Address oldAddress = addressRepository.findById(request.getId()).orElseThrow(() -> new RuntimeException("Address not found"));
-        Address address =  AddressMapper.INSTANCE.addressFromUpdateAddressRequest(request,oldAddress);
+        Address oldAddress = addressRepository.findById(request.getId())
+                .orElseThrow(() -> new RuntimeException("Address not found"));
+
+        Address address = AddressMapper.INSTANCE.addressFromUpdateAddressRequest(request, oldAddress);
         Address updatedAddress = addressRepository.save(address);
-        UpdateAddressEvent event = new UpdateAddressEvent(updatedAddress.getId(),
+
+        UpdateAddressEvent event = new UpdateAddressEvent(
+                updatedAddress.getId(),
                 updatedAddress.getStreet(),
                 updatedAddress.getHouseNumber(),
                 updatedAddress.getDescription(),
                 updatedAddress.isDefault(),
                 updatedAddress.getDistrict().getId(),
-                updatedAddress.getCustomer().getId());
+                updatedAddress.getDistrict().getName(),
+                updatedAddress.getDistrict().getCity().getId(),
+                updatedAddress.getDistrict().getCity().getName(),
+                updatedAddress.getCustomer().getId()
+        );
+
         updateAddressProducer.produceAddressUpdated(event);
-        UpdatedAddressResponse response = AddressMapper.INSTANCE.updatedAddressResponseFromAddress(updatedAddress);
+
+        UpdatedAddressResponse response =
+                AddressMapper.INSTANCE.updatedAddressResponseFromAddress(updatedAddress);
+
         return response;
     }
+
 
     @Override
     public GetByIdAddressResponse getById(int id) {
@@ -123,6 +153,8 @@ public class AddressServiceImpl implements AddressService {
         GetByIdAddressResponse response = AddressMapper.INSTANCE.getAddressResponseFromAddress(address);
         return response;
     }
+
+
 
 
 

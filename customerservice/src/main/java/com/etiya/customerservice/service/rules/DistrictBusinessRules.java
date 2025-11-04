@@ -8,11 +8,11 @@ import com.etiya.customerservice.service.messages.Messages;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DistrictBusinessRoles {
+public class DistrictBusinessRules {
     private final DistrictRepository districtRepository;
     private final LocalizationService localizationService;
 
-    public DistrictBusinessRoles(DistrictRepository districtRepository, LocalizationService localizationService) {
+    public DistrictBusinessRules(DistrictRepository districtRepository, LocalizationService localizationService) {
         this.districtRepository = districtRepository;
         this.localizationService = localizationService;
     }
@@ -24,7 +24,5 @@ public class DistrictBusinessRoles {
         }
     }
 
-    public void checkIfCityExists(int id){
-
-    }
 }
+

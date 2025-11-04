@@ -30,11 +30,14 @@ import java.util.function.Consumer;
                     event.description(),
                     event.isDefault(),
                     event.districtId(),
-                    event.customerId()
+                    event.districtName(),
+                    event.cityId(),
+                    event.cityName(),
+                    event.customerId().toString()
             );
 
             customerSearchService.addAddress(address);
-            LOGGER.info(String.format("Consumed Address (created)=> %s", event.id()));
+            LOGGER.info(String.format("Consumed Address (created)=> %s", event));
             };
         }
        /* @KafkaListener(topics = "create-address", groupId = "create-address-group")

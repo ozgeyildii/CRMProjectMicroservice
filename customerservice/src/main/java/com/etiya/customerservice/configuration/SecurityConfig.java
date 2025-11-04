@@ -16,9 +16,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         baseSecurityService.configureCoreSecurity(httpSecurity);
-        httpSecurity.authorizeHttpRequests(req->req.anyRequest().authenticated());
+        httpSecurity.authorizeHttpRequests(req->req.requestMatchers("/api/individual-customers/**").permitAll().anyRequest().authenticated());
         return httpSecurity.build();
     }
 }

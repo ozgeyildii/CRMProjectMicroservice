@@ -27,7 +27,7 @@ public class UpdatedContactMediumConsumer {
                 event.type(),
                 event.value(),
                 event.isPrimary(),
-                event.customerId()
+                event.customerId().toString()
         );
         LOGGER.info(String.format("Consumed Contact Medium (updated) => %s", event.id()));
         customerSearchService.updateContactMedium(contactMedium);

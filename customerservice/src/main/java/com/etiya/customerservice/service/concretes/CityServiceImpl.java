@@ -88,12 +88,12 @@ public class CityServiceImpl implements CityService {
         cityBusinessRules.checkIfCityExistsById(id);
         return cityRepository.findById(id).get();
     }
-
     @Override
     public City findOrCreateByName(String name) {
         return cityRepository.findByNameIgnoreCase(name)
                 .orElseGet(() -> cityRepository.save(new City(0, name, null)));
     }
+
 /*
     @Override
     public void add(City city) {

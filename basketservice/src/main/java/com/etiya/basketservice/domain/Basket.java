@@ -8,7 +8,7 @@ import java.util.UUID;
 public class Basket implements Serializable {
 
     private String id;
-    private String customerId; //billingAccountId olacak
+    private UUID customerId; //billingAccountId olacak
     private double totalPrice;
     private List<BasketItem> basketItems;
 
@@ -28,11 +28,11 @@ public class Basket implements Serializable {
         this.id = id;
     }
 
-    public String getCustomerId() {
+    public UUID getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
+    public void setCustomerId(UUID customerId) {
         this.customerId = customerId;
     }
 

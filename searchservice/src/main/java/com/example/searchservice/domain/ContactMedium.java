@@ -1,14 +1,17 @@
 package com.example.searchservice.domain;
 
-import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ContactMedium {
 
     private int id;
     private String type;
     private String value;
-    private boolean isPrimary;
-    private UUID customerId;
+    @JsonProperty("isPrimary")
+    private boolean primaryValue;
+    private String customerId;
     private String deletedDate=null;
 
     public int getId() {
@@ -35,19 +38,19 @@ public class ContactMedium {
         this.value = value;
     }
 
-    public boolean isPrimary() {
-        return isPrimary;
+    public boolean isPrimaryValue() {
+        return primaryValue;
     }
 
-    public void setPrimary(boolean primary) {
-        isPrimary = primary;
+    public void setPrimaryValue(boolean primaryValue) {
+        this.primaryValue = primaryValue;
     }
 
-    public UUID getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(UUID customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
@@ -59,20 +62,20 @@ public class ContactMedium {
         this.deletedDate = deletedDate;
     }
 
-    public ContactMedium(int id, String type, String value, boolean isPrimary, UUID customerId, String deletedDate) {
+    public ContactMedium(int id, String type, String value, boolean primaryValue, String customerId, String deletedDate) {
         this.id = id;
         this.type = type;
         this.value = value;
-        this.isPrimary = isPrimary;
+        this.primaryValue = primaryValue;
         this.customerId = customerId;
         this.deletedDate = deletedDate;
     }
 
-    public ContactMedium(int id, String type, String value, boolean isPrimary, UUID customerId) {
+    public ContactMedium(int id, String type, String value, boolean primaryValue, String customerId) {
         this.id = id;
         this.type = type;
         this.value = value;
-        this.isPrimary = isPrimary;
+        this.primaryValue = primaryValue;
         this.customerId = customerId;
     }
 
