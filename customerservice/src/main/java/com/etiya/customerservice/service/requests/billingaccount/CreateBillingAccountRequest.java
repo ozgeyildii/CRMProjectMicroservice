@@ -1,5 +1,6 @@
 package com.etiya.customerservice.service.requests.billingaccount;
 
+import com.etiya.customerservice.domain.enums.BillingAccountStatus;
 import com.etiya.customerservice.domain.enums.BillingAccountType;
 import jakarta.validation.constraints.*;
 
@@ -19,6 +20,8 @@ public class CreateBillingAccountRequest {
     @NotNull(message = "{customerIdCannotBeNull}")
     @Positive(message = "{customerIdMustBePositive}")
     private UUID customerId;
+
+    private BillingAccountStatus status;
 
 
     @NotNull(message = "AddressId cannot be null")

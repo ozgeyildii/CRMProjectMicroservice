@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public interface BasketService {
-    void add(UUID customerId,String productId);
+    void add(int billingAccountId,String productId);
     Map<String, Basket> getAll();
 
 }

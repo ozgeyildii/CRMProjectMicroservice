@@ -1,6 +1,7 @@
 package com.etiya.customerservice.service.abstracts;
 
 
+import com.etiya.common.responses.BillingAccountResponse;
 import com.etiya.customerservice.service.requests.billingaccount.CreateBillingAccountRequest;
 import com.etiya.customerservice.service.requests.billingaccount.UpdateBillingAccountRequest;
 import com.etiya.customerservice.service.responses.billingAccount.CreatedBillingAccountResponse;
@@ -17,4 +18,6 @@ public interface BillingAccountService {
     void delete(int id);
 
     void softDelete(int id);
+
+    BillingAccountResponse getById(int id);
 }

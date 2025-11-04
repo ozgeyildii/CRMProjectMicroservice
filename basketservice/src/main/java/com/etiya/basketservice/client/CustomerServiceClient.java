@@ -1,5 +1,6 @@
 package com.etiya.basketservice.client;
 
+import com.etiya.common.responses.BillingAccountResponse;
 import com.etiya.common.responses.CustomerResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,4 +12,7 @@ public interface CustomerServiceClient {
 
     @GetMapping("/api/individual-customers/{id}")
     CustomerResponse getCustomerById(@PathVariable("id")UUID id);
+
+    @GetMapping("/api/billingAccounts/{id}")
+    BillingAccountResponse getBillingAccountById(@PathVariable("id") int id);
 }

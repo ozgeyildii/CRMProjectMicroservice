@@ -25,22 +25,22 @@ public class BasketServiceImpl implements BasketService {
     }
 
     @Override
-    public void add(UUID customerId, String productId) {
+    public void add(int billingAccountId, String productId) {
 
-        var customer = customerServiceClient.getCustomerById(customerId);
+        var billingAccount = customerServiceClient.getBillingAccountById(billingAccountId);
         var product = catalogServiceClient.getProductId(productId);
-        var basket = basketRepository.getBasketByCustomerId(customer.getId());
+        var basket = basketRepository.getBasketByBillingAccountId(billingAccount.getId());
 
         if(basket==null){
             basket = new Basket();
-            basket.setCustomerId(customer.getId());
+            basket.setBillingAccountId(billingAccount.getId());
         }
 
         BasketItem basketItem = new BasketItem();
         basketItem.setProductId(product.getId());
         basketItem.setProductName(product.getName());
         basketItem.setPrice(product.getPrice());
-        basket.setCustomerId(customer.getId());
+        basket.setBillingAccountId(billingAccount.getId());
         basket.setTotalPrice(basket.getTotalPrice()+basketItem.getPrice());
         basket.getBasketItems().add(basketItem);
         basketRepository.add(basket);

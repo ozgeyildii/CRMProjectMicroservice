@@ -1,7 +1,11 @@
 package com.etiya.customerservice.service.concretes;
 
 
+import com.etiya.common.crosscuttingconcerns.exceptions.types.BusinessException;
+import com.etiya.common.responses.BillingAccountResponse;
+import com.etiya.common.responses.CustomerResponse;
 import com.etiya.customerservice.domain.entities.BillingAccount;
+import com.etiya.customerservice.domain.entities.Customer;
 import com.etiya.customerservice.domain.enums.BillingAccountStatus;
 import com.etiya.customerservice.repository.BillingAccountRepository;
 import com.etiya.customerservice.service.abstracts.BillingAccountService;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class BillingAccountServiceImpl implements BillingAccountService {
@@ -102,5 +107,16 @@ public class BillingAccountServiceImpl implements BillingAccountService {
         BillingAccount billingAccount = billingAccountRepository.findById(id).orElseThrow(() -> new RuntimeException("Billing Account not found"));
         billingAccount.setDeletedDate(LocalDateTime.now());
         billingAccountRepository.save(billingAccount);
+    }
+
+    @Override
+    public BillingAccountResponse getById(int id) {
+        return billingAccountRepository.findById(id).stream().map(this::mapToResponse).findFirst().orElseThrow(()->new BusinessException("Billing account Not Found"));
+    }
+
+    private BillingAccountResponse mapToResponse(BillingAccount billingAccount){
+        BillingAccountResponse response = new BillingAccountResponse();
+        response.setId(billingAccount.getId());
+        return response;
     }
 }

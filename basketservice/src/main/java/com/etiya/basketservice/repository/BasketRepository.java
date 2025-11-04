@@ -22,12 +22,12 @@ public class BasketRepository {
     }
 
     public void add(Basket basket){
-        this.basketHashOperations.put(Key,basket.getId()+"_"+basket.getCustomerId(),basket);
+        this.basketHashOperations.put(Key,basket.getId()+"_"+basket.getBillingAccountId(),basket);
     }
 
-    public Basket getBasketByCustomerId(UUID customerId){
+    public Basket getBasketByBillingAccountId(int billingAccountId){
         return basketHashOperations.entries(Key).values().stream().
-                filter(basket -> customerId.equals(basket.getCustomerId())).findFirst().orElse(null);
+                filter(basket -> billingAccountId == basket.getBillingAccountId()).findFirst().orElse(null);
     }
 
     public Map<String,Basket> getAll(){

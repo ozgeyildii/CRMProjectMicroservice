@@ -1,5 +1,7 @@
 package com.etiya.customerservice.controller;
 
+import com.etiya.common.responses.BillingAccountResponse;
+import com.etiya.common.responses.CustomerResponse;
 import com.etiya.customerservice.service.abstracts.BillingAccountService;
 import com.etiya.customerservice.service.requests.billingaccount.CreateBillingAccountRequest;
 import com.etiya.customerservice.service.requests.billingaccount.UpdateBillingAccountRequest;
@@ -11,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/billingAccounts")
@@ -50,5 +53,11 @@ public class BillingAccountController {
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable int id) {
         billingAccountService.delete(id);
+    }
+
+    @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public BillingAccountResponse getById(@PathVariable int id){
+        return billingAccountService.getById(id);
     }
 }
