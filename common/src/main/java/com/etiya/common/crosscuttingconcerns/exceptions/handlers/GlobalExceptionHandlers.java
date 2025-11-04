@@ -52,4 +52,13 @@ public class GlobalExceptionHandlers {
         problemDetails.setDetail(exception.getMessage());
         return problemDetails;
     }
+
+    @ExceptionHandler({Exception.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ProblemDetails handleException(Exception exception) {
+        ProblemDetails problemDetails = new ProblemDetails();
+        problemDetails.setDetail(exception.getMessage());
+        return problemDetails;
+    }
+
 }

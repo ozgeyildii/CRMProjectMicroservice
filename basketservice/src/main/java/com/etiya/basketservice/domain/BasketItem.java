@@ -6,9 +6,12 @@ import java.util.UUID;
 public class BasketItem implements Serializable {
 
     private String id;
-    private String productId;
+    private String basketId;
+    private int productId;
     private String productName;
-    private double price;
+    private Double price;
+    private int quantity;
+
 
     public String getId() {
         return id;
@@ -18,11 +21,19 @@ public class BasketItem implements Serializable {
         this.id = id;
     }
 
-    public String getProductId() {
+    public String getBasketId() {
+        return basketId;
+    }
+
+    public void setBasketId(String basketId) {
+        this.basketId = basketId;
+    }
+
+    public int getProductId() {
         return productId;
     }
 
-    public void setProductId(String productId) {
+    public void setProductId(int productId) {
         this.productId = productId;
     }
 
@@ -34,13 +45,22 @@ public class BasketItem implements Serializable {
         this.productName = productName;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
 
     public BasketItem(){
         this.id = UUID.randomUUID().toString();

@@ -14,11 +14,9 @@ import org.springframework.stereotype.Service;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductMapper productMapper;
 
-    public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper) {
+    public ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
-        this.productMapper = productMapper;
     }
 
     @Override
@@ -39,6 +37,8 @@ public class ProductServiceImpl implements ProductService {
         response.setId(product.getId());
         response.setName(product.getName());
         response.setPrice(product.getPrice());
+        response.setCatalogId(product.getCatalog().getId());
+        response.setSpecId(product.getProductSpecification().getId());
         return response;
     }
 }

@@ -1,13 +1,14 @@
 package com.etiya.catalogservice.domain;
 
+import com.etiya.common.entities.BaseEntity;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "prod_char_values")
-public class ProdCharValue {
+public class ProdCharValue extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "char_value_id", nullable = false)
@@ -17,11 +18,11 @@ public class ProdCharValue {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -44,7 +45,7 @@ public class ProdCharValue {
     public ProdCharValue() {
     }
 
-    public ProdCharValue(Long id, CharacteristicValue characteristicValue, Product product) {
+    public ProdCharValue(int id, CharacteristicValue characteristicValue, Product product) {
         this.id = id;
         this.characteristicValue = characteristicValue;
         this.product = product;

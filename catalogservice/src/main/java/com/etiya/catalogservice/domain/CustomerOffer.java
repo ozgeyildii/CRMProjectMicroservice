@@ -1,15 +1,16 @@
 package com.etiya.catalogservice.domain;
 
+import com.etiya.common.entities.BaseEntity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "customer_offers")
-public class CustomerOffer {
+public class CustomerOffer extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Column(name = "customer_id")
     private Long customerId; // CustomerService referansı
@@ -23,11 +24,11 @@ public class CustomerOffer {
     @JoinColumn(name = "product_offer_id", nullable = false)
     private ProductOffer productOffer;
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -66,7 +67,7 @@ public class CustomerOffer {
     public CustomerOffer() {
     }
 
-    public CustomerOffer(Long id, Long customerId, LocalDate expirationDate, String status, ProductOffer productOffer) {
+    public CustomerOffer(int id, Long customerId, LocalDate expirationDate, String status, ProductOffer productOffer) {
         this.id = id;
         this.customerId = customerId;
         this.expirationDate = expirationDate;

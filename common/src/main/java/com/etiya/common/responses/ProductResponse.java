@@ -1,17 +1,57 @@
 package com.etiya.common.responses;
 
 public class ProductResponse {
-    private String id;
+    private int id;
 
     private String name;
 
     private double price;
 
-    public String getId() {
+    private int catalogId;
+
+    private int specId;
+
+    private double discountRate;
+
+    private double discountedPrice;
+
+    public double getDiscountRate() {
+        return discountRate;
+    }
+
+    public void setDiscountRate(double discountRate) {
+        this.discountRate = discountRate;
+    }
+
+    public double getDiscountedPrice() {
+        return discountedPrice;
+    }
+
+    public void setDiscountedPrice(double discountedPrice) {
+        this.discountedPrice = discountedPrice;
+    }
+
+    public int getCatalogId() {
+        return catalogId;
+    }
+
+    public void setCatalogId(int catalogId) {
+        this.catalogId = catalogId;
+    }
+
+    public int getSpecId() {
+        return specId;
+    }
+
+    public void setSpecId(int specId) {
+        this.specId = specId;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

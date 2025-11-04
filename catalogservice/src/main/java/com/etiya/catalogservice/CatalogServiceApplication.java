@@ -4,9 +4,11 @@ import com.etiya.common.annotations.EnableSecurity;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@SpringBootApplication(scanBasePackages = {"com.etiya.common"})
+@SpringBootApplication(scanBasePackages = {"com.etiya.common","com.etiya.catalogservice"})
 @EnableDiscoveryClient
+@EnableFeignClients(basePackages = "com.etiya")
 @EnableSecurity
 public class CatalogServiceApplication {
 

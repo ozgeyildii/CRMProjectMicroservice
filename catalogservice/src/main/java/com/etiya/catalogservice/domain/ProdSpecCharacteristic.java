@@ -1,13 +1,14 @@
 package com.etiya.catalogservice.domain;
 
+import com.etiya.common.entities.BaseEntity;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "product_spec_characteristics")
-public class ProdSpecCharacteristic {
+public class ProdSpecCharacteristic extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Column(name = "is_required")
     private Boolean isRequired;
@@ -20,11 +21,11 @@ public class ProdSpecCharacteristic {
     @JoinColumn(name = "characteristic_id", nullable = false)
     private Characteristic characteristic;
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -55,7 +56,7 @@ public class ProdSpecCharacteristic {
     public ProdSpecCharacteristic() {
     }
 
-    public ProdSpecCharacteristic(Long id, Boolean isRequired, ProductSpecification productSpecification, Characteristic characteristic) {
+    public ProdSpecCharacteristic(int id, Boolean isRequired, ProductSpecification productSpecification, Characteristic characteristic) {
         this.id = id;
         this.isRequired = isRequired;
         this.productSpecification = productSpecification;

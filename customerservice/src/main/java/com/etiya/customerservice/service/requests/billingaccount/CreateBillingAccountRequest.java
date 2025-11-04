@@ -18,7 +18,6 @@ public class CreateBillingAccountRequest {
     private BillingAccountType type;
 
     @NotNull(message = "{customerIdCannotBeNull}")
-    @Positive(message = "{customerIdMustBePositive}")
     private UUID customerId;
 
     private BillingAccountStatus status;

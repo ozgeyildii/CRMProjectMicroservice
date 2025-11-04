@@ -60,4 +60,10 @@ public class BillingAccountController {
     public BillingAccountResponse getById(@PathVariable int id){
         return billingAccountService.getById(id);
     }
+
+    @GetMapping("getList/{customerId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<GetListBillingAccountResponse> getListByCustomerId(@PathVariable UUID customerId) {
+        return billingAccountService.getListByCustomerId(customerId);
+    }
 }

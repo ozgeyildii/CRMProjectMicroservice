@@ -9,7 +9,10 @@ import org.mapstruct.factory.Mappers;
 public interface ProductMapper {
 
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
-
+    @Mapping(target = "catalog.id", source = "catalogId")
+    @Mapping(target = "productSpecification.id", source = "specId")
     Product productFromCreateProductRequest(CreateProductRequest createProductRequest);
+    @Mapping(target = "catalogId", source = "catalog.id")
+    @Mapping(target = "specId", source = "productSpecification.id")
     CreatedProductResponse createdProductResponseFromProduct(Product product);
 }

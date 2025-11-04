@@ -1,5 +1,6 @@
 package com.etiya.catalogservice.domain;
 
+import com.etiya.common.entities.BaseEntity;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -7,10 +8,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "catalogs")
-public class Catalog {
+public class Catalog  extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     private String name;
 
@@ -27,11 +28,11 @@ public class Catalog {
     @OneToMany(mappedBy = "catalog")
     private List<CatalogProductOffer> catalogProductOffers = new ArrayList<>();
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -78,7 +79,7 @@ public class Catalog {
     public Catalog() {
     }
 
-    public Catalog(Long id, String name, Catalog parent, List<Catalog> subCatalogs, List<Product> products, List<CatalogProductOffer> catalogProductOffers) {
+    public Catalog(int id, String name, Catalog parent, List<Catalog> subCatalogs, List<Product> products, List<CatalogProductOffer> catalogProductOffers) {
         this.id = id;
         this.name = name;
         this.parent = parent;

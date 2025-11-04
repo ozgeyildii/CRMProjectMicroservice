@@ -96,6 +96,12 @@ public class BillingAccountServiceImpl implements BillingAccountService {
     }
 
     @Override
+    public List<GetListBillingAccountResponse> getListByCustomerId(UUID customerId) {
+        List<BillingAccount> billingAccounts = billingAccountRepository.findByCustomer_Id(customerId);
+        return BillingAccountMapper.INSTANCE.getListBillingAccountResponsesFromBillingAccounts(billingAccounts);
+    }
+
+    @Override
     public void delete(int id) {
         billingAccountBusinessRules.checkIfBillingAccountCanBeDeleted(id);
         BillingAccount billingAccount = billingAccountRepository.findById(id).orElseThrow(() -> new RuntimeException("Billing Account not found"));

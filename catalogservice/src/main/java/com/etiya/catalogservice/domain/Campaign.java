@@ -11,7 +11,7 @@ import java.util.List;
 public class Campaign extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     private String name;
 
@@ -33,7 +33,7 @@ public class Campaign extends BaseEntity {
     public Campaign() {
     }
 
-    public Campaign(Long id, String name, LocalDate startDate, LocalDate endDate, String campaignCode, BigDecimal discountRate, List<CampaignProduct> campaignProducts) {
+    public Campaign(int id, String name, LocalDate startDate, LocalDate endDate, String campaignCode, BigDecimal discountRate, List<CampaignProduct> campaignProducts) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;
@@ -43,11 +43,11 @@ public class Campaign extends BaseEntity {
         this.campaignProducts = campaignProducts;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -6,10 +6,29 @@ public class CreatedProductResponse {
     private String name;
     private int stock;
     private double price;
+    private int catalogId;
+    private int specId;
+
+    public int getCatalogId() {
+        return catalogId;
+    }
+
+    public void setCatalogId(int catalogId) {
+        this.catalogId = catalogId;
+    }
+
+    public int getSpecId() {
+        return specId;
+    }
+
+    public void setSpecId(int specId) {
+        this.specId = specId;
+    }
 
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }

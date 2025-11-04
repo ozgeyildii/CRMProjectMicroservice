@@ -34,5 +34,17 @@ public class BasketRepository {
         return this.basketHashOperations.entries(Key);
     }
 
+    public void deleteBasketByBillingAccountId(int billingAccountId) {
+        var keyToRemove = basketHashOperations.entries(Key).entrySet().stream()
+                .filter(entry -> entry.getValue().getBillingAccountId() == billingAccountId)
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElse(null);
+
+        if (keyToRemove != null) {
+            basketHashOperations.delete(Key, keyToRemove);
+        }
+    }
+
 
 }

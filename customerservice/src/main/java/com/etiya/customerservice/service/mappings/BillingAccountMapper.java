@@ -11,6 +11,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper
 public interface BillingAccountMapper {
     BillingAccountMapper INSTANCE = Mappers.getMapper(BillingAccountMapper.class);
@@ -41,4 +43,8 @@ public interface BillingAccountMapper {
     @Mapping(source = "customer.id", target = "customerId")
     @Mapping(source = "address.id", target = "addressId")
     GetListBillingAccountResponse getListBillingAccountResponseFromBillingAccount(BillingAccount billingAccount);
+
+    List<GetListBillingAccountResponse> getListBillingAccountResponsesFromBillingAccounts(List<BillingAccount> billingAccounts);
+
+
 }

@@ -1,5 +1,6 @@
 package com.etiya.catalogservice.domain;
 
+import com.etiya.common.entities.BaseEntity;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -9,13 +10,13 @@ import java.util.List;
 
 @Table(name = "characteristics")
 
-public class Characteristic {
+public class Characteristic extends BaseEntity {
 
     @Id
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private Long id;
+    private int id;
 
     private String name;
 
@@ -37,11 +38,11 @@ public class Characteristic {
 
     private List<ProdSpecCharacteristic> prodSpecCharacteristics = new ArrayList<>();
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -90,6 +91,19 @@ public class Characteristic {
     }
 
     public void setProdSpecCharacteristics(List<ProdSpecCharacteristic> prodSpecCharacteristics) {
+        this.prodSpecCharacteristics = prodSpecCharacteristics;
+    }
+
+    public Characteristic() {
+    }
+
+    public Characteristic(int id, String name, String description, String dataType, String unitOfMeasure, List<CharacteristicValue> characteristicValues, List<ProdSpecCharacteristic> prodSpecCharacteristics) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.dataType = dataType;
+        this.unitOfMeasure = unitOfMeasure;
+        this.characteristicValues = characteristicValues;
         this.prodSpecCharacteristics = prodSpecCharacteristics;
     }
 }

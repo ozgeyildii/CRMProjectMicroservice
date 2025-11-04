@@ -1,5 +1,6 @@
 package com.etiya.catalogservice.domain;
 
+import com.etiya.common.entities.BaseEntity;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -7,10 +8,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "char_values")
-public class CharacteristicValue {
+public class CharacteristicValue extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     private String value;
 
@@ -21,11 +22,11 @@ public class CharacteristicValue {
     @OneToMany(mappedBy = "characteristicValue")
     private List<ProdCharValue> prodCharValues = new ArrayList<>();
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -56,7 +57,7 @@ public class CharacteristicValue {
     public CharacteristicValue() {
     }
 
-    public CharacteristicValue(Long id, String value, Characteristic characteristic, List<ProdCharValue> prodCharValues) {
+    public CharacteristicValue(int id, String value, Characteristic characteristic, List<ProdCharValue> prodCharValues) {
         this.id = id;
         this.value = value;
         this.characteristic = characteristic;

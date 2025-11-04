@@ -1,16 +1,34 @@
 package com.etiya.catalogservice.service.dtos.requests;
 
 
+import com.etiya.catalogservice.domain.Catalog;
+import com.etiya.catalogservice.domain.ProductSpecification;
+
 public class CreateProductRequest {
 
 
     private String name;
-
     private int stock;
-
     private double price;
+    private int catalogId;
+    private int specId;
+
+    public int getCatalogId() {
+        return catalogId;
+    }
+
+    public void setCatalogId(int catalogId) {
+        this.catalogId = catalogId;
+    }
 
 
+    public int getSpecId() {
+        return specId;
+    }
+
+    public void setSpecId(int specId) {
+        this.specId = specId;
+    }
 
     public String getName() {
         return name;

@@ -1,5 +1,6 @@
 package com.etiya.catalogservice.domain;
 
+import com.etiya.common.entities.BaseEntity;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -9,10 +10,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "product_offers")
-public class ProductOffer {
+public class ProductOffer extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     private String name;
     private String description;
@@ -110,18 +111,18 @@ public class ProductOffer {
         this.name = name;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
     public ProductOffer() {
     }
 
-    public ProductOffer(Long id, String name, String description, LocalDate startDate, LocalDate endDate, BigDecimal discountRate, String status, Product product, List<CatalogProductOffer> catalogProductOffers, List<CustomerOffer> customerOffers) {
+    public ProductOffer(int id, String name, String description, LocalDate startDate, LocalDate endDate, BigDecimal discountRate, String status, Product product, List<CatalogProductOffer> catalogProductOffers, List<CustomerOffer> customerOffers) {
         this.id = id;
         this.name = name;
         this.description = description;
