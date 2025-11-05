@@ -8,7 +8,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication(scanBasePackages = {"com.etiya.common","com.etiya.catalogservice"})
 @EnableDiscoveryClient
-@EnableFeignClients(basePackages = "com.etiya")
 @EnableSecurity
 public class CatalogServiceApplication {
 

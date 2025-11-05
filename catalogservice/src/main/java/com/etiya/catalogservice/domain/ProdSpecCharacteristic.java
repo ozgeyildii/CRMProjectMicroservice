@@ -11,7 +11,7 @@ public class ProdSpecCharacteristic extends BaseEntity {
     private int id;
 
     @Column(name = "is_required")
-    private Boolean isRequired;
+    private boolean isRequired;
 
     @ManyToOne
     @JoinColumn(name = "spec_id", nullable = false)
@@ -29,11 +29,11 @@ public class ProdSpecCharacteristic extends BaseEntity {
         this.id = id;
     }
 
-    public Boolean getRequired() {
+    public boolean getRequired() {
         return isRequired;
     }
 
-    public void setRequired(Boolean required) {
+    public void setRequired(boolean required) {
         isRequired = required;
     }
 

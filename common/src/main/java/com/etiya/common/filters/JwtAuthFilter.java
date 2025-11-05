@@ -30,7 +30,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        try {
             String jwtHeader = request.getHeader("Authorization");
 
             if (jwtHeader != null && jwtHeader.startsWith("Bearer ")) {
@@ -52,14 +51,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
 
-        } catch (io.jsonwebtoken.ExpiredJwtException e) {
-            throw new AuthenticationException("JWT token expired.");
-        } catch (io.jsonwebtoken.SignatureException e) {
-            throw new AuthenticationException("Invalid JWT signature.");
-        } catch (io.jsonwebtoken.MalformedJwtException e) {
-            throw new AuthenticationException("Malformed JWT token.");
-        } catch (Exception e) {
-            throw new AuthenticationException("Authentication failed: " + e.getMessage());
         }
     }
-}
+

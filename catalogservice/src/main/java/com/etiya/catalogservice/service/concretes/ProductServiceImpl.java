@@ -3,8 +3,8 @@ package com.etiya.catalogservice.service.concretes;
 import com.etiya.catalogservice.domain.Product;
 import com.etiya.catalogservice.repository.ProductRepository;
 import com.etiya.catalogservice.service.abstracts.ProductService;
-import com.etiya.catalogservice.service.dtos.requests.CreateProductRequest;
-import com.etiya.catalogservice.service.dtos.responses.CreatedProductResponse;
+import com.etiya.catalogservice.service.dtos.requests.product.CreateProductRequest;
+import com.etiya.catalogservice.service.dtos.responses.product.CreatedProductResponse;
 import com.etiya.catalogservice.service.mappings.ProductMapper;
 import com.etiya.common.crosscuttingconcerns.exceptions.types.BusinessException;
 import com.etiya.common.responses.ProductResponse;
@@ -28,7 +28,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse getById(String id) {
+    public ProductResponse getById(int id) {
         return productRepository.findById(id).stream().map(this::mapToResponse).findFirst().orElseThrow(()->new BusinessException("Product not found"));
     }
 

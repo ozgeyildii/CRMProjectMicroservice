@@ -8,6 +8,7 @@ public class ExceptionMessages {
     public static final String TYPE_BUSINESS = "https://example.com/probs/business";
     public static final String TYPE_VALIDATION = "https://example.com/probs/validation";
     public static final String TYPE_INTERNAL = "https://example.com/probs/internal";
+    public static final String TYPE_EXCEPTION = "https://example.com/probs/exception";
 
     //Internal server messages
 

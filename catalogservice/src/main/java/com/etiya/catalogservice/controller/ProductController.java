@@ -1,8 +1,8 @@
 package com.etiya.catalogservice.controller;
 
 import com.etiya.catalogservice.service.abstracts.ProductService;
-import com.etiya.catalogservice.service.dtos.requests.CreateProductRequest;
-import com.etiya.catalogservice.service.dtos.responses.CreatedProductResponse;
+import com.etiya.catalogservice.service.dtos.requests.product.CreateProductRequest;
+import com.etiya.catalogservice.service.dtos.responses.product.CreatedProductResponse;
 import com.etiya.common.responses.ProductResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +25,7 @@ public class ProductController {
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ProductResponse getById(@PathVariable String id){
+    public ProductResponse getById(@PathVariable int id){
         return productService.getById(id);
     }
 }

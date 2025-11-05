@@ -54,8 +54,6 @@ public class BasketServiceImpl implements BasketService {
             basketItem.setProductId(product.getId());
             basketItem.setProductName(product.getName());
             basketItem.setPrice(product.getPrice());
-            basketItem.setDiscountedPrice(product.getPrice());
-            basketItem.setDiscountRate(product.g());
             basketItem.setQuantity(1);
             basket.getBasketItems().add(basketItem);
         }

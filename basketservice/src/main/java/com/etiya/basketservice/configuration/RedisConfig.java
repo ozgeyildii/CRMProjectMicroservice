@@ -1,5 +1,6 @@
 package com.etiya.basketservice.configuration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -11,6 +12,12 @@ import redis.clients.jedis.JedisPoolConfig;
 @Configuration
 public class RedisConfig {
 
+    @Value("${spring.data.redis.host}")
+    private String redisHost;
+
+    @Value("${spring.data.redis.port}")
+    private int redisPort;
+
     @Bean
     public JedisConnectionFactory jedisConnectionFactory(){
         JedisPoolConfig poolConfig= new JedisPoolConfig();
@@ -19,8 +26,8 @@ public class RedisConfig {
         poolConfig.setMinIdle(1); //havuzda boşta bekleyecek min bağlantı sayısı
 
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
-        configuration.setHostName("localhost");
-        configuration.setPort(6379);
+        configuration.setHostName(redisHost);
+        configuration.setPort(redisPort);
 
         JedisClientConfiguration jedisClientConfiguration = JedisClientConfiguration.builder().usePooling().poolConfig(poolConfig).build();
         return new JedisConnectionFactory(configuration,jedisClientConfiguration);

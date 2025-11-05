@@ -1,12 +1,8 @@
-package com.etiya.catalogservice.service.dtos.requests;
+package com.etiya.catalogservice.service.dtos.responses.product;
 
+public class CreatedProductResponse {
 
-import com.etiya.catalogservice.domain.Catalog;
-import com.etiya.catalogservice.domain.ProductSpecification;
-
-public class CreateProductRequest {
-
-
+    private int id;
     private String name;
     private int stock;
     private double price;
@@ -21,13 +17,20 @@ public class CreateProductRequest {
         this.catalogId = catalogId;
     }
 
-
     public int getSpecId() {
         return specId;
     }
 
     public void setSpecId(int specId) {
         this.specId = specId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -54,10 +57,11 @@ public class CreateProductRequest {
         this.price = price;
     }
 
-    public CreateProductRequest() {
+    public CreatedProductResponse() {
     }
 
-    public CreateProductRequest(String name, int stock, double price) {
+    public CreatedProductResponse(int id, String name, int stock, double price) {
+        this.id = id;
         this.name = name;
         this.stock = stock;
         this.price = price;

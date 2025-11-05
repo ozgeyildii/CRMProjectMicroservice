@@ -55,10 +55,14 @@ public class GlobalExceptionHandlers {
 
     @ExceptionHandler({Exception.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ProblemDetails handleException(Exception exception) {
+    public ProblemDetails handleException(Exception exception){
         ProblemDetails problemDetails = new ProblemDetails();
+        problemDetails.setTitle("Exception is received due to bad request");
+        problemDetails.setStatus(HttpStatus.BAD_REQUEST.value());
+        problemDetails.setType(ExceptionMessages.TYPE_EXCEPTION);
         problemDetails.setDetail(exception.getMessage());
         return problemDetails;
     }
+
 
 }
