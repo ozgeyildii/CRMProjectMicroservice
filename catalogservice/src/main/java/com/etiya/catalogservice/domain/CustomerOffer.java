@@ -4,6 +4,7 @@ import com.etiya.common.entities.BaseEntity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Table(name = "customer_offers")
@@ -13,7 +14,7 @@ public class CustomerOffer extends BaseEntity {
     private int id;
 
     @Column(name = "customer_id")
-    private Long customerId; // CustomerService referansı
+    private UUID customerId; // CustomerService referansı
 
     @Column(name = "expiration_date")
     private LocalDate expirationDate;
@@ -32,11 +33,11 @@ public class CustomerOffer extends BaseEntity {
         this.id = id;
     }
 
-    public Long getCustomerId() {
+    public UUID getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(Long customerId) {
+    public void setCustomerId(UUID customerId) {
         this.customerId = customerId;
     }
 
@@ -67,7 +68,7 @@ public class CustomerOffer extends BaseEntity {
     public CustomerOffer() {
     }
 
-    public CustomerOffer(int id, Long customerId, LocalDate expirationDate, String status, ProductOffer productOffer) {
+    public CustomerOffer(int id, UUID customerId, LocalDate expirationDate, String status, ProductOffer productOffer) {
         this.id = id;
         this.customerId = customerId;
         this.expirationDate = expirationDate;

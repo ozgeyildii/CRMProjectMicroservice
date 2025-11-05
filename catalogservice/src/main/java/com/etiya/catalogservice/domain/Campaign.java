@@ -25,7 +25,7 @@ public class Campaign extends BaseEntity {
     private String campaignCode;
 
     @Column(name = "discount_rate")
-    private BigDecimal discountRate;
+    private double discountRate;
 
     @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL)
     private List<CampaignProduct> campaignProducts = new ArrayList<>();
@@ -33,7 +33,7 @@ public class Campaign extends BaseEntity {
     public Campaign() {
     }
 
-    public Campaign(int id, String name, LocalDate startDate, LocalDate endDate, String campaignCode, BigDecimal discountRate, List<CampaignProduct> campaignProducts) {
+    public Campaign(int id, String name, LocalDate startDate, LocalDate endDate, String campaignCode, double discountRate, List<CampaignProduct> campaignProducts) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;
@@ -83,11 +83,11 @@ public class Campaign extends BaseEntity {
         this.campaignCode = campaignCode;
     }
 
-    public BigDecimal getDiscountRate() {
+    public double getDiscountRate() {
         return discountRate;
     }
 
-    public void setDiscountRate(BigDecimal discountRate) {
+    public void setDiscountRate(double discountRate) {
         this.discountRate = discountRate;
     }
 
@@ -98,6 +98,4 @@ public class Campaign extends BaseEntity {
     public void setCampaignProducts(List<CampaignProduct> campaignProducts) {
         this.campaignProducts = campaignProducts;
     }
-
-
 }
