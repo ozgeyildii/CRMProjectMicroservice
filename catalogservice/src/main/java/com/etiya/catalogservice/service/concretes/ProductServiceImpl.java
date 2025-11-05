@@ -32,6 +32,12 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findById(id).stream().map(this::mapToResponse).findFirst().orElseThrow(()->new BusinessException("Product not found"));
     }
 
+    @Override
+    public Product getProductById(String id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+    }
+
     private ProductResponse mapToResponse(Product product){
         ProductResponse response = new ProductResponse();
         response.setId(product.getId());

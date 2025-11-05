@@ -11,25 +11,8 @@ public class BasketItem implements Serializable {
     private String productName;
     private Double price;
     private int quantity;
-    private  double discountedPrice;
+    private double discountedPrice;
     private double discountRate;
-
-    public double getDiscountedPrice() {
-        return discountedPrice;
-    }
-
-    public double getDiscountRate() {
-        return discountRate;
-    }
-
-    public void setDiscountRate(double discountRate) {
-        this.discountRate = discountRate;
-    }
-
-    public void setDiscountedPrice(double discountedPrice) {
-        this.discountedPrice = discountedPrice;
-    }
-
 
 
     public String getId() {
@@ -80,6 +63,21 @@ public class BasketItem implements Serializable {
         this.quantity = quantity;
     }
 
+    public double getDiscountedPrice() {
+        return discountedPrice;
+    }
+
+    public void setDiscountedPrice(double discountedPrice) {
+        this.discountedPrice = discountedPrice;
+    }
+
+    public double getDiscountRate() {
+        return discountRate;
+    }
+
+    public void setDiscountRate(double discountRate) {
+        this.discountRate = discountRate;
+    }
 
     public BasketItem(){
         this.id = UUID.randomUUID().toString();

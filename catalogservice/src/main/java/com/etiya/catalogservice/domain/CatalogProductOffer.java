@@ -6,9 +6,10 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "catalog_product_offers")
 public class CatalogProductOffer extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "product_offer_id", nullable = false)
@@ -18,11 +19,11 @@ public class CatalogProductOffer extends BaseEntity {
     @JoinColumn(name = "catalog_id", nullable = false)
     private Catalog catalog;
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -42,10 +43,9 @@ public class CatalogProductOffer extends BaseEntity {
         this.catalog = catalog;
     }
 
-    public CatalogProductOffer() {
-    }
+    public CatalogProductOffer() {}
 
-    public CatalogProductOffer(Long id, ProductOffer productOffer, Catalog catalog) {
+    public CatalogProductOffer(int id, ProductOffer productOffer, Catalog catalog) {
         this.id = id;
         this.productOffer = productOffer;
         this.catalog = catalog;
