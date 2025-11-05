@@ -4,13 +4,18 @@ import com.etiya.customerservice.domain.entities.City;
 import com.etiya.customerservice.domain.entities.District;
 import com.etiya.customerservice.service.abstracts.*;
 import com.etiya.customerservice.service.requests.address.CreateAddressRequest;
-import com.etiya.customerservice.service.requests.addressorchestratorrequest.CreateFullAddressRequest;
 import com.etiya.customerservice.service.requests.contactmedium.CreateContactMediumRequest;
 import com.etiya.customerservice.service.requests.individualcustomerorchestrator.CreateFullIndividualCustomerRequest;
 import com.etiya.customerservice.service.requests.individualcustomers.CreateIndividualCustomerRequest;
+import com.etiya.customerservice.service.responses.address.CreatedAddressResponse;
+import com.etiya.customerservice.service.responses.contactmedium.CreatedContactMediumResponse;
+import com.etiya.customerservice.service.responses.individualcustomerorchestrator.CreatedFullIndividualCustomerResponse;
 import com.etiya.customerservice.service.responses.individualcustomers.CreatedIndividualCustomerResponse;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CustomerOrchestratorServiceImpl implements CustomerOrchestratorService {
@@ -31,33 +36,43 @@ public class CustomerOrchestratorServiceImpl implements CustomerOrchestratorServ
 
     @Override
     @Transactional
-    public CreatedIndividualCustomerResponse createFullCustomer(
+    public CreatedFullIndividualCustomerResponse createFullCustomer(
             CreateFullIndividualCustomerRequest request) {
 
         CreateIndividualCustomerRequest individualReq = request.getIndividualCustomer();
-        CreatedIndividualCustomerResponse createdCustomer = individualCustomerService.add(individualReq);
-
+        CreatedIndividualCustomerResponse createdIndividualCustomer = individualCustomerService.add(individualReq);
+        CreatedFullIndividualCustomerResponse createdCustomer = new CreatedFullIndividualCustomerResponse();
+        createdCustomer.setIndividualCustomer(createdIndividualCustomer);
+        List<CreatedAddressResponse> createdAddresses = new ArrayList<>();
+        List<CreatedContactMediumResponse> createdContactMediums = new ArrayList<>();
         if (request.getAddresses() != null) {
-            for (CreateFullAddressRequest a : request.getAddresses()) {
-                City city = cityService.findOrCreateByName(a.getCity());
-                District district = districtService.findOrCreateByNameAndCity(a.getDistrict(), city);
-
+            for (CreateAddressRequest a : request.getAddresses()) {
+                City city = cityService.findOrCreateByName(a.getCityName());
+                District district = districtService.findOrCreateByNameAndCity(a.getDistrictName(), city);
                 CreateAddressRequest addrReq = new CreateAddressRequest();
+                addrReq.setCityId(city.getId());
+                addrReq.setCityName(city.getName());
+                addrReq.setDistrictId(district.getId());
+                addrReq.setDistrictName(district.getName());
                 addrReq.setStreet(a.getStreet());
                 addrReq.setHouseNumber(a.getHouseNumber());
                 addrReq.setDescription(a.getDescription());
                 addrReq.setDefault(a.isDefault());
-                addrReq.setDistrictId(district.getId());
-                addrReq.setCustomerId(createdCustomer.getId());
+                addrReq.setCustomerId(createdCustomer.getIndividualCustomer().getId());
 
-                addressService.add(addrReq);
+                CreatedAddressResponse createdAddressResponse= addressService.add(addrReq);
+                createdAddresses.add(createdAddressResponse);
             }
+            createdCustomer.setAddresses(createdAddresses);
         }
 
         if (request.getContactMediums() != null) {
             for (CreateContactMediumRequest cm : request.getContactMediums()) {
-                contactMediumService.addForCustomer(createdCustomer.getId(), cm);
+                cm.setCustomerId(createdCustomer.getIndividualCustomer().getId());
+                CreatedContactMediumResponse createdContactMediumResponse= contactMediumService.add(cm);
+                createdContactMediums.add(createdContactMediumResponse);
             }
+            createdCustomer.setContactMediums(createdContactMediums);
         }
 
         return createdCustomer;

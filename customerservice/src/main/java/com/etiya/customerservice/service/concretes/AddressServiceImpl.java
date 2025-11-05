@@ -5,16 +5,15 @@ import com.etiya.common.events.address.DeleteAddressEvent;
 import com.etiya.common.events.address.SoftDeleteAddressEvent;
 import com.etiya.common.events.address.UpdateAddressEvent;
 import com.etiya.customerservice.domain.entities.Address;
+import com.etiya.customerservice.domain.entities.Customer;
 import com.etiya.customerservice.domain.entities.District;
 import com.etiya.customerservice.repository.AddressRepository;
 import com.etiya.customerservice.service.abstracts.AddressService;
 import com.etiya.customerservice.service.abstracts.CustomerService;
 import com.etiya.customerservice.service.abstracts.DistrictService;
-import com.etiya.customerservice.service.abstracts.IndividualCustomerService;
 import com.etiya.customerservice.service.mappings.AddressMapper;
 import com.etiya.customerservice.service.requests.address.CreateAddressRequest;
 import com.etiya.customerservice.service.requests.address.UpdateAddressRequest;
-import com.etiya.customerservice.service.requests.addressorchestratorrequest.CreateFullAddressRequest;
 import com.etiya.customerservice.service.responses.address.CreatedAddressResponse;
 import com.etiya.customerservice.service.responses.address.GetByIdAddressResponse;
 import com.etiya.customerservice.service.responses.address.GetListAddressResponse;
@@ -28,23 +27,22 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
-    private final IndividualCustomerService individualCustomerService;
     private final DistrictService districtService;
+    private final CustomerService customerService;
     private final AddressBusinessRules addressBusinessRules;
     private final CreateAddressProducer createAddressProducer;
     private final UpdateAddressProducer updateAddressProducer;
     private final DeleteAddressProducer deleteAddressProducer;
     private final SoftDeleteAddressProducer softDeleteAddressProducer;
 
-    public AddressServiceImpl(AddressRepository addressRepository, CustomerService customerService, IndividualCustomerService individualCustomerService, DistrictService districtService, AddressBusinessRules addressBusinessRules, CreateAddressProducer createAddressProducer, UpdateAddressProducer updateAddressProducer, DeleteAddressProducer deleteAddressProducer, SoftDeleteAddressProducer softDeleteAddressProducer) {
-        this.individualCustomerService = individualCustomerService;
+    public AddressServiceImpl(AddressRepository addressRepository, CustomerService customerService,DistrictService districtService, AddressBusinessRules addressBusinessRules, CreateAddressProducer createAddressProducer, UpdateAddressProducer updateAddressProducer, DeleteAddressProducer deleteAddressProducer, SoftDeleteAddressProducer softDeleteAddressProducer) {
         this.districtService = districtService;
+        this.customerService = customerService;
         this.addressBusinessRules  = addressBusinessRules;
         this.addressRepository = addressRepository;
         this.createAddressProducer = createAddressProducer;
@@ -60,36 +58,41 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public CreatedAddressResponse add(CreateAddressRequest request) {
-        Address address = AddressMapper.INSTANCE.addressFromCreateAddressRequest(request);
-        Address createdAddress = addressRepository.save(address);
+            Customer customer = customerService.getByEntityId(request.getCustomerId());
+            District district = districtService.getByEntityId(request.getDistrictId());
+        System.out.println("Customer ID in address: " + request.getCustomerId());
+        System.out.println("District ID in address: " + request.getDistrictId());
+            Address address = AddressMapper.INSTANCE.addressFromCreateAddressRequest(request);
 
-        District district = districtService.getByEntityId(createdAddress.getDistrict().getId());
+            address.setCustomer(customer);
+            address.setDistrict(district);
 
-        String districtName = district.getName();
-        String cityName = district.getCity().getName();
-        int cityId = district.getCity().getId();
+            Address createdAddress = addressRepository.save(address);
 
-        if (district.getCity() == null) {
-            throw new RuntimeException("City is not linked to district: " + district.getName());
+            String districtName = request.getDistrictName();
+            String cityName = request.getCityName();
+            int cityId = request.getCityId();
+
+            if (district.getCity() == null) {
+                throw new RuntimeException("City is not linked to district: " + district.getName());
+            }
+
+            CreateAddressEvent event = new CreateAddressEvent(
+                    createdAddress.getId(),
+                    createdAddress.getStreet(),
+                    createdAddress.getHouseNumber(),
+                    createdAddress.getDescription(),
+                    createdAddress.isDefault(),
+                    district.getId(),
+                    districtName,
+                    cityId,
+                    cityName,
+                    customer.getId()
+            );
+            createAddressProducer.produceAddressCreated(event);
+
+            return AddressMapper.INSTANCE.createdAddressResponseFromAddress(createdAddress);
         }
-
-        CreateAddressEvent event = new CreateAddressEvent(
-                createdAddress.getId(),
-                createdAddress.getStreet(),
-                createdAddress.getHouseNumber(),
-                createdAddress.getDescription(),
-                createdAddress.isDefault(),
-                createdAddress.getDistrict().getId(),
-                districtName,
-                cityId,
-                cityName,
-                createdAddress.getCustomer().getId()
-        );
-
-        createAddressProducer.produceAddressCreated(event);
-
-        CreatedAddressResponse response = AddressMapper.INSTANCE.createdAddressResponseFromAddress(createdAddress);
-        return response;    }
 
     @Override
     public List<GetListAddressResponse> getList() {

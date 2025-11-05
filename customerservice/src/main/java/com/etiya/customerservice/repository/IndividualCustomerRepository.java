@@ -47,4 +47,8 @@ public interface IndividualCustomerRepository extends CustomerRepository<Individ
 
 
 
+
+
+
+
 }

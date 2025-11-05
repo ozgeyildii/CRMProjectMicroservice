@@ -106,9 +106,16 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
         deleteCustomerProducer.produceCustomerDeleted(event);
     }
 
+
+
     @Override
     public CustomerResponse getById(UUID id) {
         return individualCustomerRepository.findById(id).stream().map(this::mapToResponse).findFirst().orElseThrow(()->new BusinessException("Customer Not Found"));
+    }
+
+    @Override
+    public boolean existsByNationalId(String nationalId) {
+       return individualCustomerRepository.existsByNationalId((nationalId));
     }
 
     private CustomerResponse mapToResponse(Customer customer){
@@ -116,4 +123,5 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
         response.setId(customer.getId());
         return response;
     }
+
 }

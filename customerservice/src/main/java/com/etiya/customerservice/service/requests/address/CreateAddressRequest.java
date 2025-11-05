@@ -6,48 +6,24 @@ import jakarta.validation.constraints.Size;
 import java.util.UUID;
 
 public class CreateAddressRequest {
-
     @NotBlank(message = "{streetIsRequired}")
     private String street;
+
     @NotBlank(message = "{houseNumberIsRequired}")
     private String houseNumber;
-    @Size(max = 255, message = "{descriptionCannotBeLong}")
+
+    @Size(message = "{descriptionCannotBeLong}")
     private String description;
+
     private boolean isDefault;
+
     private int districtId;
+
     private UUID customerId;
 
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getHouseNumber() {
-        return houseNumber;
-    }
-
-    public void setHouseNumber(String houseNumber) {
-        this.houseNumber = houseNumber;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public boolean isDefault() {
-        return isDefault;
-    }
-
-    public void setDefault(boolean aDefault) {
-        isDefault = aDefault;
-    }
+    private String districtName;
+    private String cityName;
+    private int cityId;
 
     public int getDistrictId() {
         return districtId;
@@ -57,23 +33,43 @@ public class CreateAddressRequest {
         this.districtId = districtId;
     }
 
-    public UUID getCustomerId() {
-        return customerId;
+    // Getters & Setters
+    public String getStreet() { return street; }
+    public void setStreet(String street) { this.street = street; }
+
+    public String getHouseNumber() { return houseNumber; }
+    public void setHouseNumber(String houseNumber) { this.houseNumber = houseNumber; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public boolean isDefault() { return isDefault; }
+    public void setDefault(boolean aDefault) { isDefault = aDefault; }
+
+    public UUID getCustomerId() { return customerId; }
+    public void setCustomerId(UUID customerId) { this.customerId = customerId; }
+
+    public String getDistrictName() {
+        return districtName;
     }
 
-    public void setCustomerId(UUID customerId) {
-        this.customerId = customerId;
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
     }
 
-    public CreateAddressRequest(String street, String houseNumber, String description, boolean isDefault, int districtId, UUID customerId) {
-        this.street = street;
-        this.houseNumber = houseNumber;
-        this.description = description;
-        this.isDefault = isDefault;
-        this.districtId = districtId;
-        this.customerId = customerId;
+    public String getCityName() {
+        return cityName;
     }
 
-    public CreateAddressRequest() {
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public int getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
     }
 }

@@ -25,12 +25,18 @@ public interface AddressMapper {
 
     //------------
 
-    @Mapping(source = "customerId",target = "customer.id")
-    @Mapping(source = "districtId",target = "district.id")
+    @Mapping(target = "customer.id",source = "customerId")
+    @Mapping(target = "district.id",source = "districtId")
+    @Mapping(target = "district.name",source = "districtName")
+    @Mapping(target="district.city.id", source="cityId")
+    @Mapping(target = "district.city.name",source = "cityName")
     Address addressFromCreateAddressRequest(CreateAddressRequest createAddressRequest);
 
     @Mapping(target = "customerId",source = "customer.id")
     @Mapping(target = "districtId",source = "district.id")
+    @Mapping(target = "districtName",source = "district.name")
+    @Mapping(target = "cityId",source = "district.city.id")
+    @Mapping(target = "cityName",source = "district.city.name")
     CreatedAddressResponse createdAddressResponseFromAddress(Address address);
 
     //----------

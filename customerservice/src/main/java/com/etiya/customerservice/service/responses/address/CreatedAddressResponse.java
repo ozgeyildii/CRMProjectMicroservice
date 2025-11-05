@@ -9,8 +9,35 @@ public class CreatedAddressResponse {
     private String houseNumber;
     private String description;
     private boolean isDefault;
+    private String districtName;
+    private String cityName;
     private int districtId;
+    private int cityId;
     private UUID customerId;
+
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public int getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
+    }
 
     public int getId() {
         return id;
@@ -68,17 +95,6 @@ public class CreatedAddressResponse {
         this.customerId = customerId;
     }
 
-    public CreatedAddressResponse(int id, String street, String houseNumber, String description, boolean isDefault, int districtId, UUID customerId) {
-        this.id = id;
-        this.street = street;
-        this.houseNumber = houseNumber;
-        this.description = description;
-        this.isDefault = isDefault;
-        this.districtId = districtId;
-        this.customerId = customerId;
-    }
 
-    public CreatedAddressResponse() {
-    }
 }
 

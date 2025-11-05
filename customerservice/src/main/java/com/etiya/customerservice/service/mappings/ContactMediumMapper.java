@@ -19,9 +19,10 @@ public interface ContactMediumMapper {
 
     ContactMediumMapper INSTANCE = Mappers.getMapper(ContactMediumMapper.class);
 
-    @Mapping(source = "customerId",target = "customer.id")
+    @Mapping(target = "customer.id", source = "customerId")
     ContactMedium getContactMediumFromCreateContactMediumRequest(CreateContactMediumRequest createContactMediumRequest);
 
+    @Mapping(target = "customerId",source = "customer.id")
     CreatedContactMediumResponse getCreatedContactMediumResponseFromContactMedium(ContactMedium contactMedium);
 
     @Mapping(source = "customer.id",target = "customerId")

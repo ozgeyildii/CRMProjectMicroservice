@@ -6,6 +6,7 @@ import com.etiya.customerservice.domain.entities.Customer;
 import com.etiya.customerservice.repository.CustomerRepository;
 import com.etiya.customerservice.repository.IndividualCustomerRepository;
 import com.etiya.customerservice.service.abstracts.CustomerService;
+import com.etiya.customerservice.service.abstracts.IndividualCustomerService;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -15,10 +16,11 @@ import java.util.UUID;
 public class CustomerServiceImpl implements CustomerService {
 
     private final IndividualCustomerRepository individualCustomerRepository;
+    private final IndividualCustomerService individualCustomerService;
 
-
-    public CustomerServiceImpl(IndividualCustomerRepository individualCustomerRepository){
+    public CustomerServiceImpl(IndividualCustomerRepository individualCustomerRepository, IndividualCustomerService individualCustomerService) {
         this.individualCustomerRepository = individualCustomerRepository;
+        this.individualCustomerService = individualCustomerService;
     }
 
     @Override
@@ -33,6 +35,11 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         throw new BusinessException("Customer not found with id: " + id);
+    }
+
+    @Override
+    public Customer getByEntityId(UUID id) {
+        return individualCustomerService.findById(id);
     }
 
 }

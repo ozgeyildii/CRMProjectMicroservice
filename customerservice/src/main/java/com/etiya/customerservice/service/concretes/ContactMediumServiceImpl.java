@@ -5,6 +5,7 @@ import com.etiya.common.events.contactmedium.DeleteContactMediumEvent;
 import com.etiya.common.events.contactmedium.SoftDeleteContactMediumEvent;
 import com.etiya.common.events.contactmedium.UpdateContactMediumEvent;
 import com.etiya.customerservice.domain.entities.ContactMedium;
+import com.etiya.customerservice.domain.entities.Customer;
 import com.etiya.customerservice.domain.enums.ContactMediumType;
 import com.etiya.customerservice.repository.ContactMediumRepository;
 import com.etiya.customerservice.service.abstracts.CityService;
@@ -58,6 +59,8 @@ class ContactMediumServiceImpl implements ContactMediumService {
     @Override
     public CreatedContactMediumResponse add(CreateContactMediumRequest request) {
         ContactMedium contactMedium = ContactMediumMapper.INSTANCE.getContactMediumFromCreateContactMediumRequest(request);
+        Customer customer = customerService.getByEntityId(request.getCustomerId());
+        contactMedium.setCustomer(customer);
         contactMediumBusinessRules.checkIsPrimaryOnlyOne(contactMedium);
         customerService.existsById(request.getCustomerId());
         ContactMedium created =  contactMediumRepository.save(contactMedium);
@@ -188,7 +191,7 @@ class ContactMediumServiceImpl implements ContactMediumService {
         List<GetListContactMediumResponse> responses = ContactMediumMapper.INSTANCE.getListContactMediumResponsesFromContactMedium(contactMediums);
         return responses;
     }
-
+/*
     @Override
     public void addForCustomer(UUID customerId, CreateContactMediumRequest request) {
         ContactMedium cm = new ContactMedium();
@@ -206,5 +209,5 @@ class ContactMediumServiceImpl implements ContactMediumService {
         );
         createContactMediumProducer.produceContactMediumCreated(event);
     }
-
+*/
 }

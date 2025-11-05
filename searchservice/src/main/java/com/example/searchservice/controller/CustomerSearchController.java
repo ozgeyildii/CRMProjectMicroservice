@@ -29,14 +29,6 @@ public class CustomerSearchController {
         return customerSearchService.getById(id);
     }
 
-    @GetMapping("/check-national-id")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Map<String, Boolean>> checkNationalId(@RequestParam String nationalId) {
-        boolean exists = customerSearchService.existsByNationalId(nationalId);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("exists", exists);
-        return ResponseEntity.ok(response);
-    }
 
     @GetMapping("search")
     public List<CustomerSearch> search(

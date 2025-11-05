@@ -8,8 +8,11 @@ import com.etiya.customerservice.service.responses.individualcustomers.CreatedIn
 import com.etiya.customerservice.service.responses.individualcustomers.UpdatedIndividualCustomerResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -44,6 +47,21 @@ public class IndividualCustomerController {
     @ResponseStatus(HttpStatus.OK)
     public CustomerResponse getById(@PathVariable UUID id){
         return individualCustomerService.getById(id);
+    }
+
+    @GetMapping("/check-national-id")
+    public ResponseEntity<Map<String, Object>> checkNationalId(@RequestParam String nationalId) {
+        boolean exists= individualCustomerService.existsByNationalId(nationalId);
+        Map<String, Object> response = new HashMap<>();
+        response.put("exists", exists);
+        if(exists){
+            response.put("message", "A customer already exists with this Nationality ID. Please review and ensure all the fields are filled correctly.");
+        }
+        else
+        {
+            response.put("message", "National ID is available.");
+        }
+        return ResponseEntity.ok(response);
     }
 
 }

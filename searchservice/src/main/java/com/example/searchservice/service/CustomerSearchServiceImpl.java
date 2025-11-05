@@ -232,11 +232,6 @@ public class CustomerSearchServiceImpl implements CustomerSearchService{
         return customerSearchRepository.searchDynamic(id,customerNumber,nationalId,firstName,lastName,value, page, size);
     }
 
-    @Override
-    public boolean existsByNationalId(String nationalId) {
-        List<CustomerSearch> result = customerSearchRepository.findByNationalIdExact(nationalId);
-        return result != null && !result.isEmpty();
-    }
 
     @Override
     public void updateContactMedium(ContactMedium contactMedium) {
