@@ -1,6 +1,7 @@
 package com.etiya.customerservice.transport.kafka.producer.contactmedium;
 
 import com.etiya.common.events.contactmedium.CreateContactMediumEvent;
+import com.etiya.common.events.contactmedium.DeleteContactMediumEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.function.StreamBridge;
@@ -21,6 +22,7 @@ public class CreateContactMediumProducer {
         //this.kafkaTemplate = kafkaTemplate;
     }
     public void produceContactMediumCreated(CreateContactMediumEvent event){
+        //Message<CreateContactMediumEvent> message = MessageBuilder.withPayload(event).setHeader(KafkaHeaders.KEY, event.customerId().toString()).build();
         streamBridge.send("contactCreated-out-0",event);
         LOGGER.info(String.format("Contact Medium created event => %s",event.id()));
 

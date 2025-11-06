@@ -21,6 +21,8 @@ public class CreatedIndividualCustomerResponse {
 
     private String gender;
 
+    private String customerNumber;
+
     public String getFirstName() {
         return firstName;
     }
@@ -93,7 +95,18 @@ public class CreatedIndividualCustomerResponse {
         this.id = id;
     }
 
-    public CreatedIndividualCustomerResponse(UUID id, String firstName, String lastName, String middleName, String nationalId, LocalDate dateOfBirth, String motherName, String fatherName, String gender) {
+    public String getCustomerNumber() {
+        return customerNumber;
+    }
+
+    public void setCustomerNumber(String customerNumber) {
+        this.customerNumber = customerNumber;
+    }
+
+    public CreatedIndividualCustomerResponse() {
+    }
+
+    public CreatedIndividualCustomerResponse(UUID id, String firstName, String lastName, String middleName, String nationalId, LocalDate dateOfBirth, String motherName, String fatherName, String gender, String customerNumber) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -103,8 +116,6 @@ public class CreatedIndividualCustomerResponse {
         this.motherName = motherName;
         this.fatherName = fatherName;
         this.gender = gender;
-    }
-
-    public CreatedIndividualCustomerResponse() {
+        this.customerNumber = customerNumber;
     }
 }

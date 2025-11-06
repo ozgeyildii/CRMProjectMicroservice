@@ -22,7 +22,9 @@ public class CreateAddressRequest {
     private UUID customerId;
 
     private String districtName;
+
     private String cityName;
+
     private int cityId;
 
     public int getDistrictId() {

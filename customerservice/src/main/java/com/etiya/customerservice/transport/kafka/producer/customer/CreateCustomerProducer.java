@@ -1,9 +1,13 @@
 package com.etiya.customerservice.transport.kafka.producer.customer;
 
+import com.etiya.common.events.address.CreateAddressEvent;
 import com.etiya.common.events.customer.CreateCustomerEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.function.StreamBridge;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 @Service
 public class CreateCustomerProducer {
@@ -18,6 +22,7 @@ public class CreateCustomerProducer {
     }
 
     public void produceCustomerCreated(CreateCustomerEvent event){
+        //Message<CreateCustomerEvent> message = MessageBuilder.withPayload(event).setHeader(KafkaHeaders.KEY, event.customerId().toString()).build();
         streamBridge.send("customerCreated-out-0",event);
         LOGGER.info(String.format("Customer created event => %s",event.customerId()));
        /* Message<CreateCustomerEvent> message = MessageBuilder.withPayload(event)

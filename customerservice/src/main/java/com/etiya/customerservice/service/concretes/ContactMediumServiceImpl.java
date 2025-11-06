@@ -7,6 +7,7 @@ import com.etiya.common.events.contactmedium.UpdateContactMediumEvent;
 import com.etiya.customerservice.domain.entities.ContactMedium;
 import com.etiya.customerservice.domain.entities.Customer;
 import com.etiya.customerservice.domain.enums.ContactMediumType;
+import com.etiya.customerservice.infrastructure.OutboxService;
 import com.etiya.customerservice.repository.ContactMediumRepository;
 import com.etiya.customerservice.service.abstracts.CityService;
 import com.etiya.customerservice.service.abstracts.ContactMediumService;
@@ -37,20 +38,16 @@ public
 
 class ContactMediumServiceImpl implements ContactMediumService {
     private final ContactMediumRepository contactMediumRepository;
-    private final IndividualCustomerService individualCustomerService;
     private final ContactMediumBusinessRules contactMediumBusinessRules;
     private final CustomerService customerService;
-    private final CreateContactMediumProducer createContactMediumProducer;
     private final UpdateContactMediumProducer updateContactMediumProducer;
     private final DeleteContactMediumProducer deleteContactMediumProducer;
     private final SoftDeleteContactMediumProducer softDeleteContactMediumProducer;
 
-    public ContactMediumServiceImpl(ContactMediumRepository contactMediumRepository, IndividualCustomerService individualCustomerService, ContactMediumBusinessRules contactMediumBusinessRules, CustomerService customerService, CityService cityService, CreateContactMediumProducer createContactMediumProducer, UpdateContactMediumProducer updateContactMediumProducer, DeleteContactMediumProducer deleteContactMediumProducer, SoftDeleteContactMediumProducer softDeleteContactMediumProducer) {
+    public ContactMediumServiceImpl(ContactMediumRepository contactMediumRepository,  ContactMediumBusinessRules contactMediumBusinessRules, CustomerService customerService,  UpdateContactMediumProducer updateContactMediumProducer, DeleteContactMediumProducer deleteContactMediumProducer, SoftDeleteContactMediumProducer softDeleteContactMediumProducer) {
         this.contactMediumRepository = contactMediumRepository;
-        this.individualCustomerService = individualCustomerService;
         this.contactMediumBusinessRules = contactMediumBusinessRules;
         this.customerService = customerService;
-        this.createContactMediumProducer = createContactMediumProducer;
         this.updateContactMediumProducer = updateContactMediumProducer;
         this.deleteContactMediumProducer = deleteContactMediumProducer;
         this.softDeleteContactMediumProducer = softDeleteContactMediumProducer;
@@ -64,14 +61,7 @@ class ContactMediumServiceImpl implements ContactMediumService {
         contactMediumBusinessRules.checkIsPrimaryOnlyOne(contactMedium);
         customerService.existsById(request.getCustomerId());
         ContactMedium created =  contactMediumRepository.save(contactMedium);
-        CreateContactMediumEvent event = new CreateContactMediumEvent(
-                created.getId(),
-                created.getType().name(),
-                created.getValue(),
-                created.isPrimary(),
-                created.getCustomer().getId()
-        );
-        createContactMediumProducer.produceContactMediumCreated(event);
+
         CreatedContactMediumResponse response = ContactMediumMapper.INSTANCE.getCreatedContactMediumResponseFromContactMedium(created);
         return response;
     }

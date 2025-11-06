@@ -1,14 +1,14 @@
 package com.etiya.customerservice.service.concretes;
 
 import com.etiya.common.crosscuttingconcerns.exceptions.types.BusinessException;
-import com.etiya.common.events.address.DeleteAddressEvent;
-import com.etiya.common.events.customer.CreateCustomerEvent;
+
 import com.etiya.common.events.customer.DeleteCustomerEvent;
 import com.etiya.common.events.customer.UpdateCustomerEvent;
 import com.etiya.common.responses.CustomerResponse;
-import com.etiya.customerservice.domain.entities.BillingAccount;
+
 import com.etiya.customerservice.domain.entities.Customer;
 import com.etiya.customerservice.domain.entities.IndividualCustomer;
+
 import com.etiya.customerservice.repository.IndividualCustomerRepository;
 import com.etiya.customerservice.service.abstracts.IndividualCustomerService;
 import com.etiya.customerservice.service.mappings.IndividualCustomerMapper;
@@ -29,14 +29,12 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
 
     private final IndividualCustomerRepository individualCustomerRepository;
     private final IndividualCustomerBusinessRules individualCustomerBusinessRules;
-    private final CreateCustomerProducer createCustomerProducer;
     private final UpdateCustomerProducer updateCustomerProducer;
     private final DeleteCustomerProducer deleteCustomerProducer;
 
-    public IndividualCustomerServiceImpl(IndividualCustomerRepository individualCustomerRepository, IndividualCustomerBusinessRules individualCustomerBusinessRules, CreateCustomerProducer createCustomerProducer, UpdateCustomerProducer updateCustomerProducer, DeleteCustomerProducer deleteCustomerProducer) {
+    public IndividualCustomerServiceImpl(IndividualCustomerRepository individualCustomerRepository, IndividualCustomerBusinessRules individualCustomerBusinessRules, UpdateCustomerProducer updateCustomerProducer, DeleteCustomerProducer deleteCustomerProducer) {
         this.individualCustomerRepository = individualCustomerRepository;
         this.individualCustomerBusinessRules = individualCustomerBusinessRules;
-        this.createCustomerProducer = createCustomerProducer;
         this.updateCustomerProducer = updateCustomerProducer;
         this.deleteCustomerProducer = deleteCustomerProducer;
     }
@@ -46,16 +44,7 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
         individualCustomerBusinessRules.checkIfIndividualCustomerExistsByIdentityNumber((request.getNationalId()));
         IndividualCustomer individualCustomer = IndividualCustomerMapper.INSTANCE.individualCustomerFromCreateIndividualCustomerRequest(request);
         IndividualCustomer createdIndividualCustomer = individualCustomerRepository.save(individualCustomer);
-        CreateCustomerEvent event = new CreateCustomerEvent(createdIndividualCustomer.getId(),
-                createdIndividualCustomer.getCustomerNumber(),
-                createdIndividualCustomer.getFirstName(),
-                createdIndividualCustomer.getLastName(),
-                createdIndividualCustomer.getNationalId(),
-                createdIndividualCustomer.getDateOfBirth().toString(),
-                createdIndividualCustomer.getMotherName(),
-                createdIndividualCustomer.getFatherName(),
-                createdIndividualCustomer.getGender());
-        createCustomerProducer.produceCustomerCreated(event);
+
         CreatedIndividualCustomerResponse response =
                 IndividualCustomerMapper.INSTANCE.createdIndividualCustomerResponseFromIndividualCustomer(createdIndividualCustomer);
         return response;

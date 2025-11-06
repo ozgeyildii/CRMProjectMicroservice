@@ -17,13 +17,14 @@ public interface CustomerSearchService {
     void delete(String id);
     //CustomerSearch getCustomerSearchById(UUID id);
 
-    CustomerSearch updateCustomer(CustomerSearch customerSearch);
+    void updateCustomer(CustomerSearch customerSearch);
     void deleteCustomer(UUID id);
 
     void addAddress(Address address);
     void updateAddress(Address address);
     void deleteAddress(int id,UUID customerId);
     void softDeleteAddress(int id,UUID customerId,String deletedDate);
+
 
     void addContactMedium(ContactMedium contactMedium);
     void updateContactMedium(ContactMedium contactMedium);

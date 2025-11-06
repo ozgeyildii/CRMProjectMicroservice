@@ -1,7 +1,9 @@
 package com.etiya.common.events.address;
 
-import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.UUID;
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record CreateAddressEvent(
         int id,
         String street,

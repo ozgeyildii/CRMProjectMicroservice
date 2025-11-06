@@ -16,6 +16,12 @@ public class CreatedFullIndividualCustomerResponse {
 
     private List<CreatedContactMediumResponse> contactMediums;
 
+    public CreatedFullIndividualCustomerResponse(CreatedIndividualCustomerResponse individualCustomer, List<CreatedAddressResponse> addresses, List<CreatedContactMediumResponse> contactMediums) {
+        this.individualCustomer = individualCustomer;
+        this.addresses = addresses;
+        this.contactMediums = contactMediums;
+    }
+
     public CreatedIndividualCustomerResponse getIndividualCustomer() {
         return individualCustomer;
     }
@@ -39,4 +45,6 @@ public class CreatedFullIndividualCustomerResponse {
     public void setContactMediums(List<CreatedContactMediumResponse> contactMediums) {
         this.contactMediums = contactMediums;
     }
+
+
 }
