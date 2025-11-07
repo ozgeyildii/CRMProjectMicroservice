@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -47,5 +48,15 @@ public class OutboxRelay {
                 log.error("❌ Failed to publish {}: {}", event.getEventType(), e.getMessage());
             }
         }
+    }
+
+
+    @Scheduled(cron = "0 0 3 * * *")
+    public void cleanupOldPublishedEvents() {
+        int deletedCount = repo.deleteAllByStatusAndCreatedAtBefore(
+                OutboxEvent.Status.PUBLISHED,
+                LocalDateTime.now().minusDays(3)
+        );
+        log.info("🧹 Cleaned up {} old published events (older than 3 days)", deletedCount);
     }
 }

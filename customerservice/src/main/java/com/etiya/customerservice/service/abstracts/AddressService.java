@@ -9,6 +9,7 @@ import com.etiya.customerservice.service.responses.address.GetListAddressRespons
 import com.etiya.customerservice.service.responses.address.UpdatedAddressResponse;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface AddressService {
 
@@ -26,7 +27,9 @@ public interface AddressService {
 
     GetByIdAddressResponse getById(int id);
 
+    List<GetListAddressResponse> getListByCustomerId(UUID customerId);
 
+    public void setPrimaryAddress(int id);
 
 
 }

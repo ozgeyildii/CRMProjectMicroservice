@@ -32,6 +32,13 @@ public class AddressBusinessRules {
         }
     }
 
+    public void checkIfPrimaryAddressExists(int id) {
+        Address address = addressRepository.findById(id).orElseThrow(() -> new BusinessException(localizationService.getMessage(Messages.AddressNotExist)));
+        if (address.isDefault()) {
+            throw new BusinessException(localizationService.getMessage(Messages.PrimaryAddressCannotBeDeleted));
+        }
+    }
+
 
 }
 

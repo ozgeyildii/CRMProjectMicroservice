@@ -4,12 +4,10 @@ import com.etiya.common.events.address.DeleteAddressEvent;
 import com.etiya.common.events.address.SoftDeleteAddressEvent;
 import com.etiya.common.events.address.UpdateAddressEvent;
 import com.etiya.customerservice.domain.entities.Address;
-import com.etiya.customerservice.domain.entities.City;
 import com.etiya.customerservice.domain.entities.Customer;
 import com.etiya.customerservice.domain.entities.District;
 import com.etiya.customerservice.repository.AddressRepository;
 import com.etiya.customerservice.service.abstracts.AddressService;
-import com.etiya.customerservice.service.abstracts.CityService;
 import com.etiya.customerservice.service.abstracts.CustomerService;
 import com.etiya.customerservice.service.abstracts.DistrictService;
 import com.etiya.customerservice.service.mappings.AddressMapper;
@@ -24,26 +22,26 @@ import com.etiya.customerservice.transport.kafka.producer.address.DeleteAddressP
 import com.etiya.customerservice.transport.kafka.producer.address.SoftDeleteAddressProducer;
 import com.etiya.customerservice.transport.kafka.producer.address.UpdateAddressProducer;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
     private final DistrictService districtService;
-    private final CityService cityService;
     private final CustomerService customerService;
     private final AddressBusinessRules addressBusinessRules;
     private final UpdateAddressProducer updateAddressProducer;
     private final DeleteAddressProducer deleteAddressProducer;
     private final SoftDeleteAddressProducer softDeleteAddressProducer;
 
-    public AddressServiceImpl(AddressRepository addressRepository, CustomerService customerService, DistrictService districtService, CityService cityService, AddressBusinessRules addressBusinessRules,  UpdateAddressProducer updateAddressProducer, DeleteAddressProducer deleteAddressProducer, SoftDeleteAddressProducer softDeleteAddressProducer) {
+    public AddressServiceImpl(AddressRepository addressRepository, CustomerService customerService, DistrictService districtService,  AddressBusinessRules addressBusinessRules,  UpdateAddressProducer updateAddressProducer, DeleteAddressProducer deleteAddressProducer, SoftDeleteAddressProducer softDeleteAddressProducer) {
         this.districtService = districtService;
         this.customerService = customerService;
-        this.cityService = cityService;
         this.addressBusinessRules  = addressBusinessRules;
         this.addressRepository = addressRepository;
         this.updateAddressProducer = updateAddressProducer;
@@ -84,6 +82,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public void delete(int id) { //kalıcı silme- hard delete
         Address address = addressRepository.findById(id).orElseThrow(() -> new RuntimeException("Address not found"));
+        addressBusinessRules.checkIfPrimaryAddressExists(id);
         addressBusinessRules.checkIfBillingAccountExists(id);
         addressRepository.deleteById(id);
         DeleteAddressEvent event=new DeleteAddressEvent(id, address.getCustomer().getId());
@@ -134,6 +133,9 @@ public class AddressServiceImpl implements AddressService {
         Address oldAddress = addressRepository.findById(request.getId()).orElseThrow(() -> new RuntimeException("Address not found"));
         Address address =  AddressMapper.INSTANCE.addressFromUpdateAddressRequest(request,oldAddress);
 
+        District district = districtService.getDistrictById(request.getDistrictId());
+        address.setDistrict(district);
+
         Address savedAddress = addressRepository.save(address);
 
         UpdateAddressEvent event = new UpdateAddressEvent(
@@ -161,6 +163,30 @@ public class AddressServiceImpl implements AddressService {
         Address address = addressRepository.findById(id).orElseThrow(() -> new RuntimeException("Address not found"));
         GetByIdAddressResponse response = AddressMapper.INSTANCE.getAddressResponseFromAddress(address);
         return response;
+    }
+
+    @Override
+    public List<GetListAddressResponse> getListByCustomerId(UUID customerId) {
+        List<Address> addressList = addressRepository.findByCustomer_Id(customerId);
+        List<GetListAddressResponse> response = AddressMapper.INSTANCE.getListAddressResponsesFromAddressList(addressList);
+        return response;
+    }
+
+    @Override
+    @Transactional
+    public void setPrimaryAddress(int id) {
+
+        Address selectedAddress = addressRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Address not found"));
+
+        List<Address> updatedAddresses = addressRepository
+                .findByCustomer_Id(selectedAddress.getCustomer().getId())
+                .stream()
+                .peek(address -> address.setDefault(address.getId() == id))
+                .toList();
+
+        addressRepository.saveAll(updatedAddresses);
+
     }
 
 

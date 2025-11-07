@@ -121,6 +121,7 @@ services:
     volumes:
       - "basket-data:/var/lib/redis"
 
+
   salesservicedb:
     container_name: salesservicedb
     image: mongo
@@ -128,6 +129,8 @@ services:
       - "27020:27017"
     volumes:
       - "sales-data:/data/db/"
+    
+
 
 volumes:
   customer-data:

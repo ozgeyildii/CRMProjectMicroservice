@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="eurekaserver" />
         <module name="apigateway" />
+        <module name="salesservice" />
         <module name="common" />
         <module name="authservice" />
         <module name="configserver" />
@@ -27,9 +28,6 @@
         <module name="catalogservice" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="salesservice" target="17" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

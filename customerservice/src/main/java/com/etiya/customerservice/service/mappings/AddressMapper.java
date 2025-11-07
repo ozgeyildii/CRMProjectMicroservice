@@ -41,7 +41,6 @@ public interface AddressMapper {
 
     //----------
 
-    @Mapping(target = "district", ignore = true)
     Address addressFromUpdateAddressRequest(UpdateAddressRequest updateAddressRequest, @MappingTarget Address address);
 
     @BeanMapping(nullValuePropertyMappingStrategy =

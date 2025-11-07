@@ -19,4 +19,5 @@ public class Messages {
     public static final String CustomerNotExist="customerNotExist";
     public static final String DistrictNotExist="districtNotExist";
     public static final String DistrictCannotDeleted="districtCannotDeleted";
+    public static final String PrimaryAddressCannotBeDeleted="primaryAddressCannotBeDeleted";
 }
