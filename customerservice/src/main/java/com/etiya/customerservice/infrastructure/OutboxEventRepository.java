@@ -9,16 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-    @Repository
-    public interface OutboxEventRepository extends JpaRepository<OutboxEvent, Long> {
-
-        @Transactional
-        @Query(
-                value = "SELECT * FROM outbox_events " +
-                        "WHERE status = 'NEW' " +
-                        "ORDER BY created_at ASC " +
-                        "FOR UPDATE SKIP LOCKED",
-                nativeQuery = true
-        )
-        List<OutboxEvent> findAndLockNewEvents();
-    }
+@Repository
+public interface OutboxEventRepository extends JpaRepository<OutboxEvent, Long> {
+    @Transactional
+    @Query(
+            value = "SELECT * FROM outbox_events " +
+                    "WHERE status = 'NEW' " +
+                    "ORDER BY created_at ASC " +
+                    "FOR UPDATE SKIP LOCKED",
+            nativeQuery = true
+    )
+    List<OutboxEvent> findAndLockNewEvents();
+}

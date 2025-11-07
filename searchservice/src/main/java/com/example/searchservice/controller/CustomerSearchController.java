@@ -26,6 +26,7 @@ public class CustomerSearchController {
     @GetMapping("/get-customer-by-id")
     @ResponseStatus(HttpStatus.OK)
     public CustomerSearch getCustomerById(@RequestParam String id) {
+        System.out.println("Controller get-customer-by-id " + id);
         return customerSearchService.getById(id);
     }
 

@@ -20,10 +20,7 @@ public interface DistrictService {
     List<GetListDistrictResponse> getByName(String name);
     List<GetListDistrictResponse> getByNameStartingWith(String name);
     List<GetListDistrictResponse> getByCityId(int cityId);
-    District findOrCreateByNameAndCity(String name, City city);
-    District findByName(String name);
-    District getByEntityId(int id);
-
+    District getDistrictById(int id);
 
 
 }

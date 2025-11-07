@@ -1,17 +1,19 @@
-package com.etiya.customerservice.service.responses.address;
+package com.etiya.customerservice.service.responses.customer;
 
 import java.util.UUID;
 
-public class UpdatedAddressResponse {
+public class AddressResponse {
     private int id;
     private String street;
     private String houseNumber;
     private String description;
     private boolean isDefault;
+
     private int districtId;
     private String districtName;
     private int cityId;
     private String cityName;
+
     private UUID customerId;
 
     public int getId() {
@@ -94,16 +96,19 @@ public class UpdatedAddressResponse {
         this.customerId = customerId;
     }
 
-    public UpdatedAddressResponse(int id, String street, String houseNumber, String description, boolean isDefault, int districtId, UUID customerId) {
+    public AddressResponse() {
+    }
+
+    public AddressResponse(int id, String street, String houseNumber, String description, boolean isDefault, int districtId, String districtName, int cityId, String cityName, UUID customerId) {
         this.id = id;
         this.street = street;
         this.houseNumber = houseNumber;
         this.description = description;
         this.isDefault = isDefault;
         this.districtId = districtId;
+        this.districtName = districtName;
+        this.cityId = cityId;
+        this.cityName = cityName;
         this.customerId = customerId;
-    }
-
-    public UpdatedAddressResponse() {
     }
 }

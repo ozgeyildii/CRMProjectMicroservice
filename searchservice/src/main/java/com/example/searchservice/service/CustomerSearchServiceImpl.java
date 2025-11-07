@@ -46,6 +46,7 @@ public class CustomerSearchServiceImpl implements CustomerSearchService {
     @Override
     public CustomerSearch getById(String id) {
         Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(id);
+        System.out.println("✅ getById impl ");
         if (customerOpt.isPresent()) {
             CustomerSearch customer = customerOpt.get();
             System.out.println("✅ [Elastic Result] " + customer);

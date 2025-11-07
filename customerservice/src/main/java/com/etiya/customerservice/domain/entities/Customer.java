@@ -4,6 +4,7 @@ import com.etiya.common.entities.BaseEntity;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -23,10 +24,10 @@ public class Customer extends BaseEntity {
     //navigation property
 
     @OneToMany(mappedBy = "customer", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST})
-    private List<Address> addresses;
+    private Set<Address> addresses;
 
     @OneToMany(mappedBy = "customer",cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST})
-    private List<ContactMedium> contactMediums;
+    private Set<ContactMedium> contactMediums;
 
     //Getter-Setter
 
@@ -46,19 +47,19 @@ public class Customer extends BaseEntity {
         this.customerNumber = customerNumber;
     }
 
-    public List<Address> getAddresses() {
+    public Set<Address> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(List<Address> addresses) {
+    public void setAddresses(Set<Address> addresses) {
         this.addresses = addresses;
     }
 
-    public List<ContactMedium> getContactMediums() {
+    public Set<ContactMedium> getContactMediums() {
         return contactMediums;
     }
 
-    public void setContactMediums(List<ContactMedium> contactMediums) {
+    public void setContactMediums(Set<ContactMedium> contactMediums) {
         this.contactMediums = contactMediums;
     }
 

@@ -9,6 +9,7 @@
     <file url="file://$PROJECT_DIR$/configserver/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/customerservice/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/eurekaserver/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/salesservice/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/searchservice/src/main/java" charset="UTF-8" />
   </component>
 </project>

@@ -73,6 +73,12 @@ public class DistrictServiceImpl implements DistrictService {
     }
 
     @Override
+    public District getDistrictById(int id) {
+        District district = districtRepository.findById(id).orElseThrow(() -> new RuntimeException("District not found"));
+        return district;
+    }
+
+    @Override
     public void deleteById(int id) {
         districtBusinessRules.checkIfAddressExists(id);
         districtRepository.deleteById(id);
@@ -99,28 +105,6 @@ public class DistrictServiceImpl implements DistrictService {
 
         List<GetListDistrictResponse> responses = DistrictMapper.INSTANCE.getListDistrictResponseFromDistrict(districts);
         return responses;
-    }
-
-
-    @Override
-    public District getByEntityId(int id) {
-        return districtRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("District not found"));    }
-
-    @Override
-    public District findOrCreateByNameAndCity(String name, City city) {
-        return districtRepository.findByNameAndCity(name, city)
-                .orElseGet(() -> {
-                    District d = new District();
-                    d.setName(name);
-                    d.setCity(city);
-                    return districtRepository.save(d);
-                });   }
-
-    @Override
-    public District findByName(String name) {
-        return districtRepository.findByName(name)
-                .orElseThrow(() -> new RuntimeException("District not found with id: " + name));
     }
 
 }

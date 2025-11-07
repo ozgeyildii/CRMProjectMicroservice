@@ -63,6 +63,12 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
+    public City getCityById(int id) {
+        City city = cityRepository.findById(id).orElseThrow(()->new RuntimeException("City not found"));
+        return city;
+    }
+
+    @Override
     public List<GetListCityResponse> findByCreatedDateBiggerThanParameter(LocalDateTime parameter) {
         List<City> cities=cityRepository.findByCreatedDateBiggerThanParameter(parameter);
         List<GetListCityResponse> responses=CityMapper.INSTANCE.getListCityResponseFromCity(cities);
@@ -87,11 +93,6 @@ public class CityServiceImpl implements CityService {
     public City existsById(int id) {
         cityBusinessRules.checkIfCityExistsById(id);
         return cityRepository.findById(id).get();
-    }
-    @Override
-    public City findOrCreateByName(String name) {
-        return cityRepository.findByNameIgnoreCase(name)
-                .orElseGet(() -> cityRepository.save(new City(0, name, null)));
     }
 
 /*

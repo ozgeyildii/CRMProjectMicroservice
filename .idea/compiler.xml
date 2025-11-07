@@ -27,6 +27,9 @@
         <module name="catalogservice" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="salesservice" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
@@ -38,6 +41,7 @@
       <module name="configserver" options="-parameters" />
       <module name="customerservice" options="-parameters" />
       <module name="eurekaserver" options="-parameters" />
+      <module name="salesservice" options="-parameters" />
       <module name="searchservice" options="-parameters" />
     </option>
   </component>

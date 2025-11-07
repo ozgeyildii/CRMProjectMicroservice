@@ -45,7 +45,13 @@ public interface IndividualCustomerRepository extends CustomerRepository<Individ
 
     boolean existsById(UUID id);
 
-
+    @Query("""
+           SELECT c FROM IndividualCustomer c
+           LEFT JOIN FETCH c.addresses
+           LEFT JOIN FETCH c.contactMediums
+           WHERE c.id = :id
+           """)
+    Optional<IndividualCustomer> findByIdWithRelations(@Param("id") UUID id);
 
 
 

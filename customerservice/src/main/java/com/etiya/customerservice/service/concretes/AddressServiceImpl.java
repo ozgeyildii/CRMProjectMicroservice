@@ -59,8 +59,7 @@ public class AddressServiceImpl implements AddressService {
 
         @Override
         public CreatedAddressResponse add(CreateAddressRequest request) {
-            City city = cityService.findOrCreateByName(request.getCityName());
-            District district = districtService.findOrCreateByNameAndCity(request.getDistrictName(), city);
+            District district = districtService.getDistrictById(request.getDistrictId());
             Customer customer = customerService.getByEntityId(request.getCustomerId());
 
 
@@ -101,32 +100,58 @@ public class AddressServiceImpl implements AddressService {
     }
 
 
+//    @Override
+//    public UpdatedAddressResponse update(UpdateAddressRequest request) {
+//        Address oldAddress = addressRepository.findById(request.getId())
+//                .orElseThrow(() -> new RuntimeException("Address not found"));
+//
+//        Address address = AddressMapper.INSTANCE.addressFromUpdateAddressRequest(request, oldAddress);
+//        Address updatedAddress = addressRepository.save(address);
+//
+//        UpdateAddressEvent event = new UpdateAddressEvent(
+//                updatedAddress.getId(),
+//                updatedAddress.getStreet(),
+//                updatedAddress.getHouseNumber(),
+//                updatedAddress.getDescription(),
+//                updatedAddress.isDefault(),
+//                updatedAddress.getDistrict().getId(),
+//                updatedAddress.getDistrict().getName(),
+//                updatedAddress.getDistrict().getCity().getId(),
+//                updatedAddress.getDistrict().getCity().getName(),
+//                updatedAddress.getCustomer().getId()
+//        );
+//
+//        updateAddressProducer.produceAddressUpdated(event);
+//
+//        UpdatedAddressResponse response =
+//                AddressMapper.INSTANCE.updatedAddressResponseFromAddress(updatedAddress);
+//
+//        return response;
+//    }
+
     @Override
     public UpdatedAddressResponse update(UpdateAddressRequest request) {
-        Address oldAddress = addressRepository.findById(request.getId())
-                .orElseThrow(() -> new RuntimeException("Address not found"));
+        Address oldAddress = addressRepository.findById(request.getId()).orElseThrow(() -> new RuntimeException("Address not found"));
+        Address address =  AddressMapper.INSTANCE.addressFromUpdateAddressRequest(request,oldAddress);
 
-        Address address = AddressMapper.INSTANCE.addressFromUpdateAddressRequest(request, oldAddress);
-        Address updatedAddress = addressRepository.save(address);
+        Address savedAddress = addressRepository.save(address);
 
         UpdateAddressEvent event = new UpdateAddressEvent(
-                updatedAddress.getId(),
-                updatedAddress.getStreet(),
-                updatedAddress.getHouseNumber(),
-                updatedAddress.getDescription(),
-                updatedAddress.isDefault(),
-                updatedAddress.getDistrict().getId(),
-                updatedAddress.getDistrict().getName(),
-                updatedAddress.getDistrict().getCity().getId(),
-                updatedAddress.getDistrict().getCity().getName(),
-                updatedAddress.getCustomer().getId()
+                savedAddress.getId(),
+                savedAddress.getStreet(),
+                savedAddress.getHouseNumber(),
+                savedAddress.getDescription(),
+                savedAddress.isDefault(),
+                savedAddress.getDistrict().getId(),
+                savedAddress.getDistrict().getName(),
+                savedAddress.getDistrict().getCity().getId(),
+                savedAddress.getDistrict().getCity().getName(),
+                savedAddress.getCustomer().getId()
         );
 
         updateAddressProducer.produceAddressUpdated(event);
 
-        UpdatedAddressResponse response =
-                AddressMapper.INSTANCE.updatedAddressResponseFromAddress(updatedAddress);
-
+        UpdatedAddressResponse response = AddressMapper.INSTANCE.updatedAddressResponseFromAddress(savedAddress);
         return response;
     }
 
@@ -137,9 +162,6 @@ public class AddressServiceImpl implements AddressService {
         GetByIdAddressResponse response = AddressMapper.INSTANCE.getAddressResponseFromAddress(address);
         return response;
     }
-
-
-
 
 
 /*

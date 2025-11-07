@@ -41,13 +41,16 @@ public interface AddressMapper {
 
     //----------
 
-    @Mapping(source = "districtId",target = "district.id")
+    @Mapping(target = "district", ignore = true)
     Address addressFromUpdateAddressRequest(UpdateAddressRequest updateAddressRequest, @MappingTarget Address address);
 
     @BeanMapping(nullValuePropertyMappingStrategy =
             NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "customerId",source = "customer.id")
     @Mapping(target = "districtId",source = "district.id")
+    @Mapping(target = "districtName",source = "district.name")
+    @Mapping(target = "cityId",source = "district.city.id")
+    @Mapping(target = "cityName",source = "district.city.name")
     UpdatedAddressResponse updatedAddressResponseFromAddress(Address address);
 
     List<GetListAddressResponse> getListAddressResponsesFromAddressList(List<Address> addressList);

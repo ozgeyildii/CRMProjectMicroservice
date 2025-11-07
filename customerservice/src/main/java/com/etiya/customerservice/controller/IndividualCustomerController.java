@@ -4,6 +4,7 @@ import com.etiya.common.responses.CustomerResponse;
 import com.etiya.customerservice.service.abstracts.IndividualCustomerService;
 import com.etiya.customerservice.service.requests.individualcustomers.CreateIndividualCustomerRequest;
 import com.etiya.customerservice.service.requests.individualcustomers.UpdateIndividualCustomerRequest;
+import com.etiya.customerservice.service.responses.customer.FullCustomerResponse;
 import com.etiya.customerservice.service.responses.individualcustomers.CreatedIndividualCustomerResponse;
 import com.etiya.customerservice.service.responses.individualcustomers.UpdatedIndividualCustomerResponse;
 import jakarta.validation.Valid;
@@ -63,5 +64,12 @@ public class IndividualCustomerController {
         }
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/full-customer/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public FullCustomerResponse getFullCustomerById(@PathVariable UUID id){
+        return individualCustomerService.getFullCustomerById(id);
+    }
+
 
 }

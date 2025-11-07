@@ -11,7 +11,6 @@ public class UpdateAddressRequest {
     private String houseNumber;
     @Size(max = 255, message = "{descriptionCannotBeLong}")
     private String description;
-    private Boolean isDefault;
     private int districtId;
     private UUID customerId;
 
@@ -47,14 +46,6 @@ public class UpdateAddressRequest {
         this.description = description;
     }
 
-    public Boolean getDefault() {
-        return isDefault;
-    }
-
-    public void setDefault(Boolean aDefault) {
-        isDefault = aDefault;
-    }
-
     public int getDistrictId() {
         return districtId;
     }
@@ -71,12 +62,11 @@ public class UpdateAddressRequest {
         this.customerId = customerId;
     }
 
-    public UpdateAddressRequest(int id, String street, String houseNumber, String description, Boolean isDefault, int districtId, UUID customerId) {
+    public UpdateAddressRequest(int id, String street, String houseNumber, String description, int districtId, UUID customerId) {
         this.id = id;
         this.street = street;
         this.houseNumber = houseNumber;
         this.description = description;
-        this.isDefault = isDefault;
         this.districtId = districtId;
         this.customerId = customerId;
     }

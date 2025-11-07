@@ -4,6 +4,7 @@ import com.etiya.common.responses.CustomerResponse;
 import com.etiya.customerservice.domain.entities.Customer;
 import com.etiya.customerservice.service.requests.individualcustomers.CreateIndividualCustomerRequest;
 import com.etiya.customerservice.service.requests.individualcustomers.UpdateIndividualCustomerRequest;
+import com.etiya.customerservice.service.responses.customer.FullCustomerResponse;
 import com.etiya.customerservice.service.responses.individualcustomerorchestrator.CreatedFullIndividualCustomerResponse;
 import com.etiya.customerservice.service.responses.individualcustomers.CreatedIndividualCustomerResponse;
 import com.etiya.customerservice.service.responses.individualcustomers.UpdatedIndividualCustomerResponse;
@@ -18,5 +19,5 @@ public interface IndividualCustomerService {
     void delete(UUID id);
     CustomerResponse getById(UUID id);
     boolean existsByNationalId(String nationalId);
-
+    FullCustomerResponse getFullCustomerById(UUID id);
 }

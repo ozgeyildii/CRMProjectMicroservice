@@ -41,7 +41,7 @@ public void add(@RequestBody City city){
         return cityService.update(updateCityRequest);
     }
 
-    @GetMapping("getListCityResponse")
+    @GetMapping("/getListCityResponse")
     @ResponseStatus(HttpStatus.OK)
     public List<GetListCityResponse> getList(){
         return cityService.getList();

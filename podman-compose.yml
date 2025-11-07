@@ -121,8 +121,17 @@ services:
     volumes:
       - "basket-data:/var/lib/redis"
 
+  salesservicedb:
+    container_name: salesservicedb
+    image: mongo
+    ports:
+      - "27020:27017"
+    volumes:
+      - "sales-data:/data/db/"
+
 volumes:
   customer-data:
   auth-data:
   catalog-data:
   basket-data:
+  sales-data:

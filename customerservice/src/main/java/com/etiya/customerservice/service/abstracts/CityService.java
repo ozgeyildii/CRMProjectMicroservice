@@ -21,7 +21,7 @@ public interface CityService {
     List<GetListCityResponse> findByCreatedDateBiggerThanParameterNative(LocalDateTime parameter);
     List<GetListCityResponse> findByCreatedDate(LocalDateTime createdDate);
     City existsById(int id);
-    City findOrCreateByName(String name);
+    City getCityById(int id);
 
 
 
