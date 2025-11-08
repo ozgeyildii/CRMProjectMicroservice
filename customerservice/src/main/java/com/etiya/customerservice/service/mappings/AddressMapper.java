@@ -19,6 +19,7 @@ public interface AddressMapper {
 
     @Mapping(target = "districtName",source = "district.name") //manuel mapping burada yapılıyor
     @Mapping(target = "cityName",source = "district.city.name")
+    @Mapping(target = "cityId",source = "district.city.id")
     @Mapping(target = "customerId",source = "customer.id")
     @Mapping(target = "districtId",source = "district.id")
     GetListAddressResponse getListAddressResponseFromAddress(Address address);
@@ -51,6 +52,7 @@ public interface AddressMapper {
     @Mapping(target = "cityId",source = "district.city.id")
     @Mapping(target = "cityName",source = "district.city.name")
     UpdatedAddressResponse updatedAddressResponseFromAddress(Address address);
+
 
     List<GetListAddressResponse> getListAddressResponsesFromAddressList(List<Address> addressList);
 

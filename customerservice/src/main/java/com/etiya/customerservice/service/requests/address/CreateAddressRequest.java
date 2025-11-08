@@ -1,5 +1,6 @@
 package com.etiya.customerservice.service.requests.address;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -45,7 +46,10 @@ public class CreateAddressRequest {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
+    @JsonProperty("isDefault")
     public boolean isDefault() { return isDefault; }
+
+    @JsonProperty("isDefault")
     public void setDefault(boolean aDefault) { isDefault = aDefault; }
 
     public UUID getCustomerId() { return customerId; }

@@ -1,5 +1,7 @@
 package com.etiya.customerservice.service.responses.address;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.UUID;
 
 public class UpdatedAddressResponse {
@@ -46,10 +48,12 @@ public class UpdatedAddressResponse {
         this.description = description;
     }
 
+    @JsonProperty("isDefault")
     public boolean isDefault() {
         return isDefault;
     }
 
+    @JsonProperty("isDefault")
     public void setDefault(boolean aDefault) {
         isDefault = aDefault;
     }

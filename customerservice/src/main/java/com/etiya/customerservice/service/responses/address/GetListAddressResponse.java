@@ -1,6 +1,8 @@
 package com.etiya.customerservice.service.responses.address;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.UUID;
 
 public class GetListAddressResponse {
@@ -11,6 +13,7 @@ public class GetListAddressResponse {
     private boolean isDefault;
     private int districtId;
     private String districtName;
+    private int cityId;
     private String cityName;
     private UUID customerId;
 
@@ -46,10 +49,12 @@ public class GetListAddressResponse {
         this.description = description;
     }
 
+    @JsonProperty("isDefault")
     public boolean isDefault() {
         return isDefault;
     }
 
+    @JsonProperty("isDefault")
     public void setDefault(boolean aDefault) {
         isDefault = aDefault;
     }
@@ -70,6 +75,14 @@ public class GetListAddressResponse {
         this.districtName = districtName;
     }
 
+    public int getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
+    }
+
     public String getCityName() {
         return cityName;
     }
@@ -86,7 +99,7 @@ public class GetListAddressResponse {
         this.customerId = customerId;
     }
 
-    public GetListAddressResponse(int id, String street, String houseNumber, String description, boolean isDefault, int districtId, String districtName, String cityName, UUID customerId) {
+    public GetListAddressResponse(int id, String street, String houseNumber, String description, boolean isDefault, int districtId, String districtName, int cityId, String cityName, UUID customerId) {
         this.id = id;
         this.street = street;
         this.houseNumber = houseNumber;
@@ -94,6 +107,7 @@ public class GetListAddressResponse {
         this.isDefault = isDefault;
         this.districtId = districtId;
         this.districtName = districtName;
+        this.cityId = cityId;
         this.cityName = cityName;
         this.customerId = customerId;
     }
