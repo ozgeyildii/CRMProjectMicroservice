@@ -4,8 +4,8 @@ import com.etiya.common.entities.BaseEntity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "prod_char_values")
-public class ProdCharValue extends BaseEntity {
+@Table(name = "prod_offer_char_values")
+public class ProdOfferCharValue extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -15,8 +15,17 @@ public class ProdCharValue extends BaseEntity {
     private CharacteristicValue characteristicValue;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @JoinColumn(name = "product_offer_id", nullable = false)
+    private ProductOffer productOffer;
+
+    public ProdOfferCharValue() {
+    }
+
+    public ProdOfferCharValue(int id, CharacteristicValue characteristicValue, ProductOffer productOffer) {
+        this.id = id;
+        this.characteristicValue = characteristicValue;
+        this.productOffer = productOffer;
+    }
 
     public int getId() {
         return id;
@@ -34,20 +43,11 @@ public class ProdCharValue extends BaseEntity {
         this.characteristicValue = characteristicValue;
     }
 
-    public Product getProduct() {
-        return product;
+    public ProductOffer getProductOffer() {
+        return productOffer;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public ProdCharValue() {
-    }
-
-    public ProdCharValue(int id, CharacteristicValue characteristicValue, Product product) {
-        this.id = id;
-        this.characteristicValue = characteristicValue;
-        this.product = product;
+    public void setProductOffer(ProductOffer productOffer) {
+        this.productOffer = productOffer;
     }
 }

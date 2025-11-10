@@ -20,7 +20,7 @@ public class CharacteristicValue extends BaseEntity {
     private Characteristic characteristic;
 
     @OneToMany(mappedBy = "characteristicValue")
-    private List<ProdCharValue> prodCharValues = new ArrayList<>();
+    private List<ProdOfferCharValue> prodOfferCharValues = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -46,21 +46,21 @@ public class CharacteristicValue extends BaseEntity {
         this.characteristic = characteristic;
     }
 
-    public List<ProdCharValue> getProdCharValues() {
-        return prodCharValues;
+    public List<ProdOfferCharValue> getProdCharValues() {
+        return prodOfferCharValues;
     }
 
-    public void setProdCharValues(List<ProdCharValue> prodCharValues) {
-        this.prodCharValues = prodCharValues;
+    public void setProdCharValues(List<ProdOfferCharValue> prodOfferCharValues) {
+        this.prodOfferCharValues = prodOfferCharValues;
     }
 
     public CharacteristicValue() {
     }
 
-    public CharacteristicValue(int id, String value, Characteristic characteristic, List<ProdCharValue> prodCharValues) {
+    public CharacteristicValue(int id, String value, Characteristic characteristic, List<ProdOfferCharValue> prodOfferCharValues) {
         this.id = id;
         this.value = value;
         this.characteristic = characteristic;
-        this.prodCharValues = prodCharValues;
+        this.prodOfferCharValues = prodOfferCharValues;
     }
 }

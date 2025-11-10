@@ -4,26 +4,26 @@ import com.etiya.common.entities.BaseEntity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "campaign_products")
-public class CampaignProduct extends BaseEntity {
+@Table(name = "campaign_product_offers")
+public class CampaignProductOffer extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @JoinColumn(name = "product_offer_id", nullable = false)
+    private ProductOffer productOffer;
 
     @ManyToOne
     @JoinColumn(name = "campaign_id", nullable = false)
     private Campaign campaign;
 
-    public CampaignProduct() {
+    public CampaignProductOffer() {
     }
 
-    public CampaignProduct(int id, Product product, Campaign campaign) {
+    public CampaignProductOffer(int id, ProductOffer productOffer, Campaign campaign) {
         this.id = id;
-        this.product = product;
+        this.productOffer = productOffer;
         this.campaign = campaign;
     }
 
@@ -35,12 +35,12 @@ public class CampaignProduct extends BaseEntity {
         this.id = id;
     }
 
-    public Product getProduct() {
-        return product;
+    public ProductOffer getProductOffer() {
+        return productOffer;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductOffer(ProductOffer productOffer) {
+        this.productOffer = productOffer;
     }
 
     public Campaign getCampaign() {

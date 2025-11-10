@@ -1,18 +1,10 @@
-package com.etiya.catalogservice.service.dtos.responses.productspeccharacteristic;
+package com.etiya.catalogservice.service.dtos.requests.productofferspeccharacteristic;
 
-public class CreatedProdSpecCharacteristicResponse {
-    private int id;
+public class CreateProdOfferSpecCharacteristicRequest {
+
     private boolean isRequired;
     private int productOfferSpecId;
     private int characteristicId;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public boolean isRequired() {
         return isRequired;

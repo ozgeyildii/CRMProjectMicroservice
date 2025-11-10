@@ -22,11 +22,22 @@ public class Catalog  extends BaseEntity {
     @OneToMany(mappedBy = "parent")
     private List<Catalog> subCatalogs = new ArrayList<>();
 
-    @OneToMany(mappedBy = "catalog")
-    private List<Product> products = new ArrayList<>();
+//    @OneToMany(mappedBy = "catalog")
+//    private List<ProductOffer> productOffers = new ArrayList<>();
 
     @OneToMany(mappedBy = "catalog")
     private List<CatalogProductOffer> catalogProductOffers = new ArrayList<>();
+
+    public Catalog() {
+    }
+
+    public Catalog(int id, String name, Catalog parent, List<Catalog> subCatalogs, List<CatalogProductOffer> catalogProductOffers) {
+        this.id = id;
+        this.name = name;
+        this.parent = parent;
+        this.subCatalogs = subCatalogs;
+        this.catalogProductOffers = catalogProductOffers;
+    }
 
     public int getId() {
         return id;
@@ -60,31 +71,11 @@ public class Catalog  extends BaseEntity {
         this.subCatalogs = subCatalogs;
     }
 
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
     public List<CatalogProductOffer> getCatalogProductOffers() {
         return catalogProductOffers;
     }
 
     public void setCatalogProductOffers(List<CatalogProductOffer> catalogProductOffers) {
-        this.catalogProductOffers = catalogProductOffers;
-    }
-
-    public Catalog() {
-    }
-
-    public Catalog(int id, String name, Catalog parent, List<Catalog> subCatalogs, List<Product> products, List<CatalogProductOffer> catalogProductOffers) {
-        this.id = id;
-        this.name = name;
-        this.parent = parent;
-        this.subCatalogs = subCatalogs;
-        this.products = products;
         this.catalogProductOffers = catalogProductOffers;
     }
 }

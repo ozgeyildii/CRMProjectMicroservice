@@ -2,7 +2,7 @@ package com.etiya.catalogservice.controller;
 
 import com.etiya.catalogservice.service.abstracts.ProdSpecCharacteristicService;
 
-import com.etiya.catalogservice.service.dtos.requests.productspeccharacteristic.CreateProdSpecCharacteristicRequest;
+import com.etiya.catalogservice.service.dtos.requests.productofferspeccharacteristic.CreateProdOfferSpecCharacteristicRequest;
 import com.etiya.catalogservice.service.dtos.responses.productspeccharacteristic.CreatedProdSpecCharacteristicResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ public class ProdSpecCharacteristicController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedProdSpecCharacteristicResponse add(@RequestBody CreateProdSpecCharacteristicRequest request) {
+    public CreatedProdSpecCharacteristicResponse add(@RequestBody CreateProdOfferSpecCharacteristicRequest request) {
         return prodSpecCharacteristicService.add(request);
     }
 }

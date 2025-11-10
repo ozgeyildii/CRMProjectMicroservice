@@ -36,7 +36,7 @@ public class Characteristic extends BaseEntity {
 
     @OneToMany(mappedBy = "characteristic")
 
-    private List<ProdSpecCharacteristic> prodSpecCharacteristics = new ArrayList<>();
+    private List<ProdOfferSpecCharacteristic> prodOfferSpecCharacteristics = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -86,25 +86,25 @@ public class Characteristic extends BaseEntity {
         this.characteristicValues = characteristicValues;
     }
 
-    public List<ProdSpecCharacteristic> getProdSpecCharacteristics() {
-        return prodSpecCharacteristics;
+    public List<ProdOfferSpecCharacteristic> getProdSpecCharacteristics() {
+        return prodOfferSpecCharacteristics;
     }
 
-    public void setProdSpecCharacteristics(List<ProdSpecCharacteristic> prodSpecCharacteristics) {
-        this.prodSpecCharacteristics = prodSpecCharacteristics;
+    public void setProdSpecCharacteristics(List<ProdOfferSpecCharacteristic> prodOfferSpecCharacteristics) {
+        this.prodOfferSpecCharacteristics = prodOfferSpecCharacteristics;
     }
 
     public Characteristic() {
     }
 
-    public Characteristic(int id, String name, String description, String dataType, String unitOfMeasure, List<CharacteristicValue> characteristicValues, List<ProdSpecCharacteristic> prodSpecCharacteristics) {
+    public Characteristic(int id, String name, String description, String dataType, String unitOfMeasure, List<CharacteristicValue> characteristicValues, List<ProdOfferSpecCharacteristic> prodOfferSpecCharacteristics) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.dataType = dataType;
         this.unitOfMeasure = unitOfMeasure;
         this.characteristicValues = characteristicValues;
-        this.prodSpecCharacteristics = prodSpecCharacteristics;
+        this.prodOfferSpecCharacteristics = prodOfferSpecCharacteristics;
     }
 }
 

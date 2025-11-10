@@ -2,7 +2,7 @@ package com.etiya.catalogservice.controller;
 
 import com.etiya.catalogservice.service.abstracts.ProdCharValueService;
 
-import com.etiya.catalogservice.service.dtos.requests.productcharvalue.CreateProdCharValueRequest;
+import com.etiya.catalogservice.service.dtos.requests.productoffercharvalue.CreateProdOfferCharValueRequest;
 import com.etiya.catalogservice.service.dtos.responses.productcharvalue.CreatedProdCharValueResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ public class ProdCharValueController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedProdCharValueResponse add(@RequestBody CreateProdCharValueRequest request) {
+    public CreatedProdCharValueResponse add(@RequestBody CreateProdOfferCharValueRequest request) {
         return prodCharValueService.add(request);
     }
 }

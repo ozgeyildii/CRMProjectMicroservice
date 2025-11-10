@@ -4,8 +4,8 @@ import com.etiya.common.entities.BaseEntity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "product_spec_characteristics")
-public class ProdSpecCharacteristic extends BaseEntity {
+@Table(name = "product_offer_spec_characteristics")
+public class ProdOfferSpecCharacteristic extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -14,8 +14,8 @@ public class ProdSpecCharacteristic extends BaseEntity {
     private boolean isRequired;
 
     @ManyToOne
-    @JoinColumn(name = "spec_id", nullable = false)
-    private ProductSpecification productSpecification;
+    @JoinColumn(name = "product_offer_spec_id", nullable = false)
+    private ProductOfferSpecification productOfferSpecification;
 
     @ManyToOne
     @JoinColumn(name = "characteristic_id", nullable = false)
@@ -29,7 +29,7 @@ public class ProdSpecCharacteristic extends BaseEntity {
         this.id = id;
     }
 
-    public boolean getRequired() {
+    public boolean isRequired() {
         return isRequired;
     }
 
@@ -37,12 +37,12 @@ public class ProdSpecCharacteristic extends BaseEntity {
         isRequired = required;
     }
 
-    public ProductSpecification getProductSpecification() {
-        return productSpecification;
+    public ProductOfferSpecification getProductOfferSpecification() {
+        return productOfferSpecification;
     }
 
-    public void setProductSpecification(ProductSpecification productSpecification) {
-        this.productSpecification = productSpecification;
+    public void setProductOfferSpecification(ProductOfferSpecification productOfferSpecification) {
+        this.productOfferSpecification = productOfferSpecification;
     }
 
     public Characteristic getCharacteristic() {
@@ -50,16 +50,6 @@ public class ProdSpecCharacteristic extends BaseEntity {
     }
 
     public void setCharacteristic(Characteristic characteristic) {
-        this.characteristic = characteristic;
-    }
-
-    public ProdSpecCharacteristic() {
-    }
-
-    public ProdSpecCharacteristic(int id, Boolean isRequired, ProductSpecification productSpecification, Characteristic characteristic) {
-        this.id = id;
-        this.isRequired = isRequired;
-        this.productSpecification = productSpecification;
         this.characteristic = characteristic;
     }
 }

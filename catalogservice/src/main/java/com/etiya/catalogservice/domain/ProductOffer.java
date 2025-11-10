@@ -39,76 +39,33 @@ public class ProductOffer extends BaseEntity {
     @OneToMany(mappedBy = "productOffer")
     private List<CustomerOffer> customerOffers = new ArrayList<>();
 
-    public List<CustomerOffer> getCustomerOffers() {
-        return customerOffers;
+    @ManyToOne
+    @JoinColumn(name = "product_offer_spec_id", nullable = false)
+    private ProductOfferSpecification productOfferSpecification;
+
+    @OneToMany(mappedBy = "productOffer")
+    private List<ProdOfferCharValue> prodOfferCharValues = new ArrayList<>();
+
+    @OneToMany(mappedBy = "productOffer")
+    private List<CampaignProductOffer> campaignProductOffers = new ArrayList<>();
+
+    public ProductOffer() {
     }
 
-    public void setCustomerOffers(List<CustomerOffer> customerOffers) {
-        this.customerOffers = customerOffers;
-    }
-
-    public List<CatalogProductOffer> getCatalogProductOffers() {
-        return catalogProductOffers;
-    }
-
-    public void setCatalogProductOffers(List<CatalogProductOffer> catalogProductOffers) {
-        this.catalogProductOffers = catalogProductOffers;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public BigDecimal getDiscountRate() {
-        return discountRate;
-    }
-
-    public void setDiscountRate(BigDecimal discountRate) {
-        this.discountRate = discountRate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    public ProductOffer(int id, String name, String description, LocalDate startDate, LocalDate endDate, BigDecimal discountRate, String status, Product product, List<CatalogProductOffer> catalogProductOffers, List<CustomerOffer> customerOffers, ProductOfferSpecification productOfferSpecification, List<ProdOfferCharValue> prodOfferCharValues, List<CampaignProductOffer> campaignProductOffers) {
+        this.id = id;
         this.name = name;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.discountRate = discountRate;
+        this.status = status;
+        this.product = product;
+        this.catalogProductOffers = catalogProductOffers;
+        this.customerOffers = customerOffers;
+        this.productOfferSpecification = productOfferSpecification;
+        this.prodOfferCharValues = prodOfferCharValues;
+        this.campaignProductOffers = campaignProductOffers;
     }
 
     public int getId() {
@@ -119,21 +76,99 @@ public class ProductOffer extends BaseEntity {
         this.id = id;
     }
 
-    public ProductOffer() {
+    public String getName() {
+        return name;
     }
 
-    public ProductOffer(int id, String name, String description, LocalDate startDate, LocalDate endDate, BigDecimal discountRate, String status, Product product, List<CatalogProductOffer> catalogProductOffers, List<CustomerOffer> customerOffers) {
-        this.id = id;
+    public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
         this.description = description;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public BigDecimal getDiscountRate() {
+        return discountRate;
+    }
+
+    public void setDiscountRate(BigDecimal discountRate) {
         this.discountRate = discountRate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public List<CatalogProductOffer> getCatalogProductOffers() {
+        return catalogProductOffers;
+    }
+
+    public void setCatalogProductOffers(List<CatalogProductOffer> catalogProductOffers) {
         this.catalogProductOffers = catalogProductOffers;
+    }
+
+    public List<CustomerOffer> getCustomerOffers() {
+        return customerOffers;
+    }
+
+    public void setCustomerOffers(List<CustomerOffer> customerOffers) {
         this.customerOffers = customerOffers;
     }
 
+    public ProductOfferSpecification getProductOfferSpecification() {
+        return productOfferSpecification;
+    }
 
+    public void setProductOfferSpecification(ProductOfferSpecification productOfferSpecification) {
+        this.productOfferSpecification = productOfferSpecification;
+    }
+
+    public List<ProdOfferCharValue> getProdOfferCharValues() {
+        return prodOfferCharValues;
+    }
+
+    public void setProdOfferCharValues(List<ProdOfferCharValue> prodOfferCharValues) {
+        this.prodOfferCharValues = prodOfferCharValues;
+    }
+
+    public List<CampaignProductOffer> getCampaignProductOffers() {
+        return campaignProductOffers;
+    }
+
+    public void setCampaignProductOffers(List<CampaignProductOffer> campaignProductOffers) {
+        this.campaignProductOffers = campaignProductOffers;
+    }
 }

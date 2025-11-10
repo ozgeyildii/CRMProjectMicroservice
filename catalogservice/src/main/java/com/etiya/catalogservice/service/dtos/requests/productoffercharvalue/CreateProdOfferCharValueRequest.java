@@ -1,18 +1,11 @@
-package com.etiya.catalogservice.service.dtos.responses.productcharvalue;
+package com.etiya.catalogservice.service.dtos.requests.productoffercharvalue;
 
-public class CreatedProdCharValueResponse {
+public class CreateProdOfferCharValueRequest {
 
-    private int id;
     private int charValueId;
     private int productOfferId;
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public int getCharValueId() {
         return charValueId;

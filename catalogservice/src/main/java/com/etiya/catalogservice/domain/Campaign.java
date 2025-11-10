@@ -1,7 +1,7 @@
 package com.etiya.catalogservice.domain;
 import com.etiya.common.entities.BaseEntity;
 import jakarta.persistence.*;
-import java.math.BigDecimal;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,19 +28,19 @@ public class Campaign extends BaseEntity {
     private double discountRate;
 
     @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL)
-    private List<CampaignProduct> campaignProducts = new ArrayList<>();
+    private List<CampaignProductOffer> campaignProductOffers = new ArrayList<>();
 
     public Campaign() {
     }
 
-    public Campaign(int id, String name, LocalDate startDate, LocalDate endDate, String campaignCode, double discountRate, List<CampaignProduct> campaignProducts) {
+    public Campaign(int id, String name, LocalDate startDate, LocalDate endDate, String campaignCode, double discountRate, List<CampaignProductOffer> campaignProductOffers) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.campaignCode = campaignCode;
         this.discountRate = discountRate;
-        this.campaignProducts = campaignProducts;
+        this.campaignProductOffers = campaignProductOffers;
     }
 
     public int getId() {
@@ -91,11 +91,11 @@ public class Campaign extends BaseEntity {
         this.discountRate = discountRate;
     }
 
-    public List<CampaignProduct> getCampaignProducts() {
-        return campaignProducts;
+    public List<CampaignProductOffer> getCampaignProducts() {
+        return campaignProductOffers;
     }
 
-    public void setCampaignProducts(List<CampaignProduct> campaignProducts) {
-        this.campaignProducts = campaignProducts;
+    public void setCampaignProducts(List<CampaignProductOffer> campaignProductOffers) {
+        this.campaignProductOffers = campaignProductOffers;
     }
 }

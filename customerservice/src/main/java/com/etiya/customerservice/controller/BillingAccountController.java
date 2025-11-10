@@ -9,6 +9,7 @@ import com.etiya.customerservice.service.responses.billingAccount.CreatedBilling
 import com.etiya.customerservice.service.responses.billingAccount.GetListBillingAccountResponse;
 import com.etiya.customerservice.service.responses.billingAccount.UpdatedBillingAccountResponse;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,7 +64,8 @@ public class BillingAccountController {
 
     @GetMapping("getList/{customerId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<GetListBillingAccountResponse> getListByCustomerId(@PathVariable UUID customerId) {
-        return billingAccountService.getListByCustomerId(customerId);
+    public Page<GetListBillingAccountResponse> getListByCustomerId(@PathVariable UUID customerId, @RequestParam int page, @RequestParam int pageSize) {
+        return billingAccountService.getListByCustomerId(customerId,page,pageSize);
     }
+
 }

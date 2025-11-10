@@ -10,6 +10,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -40,11 +41,12 @@ public interface BillingAccountMapper {
     UpdatedBillingAccountResponse updatedBillingAccountResponseFromBillingAccount(BillingAccount billingAccount);
 
     // GET LIST
+//    @Mapping(source = "customer.id", target = "customerId")
+//    @Mapping(source = "address.id", target = "addressId")
+//    GetListBillingAccountResponse getListBillingAccountResponseFromBillingAccount(BillingAccount billingAccount);
+
     @Mapping(source = "customer.id", target = "customerId")
     @Mapping(source = "address.id", target = "addressId")
-    GetListBillingAccountResponse getListBillingAccountResponseFromBillingAccount(BillingAccount billingAccount);
-
-    List<GetListBillingAccountResponse> getListBillingAccountResponsesFromBillingAccounts(List<BillingAccount> billingAccounts);
-
+    GetListBillingAccountResponse getListBillingAccountResponsesFromBillingAccounts(BillingAccount billingAccounts);
 
 }

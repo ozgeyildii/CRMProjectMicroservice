@@ -1,7 +1,7 @@
 package com.etiya.catalogservice.controller;
 
 import com.etiya.catalogservice.service.abstracts.ProductSpecificationService;
-import com.etiya.catalogservice.service.dtos.requests.productspec.CreateProductSpecificationRequest;
+import com.etiya.catalogservice.service.dtos.requests.productofferspec.CreateProductOfferSpecificationRequest;
 import com.etiya.catalogservice.service.dtos.responses.productspec.CreatedProductSpecificationResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ public class ProductSpecificationController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedProductSpecificationResponse add(@RequestBody CreateProductSpecificationRequest request){
+    public CreatedProductSpecificationResponse add(@RequestBody CreateProductOfferSpecificationRequest request){
         return productSpecificationService.add(request);
     }
 

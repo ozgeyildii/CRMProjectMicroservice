@@ -10,12 +10,16 @@ import com.etiya.customerservice.domain.enums.BillingAccountStatus;
 import com.etiya.customerservice.repository.BillingAccountRepository;
 import com.etiya.customerservice.service.abstracts.BillingAccountService;
 import com.etiya.customerservice.service.mappings.BillingAccountMapper;
+import com.etiya.customerservice.service.mappings.BillingAccountMapperImpl;
 import com.etiya.customerservice.service.requests.billingaccount.CreateBillingAccountRequest;
 import com.etiya.customerservice.service.requests.billingaccount.UpdateBillingAccountRequest;
 import com.etiya.customerservice.service.responses.billingAccount.CreatedBillingAccountResponse;
 import com.etiya.customerservice.service.responses.billingAccount.GetListBillingAccountResponse;
 import com.etiya.customerservice.service.responses.billingAccount.UpdatedBillingAccountResponse;
 import com.etiya.customerservice.service.rules.BillingAccountBusinessRules;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -96,9 +100,10 @@ public class BillingAccountServiceImpl implements BillingAccountService {
     }
 
     @Override
-    public List<GetListBillingAccountResponse> getListByCustomerId(UUID customerId) {
-        List<BillingAccount> billingAccounts = billingAccountRepository.findByCustomer_Id(customerId);
-        return BillingAccountMapper.INSTANCE.getListBillingAccountResponsesFromBillingAccounts(billingAccounts);
+    public Page<GetListBillingAccountResponse> getListByCustomerId(UUID customerId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<BillingAccount> billingAccounts = billingAccountRepository.findByCustomer_Id(customerId,pageable);
+        return billingAccounts.map(BillingAccountMapper.INSTANCE::getListBillingAccountResponsesFromBillingAccounts);
     }
 
     @Override

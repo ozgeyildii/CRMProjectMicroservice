@@ -1,9 +1,9 @@
 package com.etiya.catalogservice.service.abstracts;
 
-import com.etiya.catalogservice.service.dtos.requests.campaignproduct.CreateCampaignProductRequest;
-import com.etiya.catalogservice.service.dtos.responses.campaignproduct.CreatedCampaignProductResponse;
+import com.etiya.catalogservice.service.dtos.requests.campaignproductoffer.CreateCampaignProductOfferRequest;
+import com.etiya.catalogservice.service.dtos.responses.campaignproductoffer.CreatedCampaignProductResponse;
 
 public interface CampaignProductService {
-    CreatedCampaignProductResponse add(CreateCampaignProductRequest request);
+    CreatedCampaignProductResponse add(CreateCampaignProductOfferRequest request);
 
 }

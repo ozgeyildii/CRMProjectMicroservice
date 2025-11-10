@@ -1,8 +1,8 @@
-package com.etiya.catalogservice.service.dtos.requests.productspec;
+package com.etiya.catalogservice.service.dtos.requests.productofferspec;
 
 
 
-public class CreateProductSpecificationRequest {
+public class CreateProductOfferSpecificationRequest {
     private String name;
     private String description;
     private String lifecycleStatus;
