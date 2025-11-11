@@ -63,7 +63,6 @@ public class CreatedEventsDispatcher {
                 }
         );
 
-        // 💡 Consumer burada kapanmalı
         return payload -> {
             String json = new String(payload, StandardCharsets.UTF_8);
             try {

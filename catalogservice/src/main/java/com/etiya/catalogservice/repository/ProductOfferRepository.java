@@ -8,7 +8,8 @@ import java.util.List;
 
 @Repository
 public interface ProductOfferRepository extends JpaRepository<ProductOffer, Integer> {
-    List<ProductOffer> findByCampaignProductOffers_Campaign_Id(int campaignId);
+    List<ProductOffer> findByCatalogProductOffers_Catalog_Id(int catalogId);
+
 
 
 }

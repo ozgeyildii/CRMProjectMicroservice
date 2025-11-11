@@ -5,8 +5,11 @@ import com.etiya.catalogservice.repository.CatalogRepository;
 import com.etiya.catalogservice.service.abstracts.CatalogService;
 import com.etiya.catalogservice.service.dtos.requests.catalog.CreateCatalogRequest;
 import com.etiya.catalogservice.service.dtos.responses.catalog.CreatedCatalogResponse;
+import com.etiya.catalogservice.service.dtos.responses.catalog.GetListCatalogResponse;
 import com.etiya.catalogservice.service.mappings.CatalogMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CatalogServiceImpl implements CatalogService {
@@ -33,5 +36,11 @@ public class CatalogServiceImpl implements CatalogService {
     @Override
     public Catalog getById(int id) {
         return catalogRepository.findById(id).orElseThrow(() -> new RuntimeException("Catalog Not Found"));
+    }
+
+    @Override
+    public List<GetListCatalogResponse> getAll() {
+        List<Catalog> catalogs = catalogRepository.findAll();
+        return CatalogMapper.INSTANCE.getListCatalogResponseFromCatalog(catalogs);
     }
 }

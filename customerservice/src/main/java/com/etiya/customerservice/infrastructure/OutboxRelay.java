@@ -39,9 +39,7 @@ public class OutboxRelay {
                         .setHeader("contentType", "application/json")
                         .setHeader(KafkaHeaders.KEY, event.getAggregateId())
                         .build();
-
                 bridge.send("createdEvents-out-0", message);
-
                 event.setStatus(OutboxEvent.Status.PUBLISHED);
 
             } catch (Exception e) {

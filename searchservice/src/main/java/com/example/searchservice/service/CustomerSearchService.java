@@ -1,11 +1,9 @@
 package com.example.searchservice.service;
 
-import com.etiya.common.events.customer.UpdateCustomerEvent;
 import com.example.searchservice.domain.Address;
 import com.example.searchservice.domain.ContactMedium;
 import com.example.searchservice.domain.CustomerSearch;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 

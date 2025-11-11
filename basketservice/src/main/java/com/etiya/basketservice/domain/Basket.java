@@ -1,6 +1,7 @@
 package com.etiya.basketservice.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -9,7 +10,7 @@ public class Basket implements Serializable {
 
     private String id;
     private int billingAccountId; //billingAccountId olacak
-    private double totalPrice;
+    private BigDecimal totalPrice;
     private List<BasketItem> basketItems;
 
     public List<BasketItem> getBasketItems() {
@@ -36,11 +37,11 @@ public class Basket implements Serializable {
         this.billingAccountId = billingAccountId;
     }
 
-    public double getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(double totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 

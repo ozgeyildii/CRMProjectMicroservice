@@ -1,13 +1,12 @@
 package com.etiya.customerservice.service.concretes;
 
-import com.etiya.common.events.contactmedium.CreateContactMediumEvent;
+
 import com.etiya.common.events.contactmedium.DeleteContactMediumEvent;
 import com.etiya.common.events.contactmedium.SoftDeleteContactMediumEvent;
 import com.etiya.common.events.contactmedium.UpdateContactMediumEvent;
 import com.etiya.customerservice.domain.entities.ContactMedium;
 import com.etiya.customerservice.domain.entities.Customer;
-import com.etiya.customerservice.domain.enums.ContactMediumType;
-import com.etiya.customerservice.infrastructure.OutboxService;
+
 import com.etiya.customerservice.repository.ContactMediumRepository;
 import com.etiya.customerservice.service.abstracts.CityService;
 import com.etiya.customerservice.service.abstracts.ContactMediumService;

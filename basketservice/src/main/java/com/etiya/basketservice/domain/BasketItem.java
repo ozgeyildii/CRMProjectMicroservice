@@ -1,6 +1,7 @@
 package com.etiya.basketservice.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class BasketItem implements Serializable {
@@ -11,10 +12,10 @@ public class BasketItem implements Serializable {
     private String productOfferName;
     private int campaignProductOfferId;
     private int catalogProductOfferId;
-    private Double price;
+    private BigDecimal price;
     private int quantity;
-    private double discountedPrice;
-    private double discountRate;
+    private BigDecimal discountedPrice;
+    private BigDecimal discountRate;
 
     public String getId() {
         return id;
@@ -64,11 +65,11 @@ public class BasketItem implements Serializable {
         this.catalogProductOfferId = catalogProductOfferId;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -80,26 +81,23 @@ public class BasketItem implements Serializable {
         this.quantity = quantity;
     }
 
-    public double getDiscountedPrice() {
+    public BigDecimal getDiscountedPrice() {
         return discountedPrice;
     }
 
-    public void setDiscountedPrice(double discountedPrice) {
+    public void setDiscountedPrice(BigDecimal discountedPrice) {
         this.discountedPrice = discountedPrice;
     }
 
-    public double getDiscountRate() {
+    public BigDecimal getDiscountRate() {
         return discountRate;
     }
 
-    public void setDiscountRate(double discountRate) {
+    public void setDiscountRate(BigDecimal discountRate) {
         this.discountRate = discountRate;
     }
 
-    public BasketItem() {
-    }
-
-    public BasketItem(String id, String basketId, int productOfferId, String productOfferName, int campaignProductOfferId, int catalogProductOfferId, Double price, int quantity, double discountedPrice, double discountRate) {
+    public BasketItem(String id, String basketId, int productOfferId, String productOfferName, int campaignProductOfferId, int catalogProductOfferId, BigDecimal price, int quantity, BigDecimal discountedPrice, BigDecimal discountRate) {
         this.id = id;
         this.basketId = basketId;
         this.productOfferId = productOfferId;
@@ -110,5 +108,8 @@ public class BasketItem implements Serializable {
         this.quantity = quantity;
         this.discountedPrice = discountedPrice;
         this.discountRate = discountRate;
+    }
+
+    public BasketItem() {
     }
 }

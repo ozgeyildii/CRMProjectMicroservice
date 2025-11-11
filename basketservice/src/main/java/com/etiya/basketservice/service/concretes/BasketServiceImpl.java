@@ -6,8 +6,13 @@ import com.etiya.basketservice.domain.Basket;
 import com.etiya.basketservice.domain.BasketItem;
 import com.etiya.basketservice.repository.BasketRepository;
 import com.etiya.basketservice.service.abstracts.BasketService;
+import com.etiya.basketservice.service.dto.request.AddBasketItemRequest;
+import com.etiya.basketservice.service.dto.response.CreatedBasketItemResponse;
+import com.etiya.basketservice.service.mapping.BasketMapper;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -28,40 +33,63 @@ public class BasketServiceImpl implements BasketService {
     }
 
     @Override
-    public void add(int billingAccountId, String productId) {
+    public CreatedBasketItemResponse add(int billingAccountId,AddBasketItemRequest request) {
 
         var billingAccount = customerServiceClient.getBillingAccountById(billingAccountId);
-        if (billingAccount == null ) {
+        if (billingAccount == null) {
             throw new RuntimeException("Billing account not found.");
         }
 
-        var product = catalogServiceClient.getProductId(productId);
+        // 🧺 mevcut sepeti getir
         var basket = basketRepository.getBasketByBillingAccountId(billingAccount.getId());
-
         if (basket == null) {
             basket = new Basket();
             basket.setBillingAccountId(billingAccount.getId());
         }
-        Optional<BasketItem> existingItem = basket.getBasketItems().stream()
-                .filter(i -> i.getProductId()==(product.getId()))
-                .findFirst();
 
-        if (existingItem.isPresent()) {
-            BasketItem item = existingItem.get();
-            item.setQuantity(item.getQuantity() + 1);
+        BasketItem basketItem;
+
+        // 🎯 kampanya mı normal offer mı
+        if ("CAMPAIGN".equalsIgnoreCase(request.getType())) {
+            var campaignOffer = catalogServiceClient.getCampaignProductOfferById(request.getId());
+            basketItem = BasketMapper.INSTANCE.fromCampaignProductOfferResponse(campaignOffer);
         } else {
-            BasketItem basketItem = new BasketItem();
-            basketItem.setProductId(product.getId());
-            basketItem.setProductName(product.getName());
-            basketItem.setPrice(product.getPrice());
-            basketItem.setDiscountedPrice(product.getPrice());
-            basketItem.setDiscountRate(product.getDiscountRate());
-            basketItem.setQuantity(1);
-            basket.getBasketItems().add(basketItem);
+            var productOffer = catalogServiceClient.getProductOfferById(request.getId());
+            basketItem = BasketMapper.INSTANCE.fromProductOfferResponse(productOffer);
         }
+
+        // 🧮 discounted price hesapla
+        basketItem.setDiscountedPrice(calcDiscountedPrice(
+                basketItem.getPrice(),
+                basketItem.getDiscountRate()
+        ));
+
+        // quantity sabit: 1
+        basketItem.setQuantity(1);
+
+        // sepet içine ekle
+        basket.getBasketItems().add(basketItem);
 
         updateTotal(basket);
         basketRepository.add(basket);
+
+        return BasketMapper.INSTANCE.toCreatedBasketItemResponse(basketItem);
+    }
+
+    private BigDecimal calcDiscountedPrice(BigDecimal price, BigDecimal discountRate) {
+        if (price == null) price = BigDecimal.ZERO;
+        if (discountRate == null) discountRate = BigDecimal.ZERO;
+        return price.multiply(BigDecimal.ONE.subtract(discountRate))
+                .setScale(2, RoundingMode.HALF_UP);
+    }
+
+    private void updateTotal(Basket basket) {
+        BigDecimal total = basket.getBasketItems().stream()
+                .map(item -> item.getDiscountedPrice()
+                        .multiply(BigDecimal.valueOf(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        basket.setTotalPrice(total);
     }
 
     @Override
@@ -115,7 +143,7 @@ public class BasketServiceImpl implements BasketService {
     public void clearBasket(String basketId) {
         Basket basket = getBasket(basketId);
         basket.getBasketItems().clear();
-        basket.setTotalPrice(0);
+        basket.setTotalPrice(BigDecimal.valueOf(0));
         basketRepository.add(basket);
     }
 
@@ -124,12 +152,7 @@ public class BasketServiceImpl implements BasketService {
         basketRepository.deleteBasketByBillingAccountId(billingAccountId);
     }
 
-    private void updateTotal(Basket basket) {
-        double total = basket.getBasketItems().stream()
-                .mapToDouble(item -> item.getPrice() * item.getQuantity())
-                .sum();
-        basket.setTotalPrice(total);
-    }
+
 
     @Override
     public Basket getByBillingAccountId(int billingAccountId) {

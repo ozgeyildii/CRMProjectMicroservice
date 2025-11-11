@@ -27,7 +27,6 @@ public class CampaignProductOfferServiceImpl implements CampaignProductOfferServ
 
     @Override
     public CampaignProductOfferResponse getById(int id) {
-
         return campaignProductOfferRepository.findCampaignOfferById(id);
     }
 
