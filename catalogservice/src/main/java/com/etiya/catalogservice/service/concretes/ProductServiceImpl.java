@@ -7,7 +7,7 @@ import com.etiya.catalogservice.service.dtos.requests.product.CreateProductReque
 import com.etiya.catalogservice.service.dtos.responses.product.CreatedProductResponse;
 import com.etiya.catalogservice.service.mappings.ProductMapper;
 import com.etiya.common.crosscuttingconcerns.exceptions.types.BusinessException;
-import com.etiya.common.responses.ProductResponse;
+import com.etiya.common.responses.ProductOfferResponse;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,7 +28,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse getById(int id) {
+    public ProductOfferResponse getById(int id) {
         return productRepository.findById(id).stream().map(this::mapToResponse).findFirst().orElseThrow(()->new BusinessException("Product not found"));
     }
 
@@ -38,8 +38,8 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
     }
 
-    private ProductResponse mapToResponse(Product product){
-        ProductResponse response = new ProductResponse();
+    private ProductOfferResponse mapToResponse(Product product){
+        ProductOfferResponse response = new ProductOfferResponse();
         response.setId(product.getId());
         response.setName(product.getName());
         response.setPrice(product.getPrice());

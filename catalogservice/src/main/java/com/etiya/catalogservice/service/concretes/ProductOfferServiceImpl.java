@@ -7,6 +7,7 @@ import com.etiya.catalogservice.service.abstracts.ProductService;
 import com.etiya.catalogservice.service.dtos.requests.productoffer.CreateProductOfferRequest;
 import com.etiya.catalogservice.service.dtos.responses.productoffer.CreatedProductOfferResponse;
 import com.etiya.catalogservice.service.mappings.ProductOfferMapper;
+import com.etiya.common.responses.ProductOfferResponse;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,7 +31,15 @@ public class ProductOfferServiceImpl implements ProductOfferService {
     }
 
     @Override
-    public ProductOffer getById(int id) {
+    public ProductOfferResponse getById(int id) {
+
+         ProductOffer productOffer = productOfferRepository.findById(id).orElseThrow(() -> new RuntimeException("Product Offer Not Found"));
+         return ProductOfferMapper.INSTANCE.productOfferResponseFromProductOffer(productOffer);
+    }
+
+    @Override
+    public ProductOffer getByEntityId(int id) {
         return productOfferRepository.findById(id).orElseThrow(() -> new RuntimeException("Product Offer Not Found"));
     }
+
 }

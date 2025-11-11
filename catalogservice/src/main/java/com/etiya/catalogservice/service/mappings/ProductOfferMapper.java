@@ -3,6 +3,7 @@ package com.etiya.catalogservice.service.mappings;
 import com.etiya.catalogservice.domain.ProductOffer;
 import com.etiya.catalogservice.service.dtos.requests.productoffer.CreateProductOfferRequest;
 import com.etiya.catalogservice.service.dtos.responses.productoffer.CreatedProductOfferResponse;
+import com.etiya.common.responses.ProductOfferResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -16,4 +17,9 @@ public interface ProductOfferMapper {
 
     @Mapping(target = "productId", source = "product.id")
     CreatedProductOfferResponse createdProductOfferResponseFromProductOffer(ProductOffer productOffer);
+
+
+    ProductOfferResponse productOfferResponseFromProductOffer(ProductOffer productOffer);
+
+
 }

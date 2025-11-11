@@ -10,6 +10,7 @@ import com.etiya.catalogservice.service.abstracts.ProductOfferService;
 import com.etiya.catalogservice.service.dtos.requests.catalogproductoffer.CreateCatalogProductOfferRequest;
 import com.etiya.catalogservice.service.dtos.responses.catalogproductoffer.CreatedCatalogProductOfferResponse;
 import com.etiya.catalogservice.service.mappings.CatalogProductOfferMapper;
+import com.etiya.common.responses.CampaignProductOfferResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -19,15 +20,18 @@ public class CatalogProductOfferServiceImpl implements CatalogProductOfferServic
     private final CatalogProductOfferRepository catalogProductOfferRepository;
     private final ProductOfferService  productOfferService;
     private final CatalogService  catalogService;
+    private final CatalogProductOfferRepository productOfferRepository;
 
     public CatalogProductOfferServiceImpl(
             CatalogProductOfferRepository catalogProductOfferRepository,
             ProductOfferService  productOfferService,
-            CatalogService  catalogService
+            CatalogService  catalogService, CatalogProductOfferRepository productOfferRepository
+
     ) {
         this.catalogProductOfferRepository = catalogProductOfferRepository;
         this.productOfferService = productOfferService;
         this.catalogService = catalogService;
+        this.productOfferRepository = productOfferRepository;
     }
 
     @Transactional
@@ -35,7 +39,7 @@ public class CatalogProductOfferServiceImpl implements CatalogProductOfferServic
     public CreatedCatalogProductOfferResponse add(CreateCatalogProductOfferRequest request) {
         Catalog catalog = catalogService.getById(request.getCatalogId());
 
-        ProductOffer productOffer = productOfferService.getById(request.getProductOfferId());
+        ProductOffer productOffer = productOfferService.getByEntityId(request.getProductOfferId());
 
         CatalogProductOffer catalogProductOffer = new CatalogProductOffer();
         catalogProductOffer.setCatalog(catalog);
@@ -43,5 +47,11 @@ public class CatalogProductOfferServiceImpl implements CatalogProductOfferServic
 
         CatalogProductOffer saved = catalogProductOfferRepository.save(catalogProductOffer);
         return CatalogProductOfferMapper.INSTANCE.createdCatalogProductOfferResponseFromCatalogProductOffer(saved);
+    }
+
+    @Override
+    public CampaignProductOfferResponse getById(int id) {
+
+        return catalogProductOfferRepository.findCampaignOfferById(id);
     }
 }

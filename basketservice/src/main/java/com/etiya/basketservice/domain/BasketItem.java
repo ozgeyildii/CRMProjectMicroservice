@@ -7,13 +7,14 @@ public class BasketItem implements Serializable {
 
     private String id;
     private String basketId;
-    private int productId;
-    private String productName;
+    private int productOfferId;
+    private String productOfferName;
+    private int campaignProductOfferId;
+    private int catalogProductOfferId;
     private Double price;
     private int quantity;
     private double discountedPrice;
     private double discountRate;
-
 
     public String getId() {
         return id;
@@ -31,20 +32,36 @@ public class BasketItem implements Serializable {
         this.basketId = basketId;
     }
 
-    public int getProductId() {
-        return productId;
+    public int getProductOfferId() {
+        return productOfferId;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setProductOfferId(int productOfferId) {
+        this.productOfferId = productOfferId;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getProductOfferName() {
+        return productOfferName;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setProductOfferName(String productOfferName) {
+        this.productOfferName = productOfferName;
+    }
+
+    public int getCampaignProductOfferId() {
+        return campaignProductOfferId;
+    }
+
+    public void setCampaignProductOfferId(int campaignProductOfferId) {
+        this.campaignProductOfferId = campaignProductOfferId;
+    }
+
+    public int getCatalogProductOfferId() {
+        return catalogProductOfferId;
+    }
+
+    public void setCatalogProductOfferId(int catalogProductOfferId) {
+        this.catalogProductOfferId = catalogProductOfferId;
     }
 
     public Double getPrice() {
@@ -79,9 +96,19 @@ public class BasketItem implements Serializable {
         this.discountRate = discountRate;
     }
 
-    public BasketItem(){
-        this.id = UUID.randomUUID().toString();
+    public BasketItem() {
     }
 
-
+    public BasketItem(String id, String basketId, int productOfferId, String productOfferName, int campaignProductOfferId, int catalogProductOfferId, Double price, int quantity, double discountedPrice, double discountRate) {
+        this.id = id;
+        this.basketId = basketId;
+        this.productOfferId = productOfferId;
+        this.productOfferName = productOfferName;
+        this.campaignProductOfferId = campaignProductOfferId;
+        this.catalogProductOfferId = catalogProductOfferId;
+        this.price = price;
+        this.quantity = quantity;
+        this.discountedPrice = discountedPrice;
+        this.discountRate = discountRate;
+    }
 }
