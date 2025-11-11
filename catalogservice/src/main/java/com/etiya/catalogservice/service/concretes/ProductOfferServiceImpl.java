@@ -6,9 +6,12 @@ import com.etiya.catalogservice.service.abstracts.ProductOfferService;
 import com.etiya.catalogservice.service.abstracts.ProductService;
 import com.etiya.catalogservice.service.dtos.requests.productoffer.CreateProductOfferRequest;
 import com.etiya.catalogservice.service.dtos.responses.productoffer.CreatedProductOfferResponse;
+import com.etiya.catalogservice.service.dtos.responses.productoffer.GetListProductOfferResponse;
 import com.etiya.catalogservice.service.mappings.ProductOfferMapper;
 import com.etiya.common.responses.ProductOfferResponse;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ProductOfferServiceImpl implements ProductOfferService {
@@ -28,6 +31,12 @@ public class ProductOfferServiceImpl implements ProductOfferService {
        // productOffer.setProduct(productService.getProductById(request.getProductId()));
         productOffer = productOfferRepository.save(productOffer);
         return ProductOfferMapper.INSTANCE.createdProductOfferResponseFromProductOffer(productOffer);
+    }
+
+    @Override
+    public List<GetListProductOfferResponse> getAllByCatalogId(int id) {
+        List<ProductOffer> productOffers = productOfferRepository.findByCampaignProductOffers_Campaign_Id(id);
+        return ProductOfferMapper.INSTANCE.getListProductOfferResponseFromProductOfferList(productOffers);
     }
 
     @Override

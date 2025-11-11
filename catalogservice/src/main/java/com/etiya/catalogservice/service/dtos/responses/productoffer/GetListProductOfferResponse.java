@@ -3,7 +3,7 @@ package com.etiya.catalogservice.service.dtos.responses.productoffer;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class CreatedProductOfferResponse {
+public class GetListProductOfferResponse {
     private int id;
     private String name;
     private String description;
@@ -94,4 +94,5 @@ public class CreatedProductOfferResponse {
     public void setProductId(int productId) {
         this.productId = productId;
     }
+
 }

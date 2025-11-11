@@ -21,4 +21,6 @@ public interface CatalogProductOfferMapper {
     @Mapping(target = "catalogName", source = "catalog.name")
     @Mapping(target = "productOfferName", source = "productOffer.name")
     CreatedCatalogProductOfferResponse createdCatalogProductOfferResponseFromCatalogProductOffer(CatalogProductOffer catalogProductOffer);
+
+
 }

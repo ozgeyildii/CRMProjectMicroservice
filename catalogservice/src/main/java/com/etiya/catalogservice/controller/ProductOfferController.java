@@ -4,8 +4,11 @@ import com.etiya.catalogservice.domain.ProductOffer;
 import com.etiya.catalogservice.service.abstracts.ProductOfferService;
 import com.etiya.catalogservice.service.dtos.requests.productoffer.CreateProductOfferRequest;
 import com.etiya.catalogservice.service.dtos.responses.productoffer.CreatedProductOfferResponse;
+import com.etiya.catalogservice.service.dtos.responses.productoffer.GetListProductOfferResponse;
 import com.etiya.common.responses.ProductOfferResponse;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/product-offers")
@@ -25,5 +28,10 @@ public class ProductOfferController {
     @GetMapping("/{id}")
     public ProductOfferResponse getById(@PathVariable int id) {
         return productOfferService.getById(id);
+    }
+
+    @GetMapping("/get-by-catalog/{catalogId}")
+    public List<GetListProductOfferResponse> getAllByCatalogId(@PathVariable int catalogId) {
+        return productOfferService.getAllByCatalogId(catalogId);
     }
 }
