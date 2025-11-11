@@ -25,7 +25,7 @@ public class ProductOfferServiceImpl implements ProductOfferService {
     @Override
     public CreatedProductOfferResponse add(CreateProductOfferRequest request) {
         ProductOffer productOffer = ProductOfferMapper.INSTANCE.productOfferFromCreateProductOfferRequest(request);
-        productOffer.setProduct(productService.getProductById(request.getProductId()));
+       // productOffer.setProduct(productService.getProductById(request.getProductId()));
         productOffer = productOfferRepository.save(productOffer);
         return ProductOfferMapper.INSTANCE.createdProductOfferResponseFromProductOffer(productOffer);
     }

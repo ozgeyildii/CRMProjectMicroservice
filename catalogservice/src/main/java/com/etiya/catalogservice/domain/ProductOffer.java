@@ -27,7 +27,14 @@ public class ProductOffer extends BaseEntity {
     @Column(name = "discount_rate")
     private BigDecimal discountRate;
 
+    @Column(name = "status")
     private String status;
+
+    @Column(name="stock")
+    private int stock;
+
+    @Column(name="price")
+    private BigDecimal price;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
@@ -52,7 +59,8 @@ public class ProductOffer extends BaseEntity {
     public ProductOffer() {
     }
 
-    public ProductOffer(int id, String name, String description, LocalDate startDate, LocalDate endDate, BigDecimal discountRate, String status, Product product, List<CatalogProductOffer> catalogProductOffers, List<CustomerOffer> customerOffers, ProductOfferSpecification productOfferSpecification, List<ProdOfferCharValue> prodOfferCharValues, List<CampaignProductOffer> campaignProductOffers) {
+    public ProductOffer(int stock, int id, String name, String description, LocalDate startDate, LocalDate endDate, BigDecimal discountRate, String status, BigDecimal price, Product product, List<CatalogProductOffer> catalogProductOffers, List<CustomerOffer> customerOffers, ProductOfferSpecification productOfferSpecification, List<ProdOfferCharValue> prodOfferCharValues, List<CampaignProductOffer> campaignProductOffers) {
+        this.stock = stock;
         this.id = id;
         this.name = name;
         this.description = description;
@@ -60,6 +68,7 @@ public class ProductOffer extends BaseEntity {
         this.endDate = endDate;
         this.discountRate = discountRate;
         this.status = status;
+        this.price = price;
         this.product = product;
         this.catalogProductOffers = catalogProductOffers;
         this.customerOffers = customerOffers;
@@ -68,92 +77,12 @@ public class ProductOffer extends BaseEntity {
         this.campaignProductOffers = campaignProductOffers;
     }
 
-    public int getId() {
-        return id;
+    public List<CampaignProductOffer> getCampaignProductOffers() {
+        return campaignProductOffers;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public BigDecimal getDiscountRate() {
-        return discountRate;
-    }
-
-    public void setDiscountRate(BigDecimal discountRate) {
-        this.discountRate = discountRate;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public List<CatalogProductOffer> getCatalogProductOffers() {
-        return catalogProductOffers;
-    }
-
-    public void setCatalogProductOffers(List<CatalogProductOffer> catalogProductOffers) {
-        this.catalogProductOffers = catalogProductOffers;
-    }
-
-    public List<CustomerOffer> getCustomerOffers() {
-        return customerOffers;
-    }
-
-    public void setCustomerOffers(List<CustomerOffer> customerOffers) {
-        this.customerOffers = customerOffers;
-    }
-
-    public ProductOfferSpecification getProductOfferSpecification() {
-        return productOfferSpecification;
-    }
-
-    public void setProductOfferSpecification(ProductOfferSpecification productOfferSpecification) {
-        this.productOfferSpecification = productOfferSpecification;
+    public void setCampaignProductOffers(List<CampaignProductOffer> campaignProductOffers) {
+        this.campaignProductOffers = campaignProductOffers;
     }
 
     public List<ProdOfferCharValue> getProdOfferCharValues() {
@@ -164,11 +93,107 @@ public class ProductOffer extends BaseEntity {
         this.prodOfferCharValues = prodOfferCharValues;
     }
 
-    public List<CampaignProductOffer> getCampaignProductOffers() {
-        return campaignProductOffers;
+    public ProductOfferSpecification getProductOfferSpecification() {
+        return productOfferSpecification;
     }
 
-    public void setCampaignProductOffers(List<CampaignProductOffer> campaignProductOffers) {
-        this.campaignProductOffers = campaignProductOffers;
+    public void setProductOfferSpecification(ProductOfferSpecification productOfferSpecification) {
+        this.productOfferSpecification = productOfferSpecification;
+    }
+
+    public List<CustomerOffer> getCustomerOffers() {
+        return customerOffers;
+    }
+
+    public void setCustomerOffers(List<CustomerOffer> customerOffers) {
+        this.customerOffers = customerOffers;
+    }
+
+    public List<CatalogProductOffer> getCatalogProductOffers() {
+        return catalogProductOffers;
+    }
+
+    public void setCatalogProductOffers(List<CatalogProductOffer> catalogProductOffers) {
+        this.catalogProductOffers = catalogProductOffers;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public BigDecimal getDiscountRate() {
+        return discountRate;
+    }
+
+    public void setDiscountRate(BigDecimal discountRate) {
+        this.discountRate = discountRate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

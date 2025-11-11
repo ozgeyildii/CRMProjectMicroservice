@@ -6,8 +6,4 @@ import com.etiya.common.responses.CampaignProductOfferResponse;
 
 public interface CatalogProductOfferService {
     CreatedCatalogProductOfferResponse add(CreateCatalogProductOfferRequest request);
-
-    CampaignProductOfferResponse getById(int id);
-
-
 }

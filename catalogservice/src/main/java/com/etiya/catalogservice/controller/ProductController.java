@@ -23,9 +23,9 @@ public class ProductController {
         return productService.add(request);
     }
 
-    @GetMapping("{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ProductOfferResponse getById(@PathVariable int id){
-        return productService.getById(id);
-    }
+//    @GetMapping("{id}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public ProductOfferResponse getById(@PathVariable int id){
+//        return productService.getById(id);
+//    }
 }

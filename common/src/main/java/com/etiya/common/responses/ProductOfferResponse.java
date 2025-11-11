@@ -1,5 +1,8 @@
 package com.etiya.common.responses;
 
+import jakarta.persistence.Column;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class ProductOfferResponse {
@@ -10,53 +13,23 @@ public class ProductOfferResponse {
     private LocalDate endDate;
     private double discountRate;
     private String status;
+    private int stock;
+    private BigDecimal price;
 
-    public int getId() {
-        return id;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
-    public String getName() {
-        return name;
+    public int getStock() {
+        return stock;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public double getDiscountRate() {
-        return discountRate;
-    }
-
-    public void setDiscountRate(double discountRate) {
-        this.discountRate = discountRate;
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     public String getStatus() {
@@ -67,4 +40,51 @@ public class ProductOfferResponse {
         this.status = status;
     }
 
+    public double getDiscountRate() {
+        return discountRate;
+    }
+
+    public void setDiscountRate(double discountRate) {
+        this.discountRate = discountRate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

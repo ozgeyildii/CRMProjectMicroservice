@@ -27,22 +27,22 @@ public class ProductServiceImpl implements ProductService {
        return response;
     }
 
-    @Override
-    public ProductOfferResponse getById(int id) {
-        return productRepository.findById(id).stream().map(this::mapToResponse).findFirst().orElseThrow(()->new BusinessException("Product not found"));
-    }
+//    @Override
+//    public ProductOfferResponse getById(int id) {
+//        return productRepository.findById(id).stream().map(this::mapToResponse).findFirst().orElseThrow(()->new BusinessException("Product not found"));
+//    }
 
-    @Override
-    public Product getProductById(int id) {
-        return productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
-    }
 
-    private ProductOfferResponse mapToResponse(Product product){
-        ProductOfferResponse response = new ProductOfferResponse();
-        response.setId(product.getId());
-        response.setName(product.getName());
-        response.setPrice(product.getPrice());
-        return response;
-    }
+//    @Override
+//    public ProductResponse getById(String id) {
+//        return productRepository.findById(id).stream().map(this::mapToResponse).findFirst().orElseThrow(()->new BusinessException("Product not found"));
+//    }
+//
+//    private ProductResponse mapToResponse(Product product){
+//        ProductResponse response = new ProductResponse();
+//        response.setId(product.getId());
+//        response.setName(product.getName());
+//        response.setPrice(product.getPrice());
+//        return response;
+//    }
 }

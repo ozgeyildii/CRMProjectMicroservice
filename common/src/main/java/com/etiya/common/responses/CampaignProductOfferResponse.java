@@ -1,12 +1,14 @@
 package com.etiya.common.responses;
 
+import java.math.BigDecimal;
+
 public class CampaignProductOfferResponse {
     private int id;                   // CampaignProductOffer.id
     private int productOfferId;       // ProductOffer.id
     private String productOfferName;  // ProductOffer.name
-    private double basePrice;         // Product.price
-    private double discountRate;      // Campaign.discountRate
-    private double discountedPrice;   // basePrice * (1 - discountRate)
+    private BigDecimal price;         // Product.price
+    private int stock;
+    private BigDecimal discountRate;      // Campaign.discountRate
     private int campaignId;
     private String campaignName;
     private String campaignCode;
@@ -14,15 +16,13 @@ public class CampaignProductOfferResponse {
     public CampaignProductOfferResponse() {
     }
 
-    public CampaignProductOfferResponse(int id, int productOfferId, String productOfferName,
-                                        double basePrice, double discountRate, double discountedPrice,
-                                        int campaignId, String campaignName, String campaignCode) {
+    public CampaignProductOfferResponse(int id, int productOfferId, String productOfferName, BigDecimal price, int stock, BigDecimal discountRate, int campaignId, String campaignName, String campaignCode) {
         this.id = id;
         this.productOfferId = productOfferId;
         this.productOfferName = productOfferName;
-        this.basePrice = basePrice;
+        this.price = price;
+        this.stock = stock;
         this.discountRate = discountRate;
-        this.discountedPrice = discountedPrice;
         this.campaignId = campaignId;
         this.campaignName = campaignName;
         this.campaignCode = campaignCode;
@@ -52,28 +52,28 @@ public class CampaignProductOfferResponse {
         this.productOfferName = productOfferName;
     }
 
-    public double getBasePrice() {
-        return basePrice;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setBasePrice(double basePrice) {
-        this.basePrice = basePrice;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
-    public double getDiscountRate() {
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public BigDecimal getDiscountRate() {
         return discountRate;
     }
 
-    public void setDiscountRate(double discountRate) {
+    public void setDiscountRate(BigDecimal discountRate) {
         this.discountRate = discountRate;
-    }
-
-    public double getDiscountedPrice() {
-        return discountedPrice;
-    }
-
-    public void setDiscountedPrice(double discountedPrice) {
-        this.discountedPrice = discountedPrice;
     }
 
     public int getCampaignId() {

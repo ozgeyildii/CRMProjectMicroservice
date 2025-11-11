@@ -9,7 +9,7 @@ public interface ProductService {
 
     CreatedProductResponse add(CreateProductRequest request);
 
-    ProductOfferResponse getById(int id);
-
-    Product getProductById(int id);
+//    ProductOfferResponse getById(int id);
+//
+//    Product getProductById(int id);
 }

@@ -49,9 +49,4 @@ public class CatalogProductOfferServiceImpl implements CatalogProductOfferServic
         return CatalogProductOfferMapper.INSTANCE.createdCatalogProductOfferResponseFromCatalogProductOffer(saved);
     }
 
-    @Override
-    public CampaignProductOfferResponse getById(int id) {
-
-        return catalogProductOfferRepository.findCampaignOfferById(id);
-    }
 }
