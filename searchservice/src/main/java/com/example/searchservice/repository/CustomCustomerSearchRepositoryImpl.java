@@ -27,6 +27,7 @@ public class CustomCustomerSearchRepositoryImpl implements CustomCustomerSearchR
     public List<CustomerSearch> searchDynamic(
             String id,
             String customerNumber,
+            String accountNumber,
             String nationalId,
             String firstName,
             String lastName,
@@ -61,6 +62,24 @@ public class CustomCustomerSearchRepositoryImpl implements CustomCustomerSearchR
                     .value("*" + lowerLastName + "*")
             ));
         }
+
+        if (StringUtils.hasText(accountNumber)) {
+            String upperAccountNumber = accountNumber.toUpperCase(); // Önceki öneriyi koruyarak büyük harf yapıyoruz
+
+            bool.must(m -> m
+                    .nested(n -> n
+                            .path("billingAccounts")
+                            .query(q -> q
+                                    .term(t -> t
+                                            .field("billingAccounts.accountNumber")
+                                            .value(upperAccountNumber)
+                                    )
+                            )
+                    )
+            );
+        }
+
+
         if (StringUtils.hasText(value)) {
             bool.must(m -> m.nested(n -> n
                     .path("contactMediums")
@@ -92,4 +111,6 @@ public class CustomCustomerSearchRepositoryImpl implements CustomCustomerSearchR
         return hits.getSearchHits().stream()
                 .map(SearchHit::getContent)
                 .toList();
-    }}
+    }
+
+}

@@ -1,6 +1,7 @@
 package com.example.searchservice.service;
 
 import com.example.searchservice.domain.Address;
+import com.example.searchservice.domain.BillingAccount;
 import com.example.searchservice.domain.ContactMedium;
 import com.example.searchservice.domain.CustomerSearch;
 import com.example.searchservice.repository.CustomerSearchRepository;
@@ -172,8 +173,8 @@ public class CustomerSearchServiceImpl implements CustomerSearchService {
     }
 
     @Override
-    public List<CustomerSearch> searchDynamic(String id, String customerNumber, String nationalId, String firstName, String lastName, String value, int page, int size) {
-        return customerSearchRepository.searchDynamic(id, customerNumber, nationalId, firstName, lastName, value, page, size);
+    public List<CustomerSearch> searchDynamic(String id, String customerNumber, String accountNumber, String nationalId, String firstName, String lastName, String value, int page, int size) {
+        return customerSearchRepository.searchDynamic(id, customerNumber, accountNumber, nationalId, firstName, lastName, value, page, size);
     }
 
     @Override
@@ -193,6 +194,17 @@ public class CustomerSearchServiceImpl implements CustomerSearchService {
                     .filter(contact -> id == (contact.getId()))
                     .findFirst()
                     .ifPresent(contact -> contact.setDeletedDate(LocalDateTime.now().toString()));
+            customerSearchRepository.save(customer);
+        });
+    }
+
+    @Override
+    public void addBillingAccount(BillingAccount billingAccount) {
+        Optional<CustomerSearch> customerOpt = customerSearchRepository.findById(String.valueOf(billingAccount.getCustomerId()));
+        customerOpt.ifPresent(customer -> {
+            if (customer.getBillingAccounts() == null){
+                customer.setBillingAccounts(new ArrayList<>());}
+            customer.getBillingAccounts().add(billingAccount);
             customerSearchRepository.save(customer);
         });
     }

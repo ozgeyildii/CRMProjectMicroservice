@@ -35,6 +35,7 @@ public class CustomerSearchController {
     public List<CustomerSearch> search(
             @RequestParam(required = false) String id,
             @RequestParam(required = false) String customerNumber,
+            @RequestParam(required = false) String accountNumber,
             @RequestParam(required = false) String nationalId,
             @RequestParam(required = false) String firstName,
             @RequestParam(required = false) String lastName,
@@ -42,7 +43,7 @@ public class CustomerSearchController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size
     ) {
-        return customerSearchService.searchDynamic(id, customerNumber, nationalId, firstName, lastName, value, page, size);
+        return customerSearchService.searchDynamic(id, customerNumber, accountNumber, nationalId, firstName, lastName, value, page, size);
     }
 
     @GetMapping

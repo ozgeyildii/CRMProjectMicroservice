@@ -2,6 +2,7 @@ package com.etiya.customerservice.service.concretes;
 
 
 import com.etiya.common.crosscuttingconcerns.exceptions.types.BusinessException;
+import com.etiya.common.events.billingaccount.CreateBillingAccountEvent;
 import com.etiya.common.responses.BillingAccountResponse;
 import com.etiya.common.responses.CustomerResponse;
 import com.etiya.customerservice.domain.entities.BillingAccount;
@@ -17,6 +18,7 @@ import com.etiya.customerservice.service.responses.billingAccount.CreatedBilling
 import com.etiya.customerservice.service.responses.billingAccount.GetListBillingAccountResponse;
 import com.etiya.customerservice.service.responses.billingAccount.UpdatedBillingAccountResponse;
 import com.etiya.customerservice.service.rules.BillingAccountBusinessRules;
+import com.etiya.customerservice.transport.kafka.producer.billlingaccount.CreateBillingAccountProducer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,10 +32,12 @@ import java.util.UUID;
 public class BillingAccountServiceImpl implements BillingAccountService {
     private final BillingAccountRepository billingAccountRepository;
     private final BillingAccountBusinessRules billingAccountBusinessRules;
+    private final CreateBillingAccountProducer  createBillingAccountProducer;
 
-    public BillingAccountServiceImpl(BillingAccountRepository billingAccountRepository, BillingAccountBusinessRules billingAccountBusinessRules) {
+    public BillingAccountServiceImpl(BillingAccountRepository billingAccountRepository, BillingAccountBusinessRules billingAccountBusinessRules, CreateBillingAccountProducer createBillingAccountProducer) {
         this.billingAccountRepository = billingAccountRepository;
         this.billingAccountBusinessRules = billingAccountBusinessRules;
+        this.createBillingAccountProducer = createBillingAccountProducer;
     }
     @Override
     public CreatedBillingAccountResponse add(CreateBillingAccountRequest request) {
@@ -50,6 +54,18 @@ public class BillingAccountServiceImpl implements BillingAccountService {
         billingAccount.setStatus(BillingAccountStatus.ACTIVE);
 
         BillingAccount created = billingAccountRepository.save(billingAccount);
+
+        CreateBillingAccountEvent event = new CreateBillingAccountEvent(
+                created.getId(),
+                created.getType().toString(),
+                created.getStatus().toString(),
+                created.getAccountNumber(),
+                created.getAccountName(),
+                created.getCustomer().getId().toString(),
+                created.getAddress().getId()
+        );
+
+        createBillingAccountProducer.produceBillingAccountCreated(event);
 
         return BillingAccountMapper.INSTANCE
                 .createdBillingAccountResponseFromBillingAccount(created);

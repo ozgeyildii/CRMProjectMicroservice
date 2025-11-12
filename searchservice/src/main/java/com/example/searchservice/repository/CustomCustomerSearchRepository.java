@@ -8,6 +8,7 @@ public interface CustomCustomerSearchRepository {
     List<CustomerSearch> searchDynamic(
             String id,
             String customerNumber,
+            String accountNumber,
             String nationalId,
             String firstName,
             String lastName,

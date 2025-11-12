@@ -1,6 +1,7 @@
 package com.example.searchservice.service;
 
 import com.example.searchservice.domain.Address;
+import com.example.searchservice.domain.BillingAccount;
 import com.example.searchservice.domain.ContactMedium;
 import com.example.searchservice.domain.CustomerSearch;
 
@@ -29,9 +30,12 @@ public interface CustomerSearchService {
     void deleteContactMedium(int id,UUID customerId);
     void softDeleteContactMedium(int id,UUID customerId,String deletedDate);
 
+    void addBillingAccount(BillingAccount billingAccount);
+
     List<CustomerSearch> searchDynamic(
             String id,
             String customerNumber,
+            String accountNumber,
             String nationalId,
             String firstName,
             String lastName,

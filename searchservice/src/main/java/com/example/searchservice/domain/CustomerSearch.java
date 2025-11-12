@@ -36,6 +36,9 @@ public class CustomerSearch {
     @Field(type = FieldType.Nested, includeInParent = true)
     private List<ContactMedium> contactMediums= new ArrayList<>();
 
+    @Field(type = FieldType.Nested, includeInParent = true)
+    private List<BillingAccount> billingAccounts= new ArrayList<>();
+
     public String getId() {
         return id;
     }
@@ -122,6 +125,14 @@ public class CustomerSearch {
 
     public void setContactMediums(List<ContactMedium> contactMediums) {
         this.contactMediums = contactMediums;
+    }
+
+    public List<BillingAccount> getBillingAccounts() {
+        return billingAccounts;
+    }
+
+    public void setBillingAccounts(List<BillingAccount> billingAccounts) {
+        this.billingAccounts = billingAccounts;
     }
 
     public CustomerSearch(String id, String customerNumber, String firstName, String lastName, String nationalId, String dateOfBirth, String motherName, String fatherName, String gender) {
