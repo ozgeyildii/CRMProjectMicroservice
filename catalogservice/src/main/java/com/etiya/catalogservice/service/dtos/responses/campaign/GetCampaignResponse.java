@@ -2,7 +2,7 @@ package com.etiya.catalogservice.service.dtos.responses.campaign;
 
 import java.time.LocalDate;
 
-public class CreatedCampaignResponse {
+public class GetCampaignResponse {
     private int id;
     private String name;
     private LocalDate startDate;

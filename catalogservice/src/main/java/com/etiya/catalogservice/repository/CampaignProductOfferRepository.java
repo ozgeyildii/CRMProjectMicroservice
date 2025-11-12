@@ -24,7 +24,7 @@ public interface CampaignProductOfferRepository extends JpaRepository<CampaignPr
                 FROM CampaignProductOffer cpo
                 JOIN cpo.productOffer po
                 JOIN cpo.campaign c
-                WHERE cpo.id = :id
+                WHERE c.id = :id
             """)
     CampaignProductOfferResponse findCampaignOfferById(@Param("id") int id);
 

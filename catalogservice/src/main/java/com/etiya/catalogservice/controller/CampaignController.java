@@ -3,10 +3,11 @@ package com.etiya.catalogservice.controller;
 import com.etiya.catalogservice.service.abstracts.CampaignService;
 import com.etiya.catalogservice.service.dtos.requests.campaign.CreateCampaignRequest;
 import com.etiya.catalogservice.service.dtos.responses.campaign.CreatedCampaignResponse;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.etiya.catalogservice.service.dtos.responses.campaign.GetCampaignResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/campaigns")
@@ -23,5 +24,11 @@ public class CampaignController {
 
         return campaignService.add(request);
 
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<GetCampaignResponse> getAllCampaigns() {
+        return campaignService.getAllCampaigns();
     }
 }

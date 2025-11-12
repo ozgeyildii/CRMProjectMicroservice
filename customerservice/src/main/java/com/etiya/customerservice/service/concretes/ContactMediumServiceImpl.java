@@ -33,9 +33,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public
-
-class ContactMediumServiceImpl implements ContactMediumService {
+public class ContactMediumServiceImpl implements ContactMediumService {
     private final ContactMediumRepository contactMediumRepository;
     private final ContactMediumBusinessRules contactMediumBusinessRules;
     private final CustomerService customerService;

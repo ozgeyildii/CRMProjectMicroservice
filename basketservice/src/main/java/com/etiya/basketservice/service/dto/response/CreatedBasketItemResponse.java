@@ -5,8 +5,11 @@ import java.math.BigDecimal;
 public class CreatedBasketItemResponse {
     private String basketId;
     private String basketItemId;
+    private int productOfferId;
     private String productOfferName;
     private BigDecimal price;
+    private int campaignProductOfferId;
+    private int catalogProductOfferId;
     private BigDecimal discountedPrice;
     private BigDecimal discountRate;
     private String type;  // "OFFER" veya "CAMPAIGN"
@@ -27,6 +30,14 @@ public class CreatedBasketItemResponse {
         this.basketItemId = basketItemId;
     }
 
+    public int getProductOfferId() {
+        return productOfferId;
+    }
+
+    public void setProductOfferId(int productOfferId) {
+        this.productOfferId = productOfferId;
+    }
+
     public String getProductOfferName() {
         return productOfferName;
     }
@@ -41,6 +52,22 @@ public class CreatedBasketItemResponse {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public int getCampaignProductOfferId() {
+        return campaignProductOfferId;
+    }
+
+    public void setCampaignProductOfferId(int campaignProductOfferId) {
+        this.campaignProductOfferId = campaignProductOfferId;
+    }
+
+    public int getCatalogProductOfferId() {
+        return catalogProductOfferId;
+    }
+
+    public void setCatalogProductOfferId(int catalogProductOfferId) {
+        this.catalogProductOfferId = catalogProductOfferId;
     }
 
     public BigDecimal getDiscountedPrice() {

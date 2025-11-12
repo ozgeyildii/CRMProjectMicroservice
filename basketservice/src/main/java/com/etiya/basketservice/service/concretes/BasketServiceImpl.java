@@ -16,6 +16,7 @@ import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class BasketServiceImpl implements BasketService {
@@ -33,23 +34,23 @@ public class BasketServiceImpl implements BasketService {
     }
 
     @Override
-    public CreatedBasketItemResponse add(int billingAccountId,AddBasketItemRequest request) {
+    public CreatedBasketItemResponse add(int billingAccountId, AddBasketItemRequest request) {
 
         var billingAccount = customerServiceClient.getBillingAccountById(billingAccountId);
         if (billingAccount == null) {
             throw new RuntimeException("Billing account not found.");
         }
 
-        // 🧺 mevcut sepeti getir
+        // 🧺 Mevcut sepeti getir
         var basket = basketRepository.getBasketByBillingAccountId(billingAccount.getId());
         if (basket == null) {
-            basket = new Basket();
+            basket = new Basket(); // UUID constructor’da üretiliyor
             basket.setBillingAccountId(billingAccount.getId());
         }
 
-        BasketItem basketItem;
+        BasketItem basketItem ;
 
-        // 🎯 kampanya mı normal offer mı
+        // 🎯 Kampanya mı, normal offer mı?
         if ("CAMPAIGN".equalsIgnoreCase(request.getType())) {
             var campaignOffer = catalogServiceClient.getCampaignProductOfferById(request.getId());
             basketItem = BasketMapper.INSTANCE.fromCampaignProductOfferResponse(campaignOffer);
@@ -58,7 +59,10 @@ public class BasketServiceImpl implements BasketService {
             basketItem = BasketMapper.INSTANCE.fromProductOfferResponse(productOffer);
         }
 
-        // 🧮 discounted price hesapla
+        // 🔗 Sepet ile ilişkilendir
+        basketItem.setBasketId(basket.getId());
+
+        // 🧮 İndirimli fiyat hesapla
         basketItem.setDiscountedPrice(calcDiscountedPrice(
                 basketItem.getPrice(),
                 basketItem.getDiscountRate()
@@ -67,21 +71,38 @@ public class BasketServiceImpl implements BasketService {
         // quantity sabit: 1
         basketItem.setQuantity(1);
 
-        // sepet içine ekle
+        // Sepete ekle
         basket.getBasketItems().add(basketItem);
 
         updateTotal(basket);
         basketRepository.add(basket);
 
+        System.out.println("✅ BasketItem added: " + basketItem.getId() +
+                " | Price: " + basketItem.getPrice() +
+                " | Discounted: " + basketItem.getDiscountedPrice() +
+                " | BasketID: " + basket.getId());
+
         return BasketMapper.INSTANCE.toCreatedBasketItemResponse(basketItem);
     }
 
     private BigDecimal calcDiscountedPrice(BigDecimal price, BigDecimal discountRate) {
+
         if (price == null) price = BigDecimal.ZERO;
+
         if (discountRate == null) discountRate = BigDecimal.ZERO;
-        return price.multiply(BigDecimal.ONE.subtract(discountRate))
+
+        BigDecimal rate = discountRate.compareTo(BigDecimal.ONE) > 0
+
+                ? discountRate.divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP)
+
+                : discountRate;
+
+        return price.multiply(BigDecimal.ONE.subtract(rate))
+
                 .setScale(2, RoundingMode.HALF_UP);
+
     }
+
 
     private void updateTotal(Basket basket) {
         BigDecimal total = basket.getBasketItems().stream()
@@ -151,7 +172,6 @@ public class BasketServiceImpl implements BasketService {
     public void deleteBasket(int billingAccountId) {
         basketRepository.deleteBasketByBillingAccountId(billingAccountId);
     }
-
 
 
     @Override

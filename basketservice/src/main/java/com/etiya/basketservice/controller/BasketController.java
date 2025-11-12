@@ -3,6 +3,8 @@ package com.etiya.basketservice.controller;
 import com.etiya.basketservice.domain.Basket;
 import com.etiya.basketservice.domain.BasketItem;
 import com.etiya.basketservice.service.abstracts.BasketService;
+import com.etiya.basketservice.service.dto.request.AddBasketItemRequest;
+import com.etiya.basketservice.service.dto.response.CreatedBasketItemResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +21,15 @@ public class BasketController {
         this.basketService = basketService;
     }
 
-    @PostMapping
+
+    @PostMapping("/{billingAccountId}/items")
     @ResponseStatus(HttpStatus.CREATED)
-    public void add(@RequestParam int billingAccountId,@RequestParam String productId){
-        basketService.add(billingAccountId,productId);
+    public CreatedBasketItemResponse addBasketItem(
+            @PathVariable int billingAccountId,
+            @RequestBody AddBasketItemRequest request) {
+
+        var response = basketService.add(billingAccountId, request);
+        return response;
     }
 
     @GetMapping("/getAll")

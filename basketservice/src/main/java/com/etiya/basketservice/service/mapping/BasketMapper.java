@@ -13,14 +13,18 @@ public interface BasketMapper {
     BasketMapper INSTANCE = Mappers.getMapper(BasketMapper.class);
 
     // Normal product offer
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "id", expression = "java(java.util.UUID.randomUUID().toString())")
     @Mapping(target = "basketId", ignore = true)
     @Mapping(target = "campaignProductOfferId", ignore = true)
+    @Mapping(target = "productOfferId", source = "id")
+    @Mapping(target = "productOfferName", source = "name")
+    @Mapping(target = "price", source = "price")
+    @Mapping(target = "discountRate", source = "discountRate")
     @Mapping(target = "quantity", constant = "1")
     BasketItem fromProductOfferResponse(ProductOfferResponse productOfferResponse);
 
     // Campaign product offer
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "id", expression = "java(java.util.UUID.randomUUID().toString())")
     @Mapping(target = "basketId", ignore = true)
     @Mapping(target = "productOfferId", source = "productOfferId")
     @Mapping(target = "productOfferName", source = "productOfferName")
@@ -35,6 +39,8 @@ public interface BasketMapper {
     @Mapping(target = "basketItemId", source = "id")
     @Mapping(target = "productOfferName", source = "productOfferName")
     @Mapping(target = "price", source = "price")
+    @Mapping(target = "campaignProductOfferId", source = "campaignProductOfferId")
+    @Mapping(target = "catalogProductOfferId", source = "catalogProductOfferId")
     @Mapping(target = "discountedPrice", source = "discountedPrice")
     @Mapping(target = "discountRate", source = "discountRate")
     @Mapping(target = "type", expression = "java(item.getCampaignProductOfferId() != 0 ? \"CAMPAIGN\" : \"OFFER\")")
