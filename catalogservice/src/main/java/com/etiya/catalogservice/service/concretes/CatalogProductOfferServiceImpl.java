@@ -9,8 +9,8 @@ import com.etiya.catalogservice.service.abstracts.CatalogService;
 import com.etiya.catalogservice.service.abstracts.ProductOfferService;
 import com.etiya.catalogservice.service.dtos.requests.catalogproductoffer.CreateCatalogProductOfferRequest;
 import com.etiya.catalogservice.service.dtos.responses.catalogproductoffer.CreatedCatalogProductOfferResponse;
+import com.etiya.common.responses.GetCatalogRelByProductOfferId;
 import com.etiya.catalogservice.service.mappings.CatalogProductOfferMapper;
-import com.etiya.common.responses.CampaignProductOfferResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -49,4 +49,9 @@ public class CatalogProductOfferServiceImpl implements CatalogProductOfferServic
         return CatalogProductOfferMapper.INSTANCE.createdCatalogProductOfferResponseFromCatalogProductOffer(saved);
     }
 
-}
+    @Override
+    public GetCatalogRelByProductOfferId getByProductOfferId(int productOfferId) {
+        CatalogProductOffer catalogRel = catalogProductOfferRepository.findByProductOfferId(productOfferId);
+        GetCatalogRelByProductOfferId response=CatalogProductOfferMapper.INSTANCE.getCatalogRelByProductOfferId(catalogRel);
+        return response;
+}}

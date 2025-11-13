@@ -1,6 +1,5 @@
 package com.etiya.common.responses;
 
-import jakarta.persistence.Column;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -11,7 +10,6 @@ public class ProductOfferResponse {
     private String description;
     private LocalDate startDate;
     private LocalDate endDate;
-    private BigDecimal discountRate;
     private String status;
     private int stock;
     private BigDecimal price;
@@ -38,14 +36,6 @@ public class ProductOfferResponse {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public BigDecimal getDiscountRate() {
-        return discountRate;
-    }
-
-    public void setDiscountRate(BigDecimal discountRate) {
-        this.discountRate = discountRate;
     }
 
     public LocalDate getEndDate() {

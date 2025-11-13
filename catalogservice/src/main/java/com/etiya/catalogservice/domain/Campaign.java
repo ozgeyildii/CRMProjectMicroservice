@@ -2,6 +2,7 @@ package com.etiya.catalogservice.domain;
 import com.etiya.common.entities.BaseEntity;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class Campaign extends BaseEntity {
     private String campaignCode;
 
     @Column(name = "discount_rate")
-    private double discountRate;
+    private BigDecimal discountRate;
 
     @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL)
     private List<CampaignProductOffer> campaignProductOffers = new ArrayList<>();
@@ -33,7 +34,7 @@ public class Campaign extends BaseEntity {
     public Campaign() {
     }
 
-    public Campaign(int id, String name, LocalDate startDate, LocalDate endDate, String campaignCode, double discountRate, List<CampaignProductOffer> campaignProductOffers) {
+    public Campaign(int id, String name, LocalDate startDate, LocalDate endDate, String campaignCode, BigDecimal discountRate, List<CampaignProductOffer> campaignProductOffers) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;
@@ -83,11 +84,11 @@ public class Campaign extends BaseEntity {
         this.campaignCode = campaignCode;
     }
 
-    public double getDiscountRate() {
+    public BigDecimal getDiscountRate() {
         return discountRate;
     }
 
-    public void setDiscountRate(double discountRate) {
+    public void setDiscountRate(BigDecimal discountRate) {
         this.discountRate = discountRate;
     }
 

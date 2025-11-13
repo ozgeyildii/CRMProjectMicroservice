@@ -9,14 +9,12 @@ import com.etiya.basketservice.service.abstracts.BasketService;
 import com.etiya.basketservice.service.dto.request.AddBasketItemRequest;
 import com.etiya.basketservice.service.dto.response.CreatedBasketItemResponse;
 import com.etiya.basketservice.service.mapping.BasketMapper;
+import com.etiya.common.responses.CampaignProductOfferResponse;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class BasketServiceImpl implements BasketService {
@@ -46,23 +44,38 @@ public class BasketServiceImpl implements BasketService {
         if (basket == null) {
             basket = new Basket(); // UUID constructor’da üretiliyor
             basket.setBillingAccountId(billingAccount.getId());
+            basket.setBasketItems(new ArrayList<>());
+            basket.setTotalPrice(BigDecimal.ZERO);
         }
 
         BasketItem basketItem ;
-
-        // 🎯 Kampanya mı, normal offer mı?
         if ("CAMPAIGN".equalsIgnoreCase(request.getType())) {
-            var campaignOffer = catalogServiceClient.getCampaignProductOfferById(request.getId());
-            basketItem = BasketMapper.INSTANCE.fromCampaignProductOfferResponse(campaignOffer);
+
+            // 1) Kampanya offer listesini getir
+            List<CampaignProductOfferResponse> campaignOffers =
+                    catalogServiceClient.getCampaignProductOfferById(request.getId());
+
+            // 2) FE’nin seçtiği ID’ye karşılık gelen satırı bul
+            var selectedOffer = campaignOffers.stream()
+                    .filter(o -> o.getId() == request.getId())
+                    .findFirst()
+                    .orElseThrow(() ->
+                            new RuntimeException("Campaign offer not found: " + request.getId()));
+
+            // 3) Mapper’a TEK elemanı gönder
+            basketItem = BasketMapper.INSTANCE.fromCampaignProductOfferResponse(selectedOffer);
+
         } else {
             var productOffer = catalogServiceClient.getProductOfferById(request.getId());
+            var catalogOfferRel = catalogServiceClient.getByProductOfferId(request.getId());
             basketItem = BasketMapper.INSTANCE.fromProductOfferResponse(productOffer);
+            basketItem.setCatalogProductOfferId(catalogOfferRel.getId());
+
         }
 
         // 🔗 Sepet ile ilişkilendir
         basketItem.setBasketId(basket.getId());
 
-        // 🧮 İndirimli fiyat hesapla
         basketItem.setDiscountedPrice(calcDiscountedPrice(
                 basketItem.getPrice(),
                 basketItem.getDiscountRate()
@@ -75,12 +88,9 @@ public class BasketServiceImpl implements BasketService {
         basket.getBasketItems().add(basketItem);
 
         updateTotal(basket);
+
         basketRepository.add(basket);
 
-        System.out.println("✅ BasketItem added: " + basketItem.getId() +
-                " | Price: " + basketItem.getPrice() +
-                " | Discounted: " + basketItem.getDiscountedPrice() +
-                " | BasketID: " + basket.getId());
 
         return BasketMapper.INSTANCE.toCreatedBasketItemResponse(basketItem);
     }
@@ -178,9 +188,16 @@ public class BasketServiceImpl implements BasketService {
     public Basket getByBillingAccountId(int billingAccountId) {
         Basket basket = basketRepository.getBasketByBillingAccountId(billingAccountId);
         if (basket == null) {
-            throw new RuntimeException("Basket not found for billing account id: " + billingAccountId);
+            Basket empty = new Basket();
+            empty.setId("");   // FE bunu “henüz gerçek basket oluşmamış” olarak görür
+            empty.setBillingAccountId(billingAccountId);
+            empty.setTotalPrice(BigDecimal.ZERO);
+            empty.setBasketItems(new ArrayList<>());
+            return empty;
         }
+
         return basket;
+
     }
 
 }

@@ -8,10 +8,8 @@ import com.etiya.customerservice.domain.entities.ContactMedium;
 import com.etiya.customerservice.domain.entities.Customer;
 
 import com.etiya.customerservice.repository.ContactMediumRepository;
-import com.etiya.customerservice.service.abstracts.CityService;
 import com.etiya.customerservice.service.abstracts.ContactMediumService;
 import com.etiya.customerservice.service.abstracts.CustomerService;
-import com.etiya.customerservice.service.abstracts.IndividualCustomerService;
 import com.etiya.customerservice.service.mappings.ContactMediumMapper;
 import com.etiya.customerservice.service.requests.contactmedium.CreateContactMediumRequest;
 import com.etiya.customerservice.service.requests.contactmedium.UpdateContactMediumRequest;
@@ -20,7 +18,6 @@ import com.etiya.customerservice.service.responses.contactmedium.GetByIdContactM
 import com.etiya.customerservice.service.responses.contactmedium.GetListContactMediumResponse;
 import com.etiya.customerservice.service.responses.contactmedium.UpdatedContactMediumResponse;
 import com.etiya.customerservice.service.rules.ContactMediumBusinessRules;
-import com.etiya.customerservice.transport.kafka.producer.contactmedium.CreateContactMediumProducer;
 import com.etiya.customerservice.transport.kafka.producer.contactmedium.DeleteContactMediumProducer;
 import com.etiya.customerservice.transport.kafka.producer.contactmedium.SoftDeleteContactMediumProducer;
 import com.etiya.customerservice.transport.kafka.producer.contactmedium.UpdateContactMediumProducer;
@@ -30,7 +27,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ContactMediumServiceImpl implements ContactMediumService {
@@ -69,7 +65,7 @@ public class ContactMediumServiceImpl implements ContactMediumService {
 
         ContactMedium contactMedium = ContactMediumMapper.INSTANCE.contactMediumFromUpdateContactMediumRequest(request, contactMediumOld);
         ContactMedium updated = contactMediumRepository.save(contactMedium);
-        UpdateContactMediumEvent event = new UpdateContactMediumEvent(
+        UpdateContactMediumEvent event= new UpdateContactMediumEvent(
                 updated.getId(),
                 updated.getType().name(),
                 updated.getValue(),

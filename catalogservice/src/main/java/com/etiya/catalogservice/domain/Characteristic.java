@@ -30,6 +30,8 @@ public class Characteristic extends BaseEntity {
 
     private String unitOfMeasure;
 
+    private boolean isEditable;
+
     @OneToMany(mappedBy = "characteristic")
 
     private List<CharacteristicValue> characteristicValues = new ArrayList<>();
@@ -94,15 +96,32 @@ public class Characteristic extends BaseEntity {
         this.prodOfferSpecCharacteristics = prodOfferSpecCharacteristics;
     }
 
+    public boolean isEditable() {
+        return isEditable;
+    }
+
+    public void setEditable(boolean editable) {
+        isEditable = editable;
+    }
+
+    public List<ProdOfferSpecCharacteristic> getProdOfferSpecCharacteristics() {
+        return prodOfferSpecCharacteristics;
+    }
+
+    public void setProdOfferSpecCharacteristics(List<ProdOfferSpecCharacteristic> prodOfferSpecCharacteristics) {
+        this.prodOfferSpecCharacteristics = prodOfferSpecCharacteristics;
+    }
+
     public Characteristic() {
     }
 
-    public Characteristic(int id, String name, String description, String dataType, String unitOfMeasure, List<CharacteristicValue> characteristicValues, List<ProdOfferSpecCharacteristic> prodOfferSpecCharacteristics) {
+    public Characteristic(int id, String name, String description, String dataType, String unitOfMeasure, boolean isEditable, List<CharacteristicValue> characteristicValues, List<ProdOfferSpecCharacteristic> prodOfferSpecCharacteristics) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.dataType = dataType;
         this.unitOfMeasure = unitOfMeasure;
+        this.isEditable = isEditable;
         this.characteristicValues = characteristicValues;
         this.prodOfferSpecCharacteristics = prodOfferSpecCharacteristics;
     }

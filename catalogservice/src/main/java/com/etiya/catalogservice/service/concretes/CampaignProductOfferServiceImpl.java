@@ -9,6 +9,8 @@ import com.etiya.catalogservice.service.mappings.CampaignProductMapper;
 import com.etiya.common.responses.CampaignProductOfferResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CampaignProductOfferServiceImpl implements CampaignProductOfferService {
 
@@ -26,7 +28,7 @@ public class CampaignProductOfferServiceImpl implements CampaignProductOfferServ
     }
 
     @Override
-    public CampaignProductOfferResponse getById(int id) {
+    public List<CampaignProductOfferResponse> getById(int id) {
         return campaignProductOfferRepository.findCampaignOfferById(id);
     }
 

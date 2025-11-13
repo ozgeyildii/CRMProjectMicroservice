@@ -9,7 +9,6 @@ public class CreatedProductOfferResponse {
     private String description;
     private LocalDate startDate;
     private LocalDate endDate;
-    private BigDecimal discountRate;
     private String status;
     private int stock;
     private BigDecimal price;
@@ -53,14 +52,6 @@ public class CreatedProductOfferResponse {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
-    }
-
-    public BigDecimal getDiscountRate() {
-        return discountRate;
-    }
-
-    public void setDiscountRate(BigDecimal discountRate) {
-        this.discountRate = discountRate;
     }
 
     public String getStatus() {

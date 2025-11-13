@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/prod-spec-characteristics")
-public class ProdSpecCharacteristicController {
+public class ProdOfferSpecCharacteristicController {
 
     private final ProdSpecCharacteristicService prodSpecCharacteristicService;
 
-    public ProdSpecCharacteristicController(ProdSpecCharacteristicService prodSpecCharacteristicService) {
+    public ProdOfferSpecCharacteristicController(ProdSpecCharacteristicService prodSpecCharacteristicService) {
         this.prodSpecCharacteristicService = prodSpecCharacteristicService;
     }
 
@@ -22,4 +22,6 @@ public class ProdSpecCharacteristicController {
     public CreatedProdSpecCharacteristicResponse add(@RequestBody CreateProdOfferSpecCharacteristicRequest request) {
         return prodSpecCharacteristicService.add(request);
     }
+
+
 }

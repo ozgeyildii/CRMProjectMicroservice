@@ -6,6 +6,8 @@ import com.etiya.catalogservice.service.dtos.responses.campaignproductoffer.Crea
 import com.etiya.common.responses.CampaignProductOfferResponse;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/campaign-product-offers")
 public class CampaignProductOfferController {
@@ -22,7 +24,7 @@ public class CampaignProductOfferController {
     }
 
     @GetMapping("/{id}")
-    public CampaignProductOfferResponse getById(@PathVariable int id) {
+    public List<CampaignProductOfferResponse> getById(@PathVariable int id) {
         return campaignProductOfferService.getById(id);
     }
 }

@@ -19,7 +19,6 @@ public interface BasketMapper {
     @Mapping(target = "productOfferId", source = "id")
     @Mapping(target = "productOfferName", source = "name")
     @Mapping(target = "price", source = "price")
-    @Mapping(target = "discountRate", source = "discountRate")
     @Mapping(target = "quantity", constant = "1")
     BasketItem fromProductOfferResponse(ProductOfferResponse productOfferResponse);
 
@@ -28,7 +27,7 @@ public interface BasketMapper {
     @Mapping(target = "basketId", ignore = true)
     @Mapping(target = "productOfferId", source = "productOfferId")
     @Mapping(target = "productOfferName", source = "productOfferName")
-    @Mapping(target = "campaignProductOfferId", source = "id")
+    @Mapping(target = "campaignProductOfferId", ignore = true)
     @Mapping(target = "price", source = "price")
     @Mapping(target = "discountRate", source = "discountRate")
     @Mapping(target = "quantity", constant = "1")

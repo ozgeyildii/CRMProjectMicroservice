@@ -4,10 +4,12 @@ import com.etiya.catalogservice.service.dtos.requests.campaignproductoffer.Creat
 import com.etiya.catalogservice.service.dtos.responses.campaignproductoffer.CreatedCampaignProductResponse;
 import com.etiya.common.responses.CampaignProductOfferResponse;
 
+import java.util.List;
+
 public interface CampaignProductOfferService {
 
     CreatedCampaignProductResponse add(CreateCampaignProductOfferRequest request);
 
-    CampaignProductOfferResponse getById(int id);
+    List<CampaignProductOfferResponse> getById(int id);
 
 }

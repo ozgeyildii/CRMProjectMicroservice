@@ -24,8 +24,6 @@ public class ProductOffer extends BaseEntity {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @Column(name = "discount_rate")
-    private BigDecimal discountRate;
 
     @Column(name = "status")
     private String status;
@@ -59,14 +57,13 @@ public class ProductOffer extends BaseEntity {
     public ProductOffer() {
     }
 
-    public ProductOffer(int stock, int id, String name, String description, LocalDate startDate, LocalDate endDate, BigDecimal discountRate, String status, BigDecimal price, Product product, List<CatalogProductOffer> catalogProductOffers, List<CustomerOffer> customerOffers, ProductOfferSpecification productOfferSpecification, List<ProdOfferCharValue> prodOfferCharValues, List<CampaignProductOffer> campaignProductOffers) {
+    public ProductOffer(int stock, int id, String name, String description, LocalDate startDate, LocalDate endDate, String status, BigDecimal price, Product product, List<CatalogProductOffer> catalogProductOffers, List<CustomerOffer> customerOffers, ProductOfferSpecification productOfferSpecification, List<ProdOfferCharValue> prodOfferCharValues, List<CampaignProductOffer> campaignProductOffers) {
         this.stock = stock;
         this.id = id;
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.discountRate = discountRate;
         this.status = status;
         this.price = price;
         this.product = product;
@@ -147,14 +144,6 @@ public class ProductOffer extends BaseEntity {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public BigDecimal getDiscountRate() {
-        return discountRate;
-    }
-
-    public void setDiscountRate(BigDecimal discountRate) {
-        this.discountRate = discountRate;
     }
 
     public LocalDate getEndDate() {

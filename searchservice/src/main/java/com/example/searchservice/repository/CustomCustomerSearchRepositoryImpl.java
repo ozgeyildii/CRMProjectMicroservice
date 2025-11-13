@@ -12,8 +12,11 @@ import org.springframework.util.StringUtils;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
+import java.text.Normalizer;
+
 
 import java.util.List;
+import java.util.Locale;
 
 @Repository
 public class CustomCustomerSearchRepositoryImpl implements CustomCustomerSearchRepository {
@@ -37,6 +40,7 @@ public class CustomCustomerSearchRepositoryImpl implements CustomCustomerSearchR
     ) {
         BoolQuery.Builder bool = QueryBuilders.bool();
 
+
         if (StringUtils.hasText(id)) {
             bool.must(m -> m.term(t -> t.field("id.keyword").value(id)));
         }
@@ -46,14 +50,42 @@ public class CustomCustomerSearchRepositoryImpl implements CustomCustomerSearchR
         if (StringUtils.hasText(nationalId)) {
             bool.must(m -> m.term(t -> t.field("nationalId.keyword").value(nationalId)));
         }
+
+
         if (StringUtils.hasText(firstName)) {
-            String lowerFirstName = firstName.toLowerCase();
-            bool.must(m -> m.wildcard(w -> w
-                    .field("firstName.keyword")
-                    .caseInsensitive(true)
-                    .value("*" + lowerFirstName + "*")
-            ));
+            String originalLower = firstName.toLowerCase(Locale.ROOT);
+            String normalized = Normalizer.normalize(firstName, Normalizer.Form.NFD)
+                    .replaceAll("\\p{M}", "")
+                    .toLowerCase(Locale.ROOT)
+                    .replace("ı", "i")
+                    .replace("ö", "o")
+                    .replace("ü", "u")
+                    .replace("ş", "s")
+                    .replace("ğ", "g")
+                    .replace("ç", "c");
+
+            Query originalQuery = Query.of(q -> q
+                    .wildcard(w -> w
+                            .field("firstName") // 🔥 artık keyword değil
+                            .caseInsensitive(true)
+                            .value("*" + originalLower + "*")
+                    )
+            );
+
+            Query normalizedQuery = Query.of(q -> q
+                    .wildcard(w -> w
+                            .field("firstName") // 🔥 keyword yok burada da
+                            .caseInsensitive(true)
+                            .value("*" + normalized + "*")
+                    )
+            );
+
+            List<Query> shouldQueries = List.of(originalQuery, normalizedQuery);
+
+            bool.must(m -> m.bool(b -> b.should(shouldQueries)));
         }
+
+
         if (StringUtils.hasText(lastName)) {
             String lowerLastName = lastName.toLowerCase();
             bool.must(m -> m.wildcard(w -> w
