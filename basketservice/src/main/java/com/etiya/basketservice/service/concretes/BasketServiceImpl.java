@@ -10,6 +10,7 @@ import com.etiya.basketservice.service.dto.request.AddBasketItemRequest;
 import com.etiya.basketservice.service.dto.response.CreatedBasketItemResponse;
 import com.etiya.basketservice.service.mapping.BasketMapper;
 import com.etiya.common.responses.CampaignProductOfferResponse;
+import com.etiya.common.responses.GetBasketResponse;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -80,7 +81,7 @@ public class BasketServiceImpl implements BasketService {
                 basketItem.getPrice(),
                 basketItem.getDiscountRate()
         ));
-
+        basketItem.setType(request.getType());
         // quantity sabit: 1
         basketItem.setQuantity(1);
 
@@ -198,6 +199,22 @@ public class BasketServiceImpl implements BasketService {
 
         return basket;
 
+    }
+
+    @Override
+    public GetBasketResponse getBasketByBillingAccountId(int billingAccountId) {
+
+        Basket basket = basketRepository.getBasketByBillingAccountId(billingAccountId);
+
+        if (basket == null) {
+            GetBasketResponse empty = new GetBasketResponse();
+            empty.setBillingAccId(billingAccountId);
+            empty.setTotalPrice(0);
+            empty.setBasketItems(new ArrayList<>());
+            return empty;
+        }
+
+        return BasketMapper.INSTANCE.getBasketResponseFromBasket(basket);
     }
 
 }

@@ -1,52 +1,28 @@
-package com.etiya.salesservice.domain;
+package com.etiya.salesservice.service.dtos.responses;
 
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-public class OrderItem {
+public class CreatedOrderItemResponse {
+    private String id;
 
-    @Field(name = "id")
-    private String id = UUID.randomUUID().toString();;
-
-    @Field(name = "productOfferId")
     private int productOfferId;
 
-    @Field(name = "productOfferName")
     private String productOfferName;
 
-    @Field(name = "price")
     private BigDecimal price;
 
-    @Field(name="discountRate")
     private BigDecimal discountRate;
 
-    @Field(name="discountedPrice")
     private BigDecimal discountedPrice;
 
-    @Field(name="sourceType")
     private String sourceType;
 
-    @Field(name="orderItemCharValues")
-    private List<OrderItemCharValue> orderItemCharValues ;
+    private List<CreatedOrderItemCharValueResponse> createdOrderItemCharValueResponses;
 
-    public OrderItem() {
-    }
-
-    public OrderItem(String id, int productOfferId, String productOfferName, BigDecimal price, BigDecimal discountRate, BigDecimal discountedPrice, String sourceType, List<OrderItemCharValue> orderItemCharValues) {
-        this.id = id;
-        this.productOfferId = productOfferId;
-        this.productOfferName = productOfferName;
-        this.price = price;
-        this.discountRate = discountRate;
-        this.discountedPrice = discountedPrice;
-        this.sourceType = sourceType;
-        this.orderItemCharValues = orderItemCharValues;
-    }
 
     public String getId() {
         return id;
@@ -104,11 +80,11 @@ public class OrderItem {
         this.sourceType = sourceType;
     }
 
-    public List<OrderItemCharValue> getOrderItemCharValues() {
-        return orderItemCharValues;
+    public List<CreatedOrderItemCharValueResponse> getCreatedOrderItemCharValueResponses() {
+        return createdOrderItemCharValueResponses;
     }
 
-    public void setOrderItemCharValues(List<OrderItemCharValue> orderItemCharValues) {
-        this.orderItemCharValues = orderItemCharValues;
+    public void setCreatedOrderItemCharValueResponses(List<CreatedOrderItemCharValueResponse> createdOrderItemCharValueResponses) {
+        this.createdOrderItemCharValueResponses = createdOrderItemCharValueResponses;
     }
 }

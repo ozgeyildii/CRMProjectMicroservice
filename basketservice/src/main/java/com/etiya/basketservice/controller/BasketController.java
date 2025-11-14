@@ -5,11 +5,11 @@ import com.etiya.basketservice.domain.BasketItem;
 import com.etiya.basketservice.service.abstracts.BasketService;
 import com.etiya.basketservice.service.dto.request.AddBasketItemRequest;
 import com.etiya.basketservice.service.dto.response.CreatedBasketItemResponse;
+import com.etiya.common.responses.GetBasketResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/baskets")
@@ -73,5 +73,12 @@ public class BasketController {
     public void deleteBasket(@PathVariable int billingAccountId) {
         basketService.deleteBasket(billingAccountId);
     }
+
+    @GetMapping("get-basket/{billingAccountId}")
+    @ResponseStatus(HttpStatus.OK)
+    public GetBasketResponse getBasketByBillingAccount(@PathVariable int billingAccountId) {
+        return basketService.getBasketByBillingAccountId(billingAccountId);
+    }
+
 }
 
