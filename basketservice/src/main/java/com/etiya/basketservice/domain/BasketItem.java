@@ -16,6 +16,15 @@ public class BasketItem implements Serializable {
     private int quantity;
     private BigDecimal discountedPrice;
     private BigDecimal discountRate=BigDecimal.valueOf(0);
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getId() {
         return id;
@@ -97,17 +106,18 @@ public class BasketItem implements Serializable {
         this.discountRate = discountRate;
     }
 
-    public BasketItem(String id, String basketId, int productOfferId, String productOfferName, int campaignProductOfferId, int catalogProductOfferId, BigDecimal price, int quantity, BigDecimal discountedPrice, BigDecimal discountRate) {
-        this.id = id;
-        this.basketId = basketId;
-        this.productOfferId = productOfferId;
-        this.productOfferName = productOfferName;
-        this.campaignProductOfferId = campaignProductOfferId;
-        this.catalogProductOfferId = catalogProductOfferId;
-        this.price = price;
-        this.quantity = quantity;
-        this.discountedPrice = discountedPrice;
+    public BasketItem(String type, BigDecimal discountRate, BigDecimal discountedPrice, int quantity, BigDecimal price, int catalogProductOfferId, int campaignProductOfferId, String productOfferName, int productOfferId, String basketId, String id) {
+        this.type = type;
         this.discountRate = discountRate;
+        this.discountedPrice = discountedPrice;
+        this.quantity = quantity;
+        this.price = price;
+        this.catalogProductOfferId = catalogProductOfferId;
+        this.campaignProductOfferId = campaignProductOfferId;
+        this.productOfferName = productOfferName;
+        this.productOfferId = productOfferId;
+        this.basketId = basketId;
+        this.id = id;
     }
 
     public BasketItem() {

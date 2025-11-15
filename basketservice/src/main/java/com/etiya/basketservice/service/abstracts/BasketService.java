@@ -4,6 +4,8 @@ import com.etiya.basketservice.domain.Basket;
 import com.etiya.basketservice.domain.BasketItem;
 import com.etiya.basketservice.service.dto.request.AddBasketItemRequest;
 import com.etiya.basketservice.service.dto.response.CreatedBasketItemResponse;
+import com.etiya.common.responses.GetBasketItemResponse;
+import com.etiya.common.responses.GetBasketResponse;
 
 import java.util.Map;
 
@@ -16,7 +18,7 @@ public interface BasketService {
     void clearBasket(String basketId);
     void deleteBasket(int basketId);
     Basket getByBillingAccountId(int billingAccountId);
-
+    GetBasketResponse getBasketByBillingAccountId(int billingAccountId);
 
 
 }
