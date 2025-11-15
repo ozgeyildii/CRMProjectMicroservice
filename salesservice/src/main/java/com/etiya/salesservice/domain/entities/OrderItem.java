@@ -1,8 +1,6 @@
-package com.etiya.salesservice.domain;
+package com.etiya.salesservice.domain.entities;
 
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -10,31 +8,31 @@ import java.util.UUID;
 
 public class OrderItem {
 
-//    @Field(name = "id")
+    @Field(name = "id")
     private String id = UUID.randomUUID().toString();;
 
-//    @Field(name = "productOfferId")
+    @Field(name = "productOfferId")
     private int productOfferId;
 
-//    @Field(name = "productOfferName")
+    @Field(name = "productOfferName")
     private String productOfferName;
 
-//    @Field(name = "price")
+    @Field(name = "price")
     private BigDecimal price;
 
-//    @Field(name="discountRate")
+    @Field(name="discountRate")
     private BigDecimal discountRate;
 
-//    @Field(name="discountedPrice")
+    @Field(name="discountedPrice")
     private BigDecimal discountedPrice;
 
-//    @Field(name="sourceType")
+    @Field(name="sourceType")
     private String sourceType;
 
-//    @Field(name="basketItemId")
+    @Field(name="basketItemId")
     private String basketItemId;
 
-//    @Field(name="orderItemCharValues")
+    @Field(name="orderItemCharValues")
     private List<OrderItemCharValue> orderItemCharValues ;
 
     public OrderItem() {

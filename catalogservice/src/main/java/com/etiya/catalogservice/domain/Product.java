@@ -10,44 +10,29 @@ import java.util.List;
 @Table(name = "products")
 public class Product extends BaseEntity {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-        private String name;
+    private String name;
 
-        private double price;
+    private double price;
 
-        private int stock;
+    private int billingAccountId;
 
-        @ManyToOne
-        @JoinColumn(name = "catalog_id", nullable = false)
-        private Catalog catalog;
-
-//        @ManyToOne
-//        @JoinColumn(name = "spec_id", nullable = false)
-//        private ProductOfferSpecification productOfferSpecification;
-
-        @OneToMany(mappedBy = "product")
-        private List<ProductOffer> productOffers = new ArrayList<>();
-
-//        @OneToMany(mappedBy = "product")
-//        private List<ProdOfferCharValue> prodOfferCharValues = new ArrayList<>();
-//
-//        @OneToMany(mappedBy = "product")
-//        private List<CampaignProductOffer> campaignProductOffers = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "product_offer_id", nullable = false)
+    private ProductOffer productOffer;
 
 
     public Product() {
     }
 
-    public Product(int id, String name, double price, int stock, Catalog catalog, List<ProductOffer> productOffers) {
-        this.id = id;
+    public Product(String name, double price, int billingAccountId, ProductOffer productOffer) {
         this.name = name;
         this.price = price;
-        this.stock = stock;
-        this.catalog = catalog;
-        this.productOffers = productOffers;
+        this.billingAccountId = billingAccountId;
+        this.productOffer = productOffer;
     }
 
     public int getId() {
@@ -74,27 +59,19 @@ public class Product extends BaseEntity {
         this.price = price;
     }
 
-    public int getStock() {
-        return stock;
+    public int getBillingAccountId() {
+        return billingAccountId;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setBillingAccountId(int billingAccountId) {
+        this.billingAccountId = billingAccountId;
     }
 
-    public Catalog getCatalog() {
-        return catalog;
+    public ProductOffer getProductOffer() {
+        return productOffer;
     }
 
-    public void setCatalog(Catalog catalog) {
-        this.catalog = catalog;
-    }
-
-    public List<ProductOffer> getProductOffers() {
-        return productOffers;
-    }
-
-    public void setProductOffers(List<ProductOffer> productOffers) {
-        this.productOffers = productOffers;
+    public void setProductOffer(ProductOffer productOffer) {
+        this.productOffer = productOffer;
     }
 }

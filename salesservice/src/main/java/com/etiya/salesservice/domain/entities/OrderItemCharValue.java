@@ -1,6 +1,4 @@
-package com.etiya.salesservice.domain;
-
-import org.springframework.data.mongodb.core.mapping.Field;
+package com.etiya.salesservice.domain.entities;
 
 import java.util.UUID;
 

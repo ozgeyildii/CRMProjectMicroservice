@@ -1,16 +1,11 @@
 package com.etiya.salesservice.service.dtos.requests;
 
-import com.etiya.salesservice.domain.OrderItem;
-import com.etiya.salesservice.domain.enums.OrderStatus;
-import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.MongoId;
-
 import java.util.List;
-import java.util.UUID;
 
 public class CreateOrderRequest {
 
     private int billingAccountId;
+    private int addressId;
     private List<CreateOrderItemRequest> items;
     
 
@@ -20,6 +15,14 @@ public class CreateOrderRequest {
 
     public void setBillingAccountId(int billingAccountId) {
         this.billingAccountId = billingAccountId;
+    }
+
+    public int getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(int addressId) {
+        this.addressId = addressId;
     }
 
     public List<CreateOrderItemRequest> getItems() {

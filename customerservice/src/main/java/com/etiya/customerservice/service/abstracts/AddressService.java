@@ -1,6 +1,7 @@
 package com.etiya.customerservice.service.abstracts;
 
 
+import com.etiya.common.responses.GetAddressResponse;
 import com.etiya.customerservice.service.requests.address.CreateAddressRequest;
 import com.etiya.customerservice.service.requests.address.UpdateAddressRequest;
 import com.etiya.customerservice.service.responses.address.CreatedAddressResponse;
@@ -29,7 +30,9 @@ public interface AddressService {
 
     List<GetListAddressResponse> getListByCustomerId(UUID customerId);
 
-    public void setPrimaryAddress(int id);
+    void setPrimaryAddress(int id);
+
+    GetAddressResponse getAddressById(int id);
 
 
 }

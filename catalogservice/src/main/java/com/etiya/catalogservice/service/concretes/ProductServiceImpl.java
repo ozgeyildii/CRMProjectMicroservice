@@ -27,6 +27,11 @@ public class ProductServiceImpl implements ProductService {
        return response;
     }
 
+    @Override
+    public void addProductByEntity(Product product) {
+        productRepository.save(product);
+    }
+
 //    @Override
 //    public ProductOfferResponse getById(int id) {
 //        return productRepository.findById(id).stream().map(this::mapToResponse).findFirst().orElseThrow(()->new BusinessException("Product not found"));

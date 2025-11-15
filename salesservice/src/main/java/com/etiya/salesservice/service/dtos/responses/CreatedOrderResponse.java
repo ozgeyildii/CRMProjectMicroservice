@@ -1,11 +1,9 @@
 package com.etiya.salesservice.service.dtos.responses;
 
-import com.etiya.salesservice.domain.OrderItem;
-import org.springframework.data.mongodb.core.mapping.Field;
+import com.etiya.common.responses.GetAddressResponse;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.UUID;
 
 public class CreatedOrderResponse {
 
@@ -15,6 +13,7 @@ public class CreatedOrderResponse {
 
     private BigDecimal totalPrice;
 
+    private GetAddressResponse address;
 
     private List<CreatedOrderItemResponse> createdOrderItem;
 
@@ -40,6 +39,14 @@ public class CreatedOrderResponse {
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public GetAddressResponse getAddress() {
+        return address;
+    }
+
+    public void setAddress(GetAddressResponse address) {
+        this.address = address;
     }
 
     public List<CreatedOrderItemResponse> getCreatedOrderItem() {

@@ -2,9 +2,9 @@ package com.etiya.salesservice.service.mappings;
 
 import com.etiya.common.responses.GetBasketItemResponse;
 import com.etiya.common.responses.GetBasketResponse;
-import com.etiya.salesservice.domain.Order;
-import com.etiya.salesservice.domain.OrderItem;
-import com.etiya.salesservice.domain.OrderItemCharValue;
+import com.etiya.salesservice.domain.entities.Order;
+import com.etiya.salesservice.domain.entities.OrderItem;
+import com.etiya.salesservice.domain.entities.OrderItemCharValue;
 import com.etiya.salesservice.service.dtos.requests.CreateOrderItemCharValueRequest;
 import com.etiya.salesservice.service.dtos.responses.CreatedOrderItemCharValueResponse;
 import com.etiya.salesservice.service.dtos.responses.CreatedOrderItemResponse;

@@ -18,7 +18,6 @@ public interface ProductOfferMapper {
 
     ProductOffer productOfferFromCreateProductOfferRequest(CreateProductOfferRequest request);
 
-    @Mapping(target = "productId", source = "product.id")
     CreatedProductOfferResponse createdProductOfferResponseFromProductOffer(ProductOffer productOffer);
 
 

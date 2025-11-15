@@ -34,9 +34,8 @@ public class ProductOffer extends BaseEntity {
     @Column(name="price")
     private BigDecimal price;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @OneToMany(mappedBy = "productOffer")
+    private List<Product> products = new ArrayList<>();
 
     @OneToMany(mappedBy = "productOffer")
     private List<CatalogProductOffer> catalogProductOffers = new ArrayList<>();
@@ -57,117 +56,29 @@ public class ProductOffer extends BaseEntity {
     public ProductOffer() {
     }
 
-    public ProductOffer(int stock, int id, String name, String description, LocalDate startDate, LocalDate endDate, String status, BigDecimal price, Product product, List<CatalogProductOffer> catalogProductOffers, List<CustomerOffer> customerOffers, ProductOfferSpecification productOfferSpecification, List<ProdOfferCharValue> prodOfferCharValues, List<CampaignProductOffer> campaignProductOffers) {
-        this.stock = stock;
+    public ProductOffer(int id, String name, String description, LocalDate startDate, LocalDate endDate, String status, int stock, BigDecimal price, List<Product> products, List<CatalogProductOffer> catalogProductOffers, List<CustomerOffer> customerOffers, ProductOfferSpecification productOfferSpecification, List<ProdOfferCharValue> prodOfferCharValues, List<CampaignProductOffer> campaignProductOffers) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
-        this.price = price;
-        this.product = product;
-        this.catalogProductOffers = catalogProductOffers;
-        this.customerOffers = customerOffers;
-        this.productOfferSpecification = productOfferSpecification;
-        this.prodOfferCharValues = prodOfferCharValues;
-        this.campaignProductOffers = campaignProductOffers;
-    }
-
-    public List<CampaignProductOffer> getCampaignProductOffers() {
-        return campaignProductOffers;
-    }
-
-    public void setCampaignProductOffers(List<CampaignProductOffer> campaignProductOffers) {
-        this.campaignProductOffers = campaignProductOffers;
-    }
-
-    public List<ProdOfferCharValue> getProdOfferCharValues() {
-        return prodOfferCharValues;
-    }
-
-    public void setProdOfferCharValues(List<ProdOfferCharValue> prodOfferCharValues) {
-        this.prodOfferCharValues = prodOfferCharValues;
-    }
-
-    public ProductOfferSpecification getProductOfferSpecification() {
-        return productOfferSpecification;
-    }
-
-    public void setProductOfferSpecification(ProductOfferSpecification productOfferSpecification) {
-        this.productOfferSpecification = productOfferSpecification;
-    }
-
-    public List<CustomerOffer> getCustomerOffers() {
-        return customerOffers;
-    }
-
-    public void setCustomerOffers(List<CustomerOffer> customerOffers) {
-        this.customerOffers = customerOffers;
-    }
-
-    public List<CatalogProductOffer> getCatalogProductOffers() {
-        return catalogProductOffers;
-    }
-
-    public void setCatalogProductOffers(List<CatalogProductOffer> catalogProductOffers) {
-        this.catalogProductOffers = catalogProductOffers;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
         this.stock = stock;
+        this.price = price;
+        this.products = products;
+        this.catalogProductOffers = catalogProductOffers;
+        this.customerOffers = customerOffers;
+        this.productOfferSpecification = productOfferSpecification;
+        this.prodOfferCharValues = prodOfferCharValues;
+        this.campaignProductOffers = campaignProductOffers;
     }
 
-    public String getStatus() {
-        return status;
+    public int getId() {
+        return id;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -178,11 +89,99 @@ public class ProductOffer extends BaseEntity {
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public String getDescription() {
+        return description;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public List<CatalogProductOffer> getCatalogProductOffers() {
+        return catalogProductOffers;
+    }
+
+    public void setCatalogProductOffers(List<CatalogProductOffer> catalogProductOffers) {
+        this.catalogProductOffers = catalogProductOffers;
+    }
+
+    public List<CustomerOffer> getCustomerOffers() {
+        return customerOffers;
+    }
+
+    public void setCustomerOffers(List<CustomerOffer> customerOffers) {
+        this.customerOffers = customerOffers;
+    }
+
+    public ProductOfferSpecification getProductOfferSpecification() {
+        return productOfferSpecification;
+    }
+
+    public void setProductOfferSpecification(ProductOfferSpecification productOfferSpecification) {
+        this.productOfferSpecification = productOfferSpecification;
+    }
+
+    public List<ProdOfferCharValue> getProdOfferCharValues() {
+        return prodOfferCharValues;
+    }
+
+    public void setProdOfferCharValues(List<ProdOfferCharValue> prodOfferCharValues) {
+        this.prodOfferCharValues = prodOfferCharValues;
+    }
+
+    public List<CampaignProductOffer> getCampaignProductOffers() {
+        return campaignProductOffers;
+    }
+
+    public void setCampaignProductOffers(List<CampaignProductOffer> campaignProductOffers) {
+        this.campaignProductOffers = campaignProductOffers;
     }
 }

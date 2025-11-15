@@ -12,7 +12,6 @@ public class CreatedProductOfferResponse {
     private String status;
     private int stock;
     private BigDecimal price;
-    private int productId;
 
     public int getId() {
         return id;
@@ -76,13 +75,5 @@ public class CreatedProductOfferResponse {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public int getProductId() {
-        return productId;
-    }
-
-    public void setProductId(int productId) {
-        this.productId = productId;
     }
 }
