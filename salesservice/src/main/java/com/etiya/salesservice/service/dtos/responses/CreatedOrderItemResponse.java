@@ -21,11 +21,21 @@ public class CreatedOrderItemResponse {
 
     private String sourceType;
 
-    private List<CreatedOrderItemCharValueResponse> createdOrderItemCharValueResponses;
+    private String basketItemId;
+
+    private List<CreatedOrderItemCharValueResponse> createdOrderItemCharValues;
 
 
     public String getId() {
         return id;
+    }
+
+    public String getBasketItemId() {
+        return basketItemId;
+    }
+
+    public void setBasketItemId(String basketItemId) {
+        this.basketItemId = basketItemId;
     }
 
     public void setId(String id) {
@@ -80,11 +90,11 @@ public class CreatedOrderItemResponse {
         this.sourceType = sourceType;
     }
 
-    public List<CreatedOrderItemCharValueResponse> getCreatedOrderItemCharValueResponses() {
-        return createdOrderItemCharValueResponses;
+    public List<CreatedOrderItemCharValueResponse> getCreatedOrderItemCharValues() {
+        return createdOrderItemCharValues;
     }
 
-    public void setCreatedOrderItemCharValueResponses(List<CreatedOrderItemCharValueResponse> createdOrderItemCharValueResponses) {
-        this.createdOrderItemCharValueResponses = createdOrderItemCharValueResponses;
+    public void setCreatedOrderItemCharValues(List<CreatedOrderItemCharValueResponse> createdOrderItemCharValues) {
+        this.createdOrderItemCharValues = createdOrderItemCharValues;
     }
 }

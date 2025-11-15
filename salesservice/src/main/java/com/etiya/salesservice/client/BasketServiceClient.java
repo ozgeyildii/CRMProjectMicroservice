@@ -15,9 +15,6 @@ import java.util.List;
 @FeignClient(name = "basketservice")
 public interface BasketServiceClient {
 
-    @GetMapping("/api/baskets/{billingAccountId}")
-    GetBasketResponse getByBillingAccount(@PathVariable int billingAccountId);
-
-
-
+    @GetMapping("/api/baskets/get-basket/{billingAccountId}")
+    GetBasketResponse getBasketByBillingAccount(@PathVariable int billingAccountId);
 }

@@ -1,6 +1,7 @@
 package com.etiya.salesservice.service.dtos.requests;
 
 import com.etiya.salesservice.domain.OrderItem;
+import com.etiya.salesservice.domain.enums.OrderStatus;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
@@ -11,6 +12,7 @@ public class CreateOrderRequest {
 
     private int billingAccountId;
     private List<CreateOrderItemRequest> items;
+    
 
     public int getBillingAccountId() {
         return billingAccountId;
@@ -27,4 +29,5 @@ public class CreateOrderRequest {
     public void setItems(List<CreateOrderItemRequest> items) {
         this.items = items;
     }
+
 }

@@ -10,34 +10,37 @@ import java.util.UUID;
 
 public class OrderItem {
 
-    @Field(name = "id")
+//    @Field(name = "id")
     private String id = UUID.randomUUID().toString();;
 
-    @Field(name = "productOfferId")
+//    @Field(name = "productOfferId")
     private int productOfferId;
 
-    @Field(name = "productOfferName")
+//    @Field(name = "productOfferName")
     private String productOfferName;
 
-    @Field(name = "price")
+//    @Field(name = "price")
     private BigDecimal price;
 
-    @Field(name="discountRate")
+//    @Field(name="discountRate")
     private BigDecimal discountRate;
 
-    @Field(name="discountedPrice")
+//    @Field(name="discountedPrice")
     private BigDecimal discountedPrice;
 
-    @Field(name="sourceType")
+//    @Field(name="sourceType")
     private String sourceType;
 
-    @Field(name="orderItemCharValues")
+//    @Field(name="basketItemId")
+    private String basketItemId;
+
+//    @Field(name="orderItemCharValues")
     private List<OrderItemCharValue> orderItemCharValues ;
 
     public OrderItem() {
     }
 
-    public OrderItem(String id, int productOfferId, String productOfferName, BigDecimal price, BigDecimal discountRate, BigDecimal discountedPrice, String sourceType, List<OrderItemCharValue> orderItemCharValues) {
+    public OrderItem(String id, int productOfferId, String productOfferName, BigDecimal price, BigDecimal discountRate, BigDecimal discountedPrice, String sourceType, String basketItemId, List<OrderItemCharValue> orderItemCharValues) {
         this.id = id;
         this.productOfferId = productOfferId;
         this.productOfferName = productOfferName;
@@ -45,6 +48,7 @@ public class OrderItem {
         this.discountRate = discountRate;
         this.discountedPrice = discountedPrice;
         this.sourceType = sourceType;
+        this.basketItemId = basketItemId;
         this.orderItemCharValues = orderItemCharValues;
     }
 
@@ -102,6 +106,14 @@ public class OrderItem {
 
     public void setSourceType(String sourceType) {
         this.sourceType = sourceType;
+    }
+
+    public String getBasketItemId() {
+        return basketItemId;
+    }
+
+    public void setBasketItemId(String basketItemId) {
+        this.basketItemId = basketItemId;
     }
 
     public List<OrderItemCharValue> getOrderItemCharValues() {

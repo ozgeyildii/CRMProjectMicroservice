@@ -1,5 +1,6 @@
 package com.etiya.salesservice.domain;
 
+import com.etiya.salesservice.domain.enums.OrderStatus;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.MongoId;
@@ -22,6 +23,9 @@ public class Order {
     @Field(name = "totalPrice")
     private BigDecimal totalPrice;
 
+    @Field(name = "status")
+    private OrderStatus status=OrderStatus.PENDING;
+
     //TODO: Müşteri bilgileri => FirstName,LastName,Email
 
     private List<OrderItem> orderItems;
@@ -30,10 +34,11 @@ public class Order {
         this.orderItems = new ArrayList<>();
     }
 
-    public Order(String id, int billingAccountId, BigDecimal totalPrice, List<OrderItem> orderItems) {
+    public Order(String id, int billingAccountId, BigDecimal totalPrice, OrderStatus status, List<OrderItem> orderItems) {
         this.id = id;
         this.billingAccountId = billingAccountId;
         this.totalPrice = totalPrice;
+        this.status = status;
         this.orderItems = orderItems;
     }
 
@@ -59,6 +64,14 @@ public class Order {
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 
     public List<OrderItem> getOrderItems() {

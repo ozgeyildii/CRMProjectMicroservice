@@ -16,8 +16,7 @@ public class CreatedOrderResponse {
     private BigDecimal totalPrice;
 
 
-    private List<CreatedOrderItemResponse> createdOrderItemResponses;
-
+    private List<CreatedOrderItemResponse> createdOrderItem;
 
     public String getId() {
         return id;
@@ -25,14 +24,6 @@ public class CreatedOrderResponse {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public List<CreatedOrderItemResponse> getCreatedOrderItemResponses() {
-        return createdOrderItemResponses;
-    }
-
-    public void setCreatedOrderItemResponses(List<CreatedOrderItemResponse> createdOrderItemResponses) {
-        this.createdOrderItemResponses = createdOrderItemResponses;
     }
 
     public int getBillingAccountId() {
@@ -49,6 +40,14 @@ public class CreatedOrderResponse {
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public List<CreatedOrderItemResponse> getCreatedOrderItem() {
+        return createdOrderItem;
+    }
+
+    public void setCreatedOrderItem(List<CreatedOrderItemResponse> createdOrderItem) {
+        this.createdOrderItem = createdOrderItem;
     }
 }
 

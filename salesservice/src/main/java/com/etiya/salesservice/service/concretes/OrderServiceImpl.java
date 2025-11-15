@@ -30,7 +30,7 @@ public class OrderServiceImpl implements OrderService {
     public CreatedOrderResponse add(CreateOrderRequest createOrderRequest) {
 
         // 1️⃣ Sepeti getir
-        GetBasketResponse basket = basketServiceClient.getByBillingAccount(createOrderRequest.getBillingAccountId());
+        GetBasketResponse basket = basketServiceClient.getBasketByBillingAccount(createOrderRequest.getBillingAccountId());
 
         // 2️⃣ Basket → Order map'le
         Order order = OrderMapper.INSTANCE.orderFromGetBasketResponse(basket);
@@ -38,19 +38,21 @@ public class OrderServiceImpl implements OrderService {
         // 3️⃣ FE’den gelen konfigürasyonları itemlara işle
         for (CreateOrderItemRequest itemReq : createOrderRequest.getItems()) {
 
-            // Sepetteki item id → orderItem.id eşleşmesi
+
             OrderItem orderItem = order.getOrderItems()
                     .stream()
-                    .filter(o -> o.getId().equals(itemReq.getBasketItemId()))
+                    .filter(o -> o.getBasketItemId().equals(itemReq.getBasketItemId()))
                     .findFirst()
                     .orElse(null);
-
             if (orderItem == null)
                 continue;
-
-            // CharValues doldur
+            // FE'den gelen char values → domain'e map
             List<OrderItemCharValue> charValues =
                     OrderMapper.INSTANCE.orderItemCharValueListFromCreateRequestList(itemReq.getCharValues());
+
+            // 🔥 EN ÖNEMLİ NOKTA
+            // Her charValue kendi orderItemId’sini bilmeli
+            charValues.forEach(cv -> cv.setOrderItemId(orderItem.getId()));
 
             orderItem.setOrderItemCharValues(charValues);
         }

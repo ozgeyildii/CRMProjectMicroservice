@@ -6,15 +6,10 @@ import java.util.UUID;
 
 public class CreatedOrderItemCharValueResponse {
 
-    private  String id;
-
-    private String itemId;
-
-    private String orderItemId;
-
-    private int charValueId;
-
-    private String value;
+    private String id;
+    private String orderItemId;       // Hangi OrderItem'a ait?
+    private String characteristicName;  // "Speed", "ModemBrand", "Username"
+    private String characteristicValue;
 
     public String getId() {
         return id;
@@ -22,14 +17,6 @@ public class CreatedOrderItemCharValueResponse {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
     }
 
     public String getOrderItemId() {
@@ -40,19 +27,19 @@ public class CreatedOrderItemCharValueResponse {
         this.orderItemId = orderItemId;
     }
 
-    public int getCharValueId() {
-        return charValueId;
+    public String getCharacteristicName() {
+        return characteristicName;
     }
 
-    public void setCharValueId(int charValueId) {
-        this.charValueId = charValueId;
+    public void setCharacteristicName(String characteristicName) {
+        this.characteristicName = characteristicName;
     }
 
-    public String getValue() {
-        return value;
+    public String getCharacteristicValue() {
+        return characteristicValue;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setCharacteristicValue(String characteristicValue) {
+        this.characteristicValue = characteristicValue;
     }
 }

@@ -28,7 +28,7 @@ public interface OrderMapper {
     Order orderFromGetBasketResponse(GetBasketResponse basket);
 
 
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "basketItemId", source = "basketItemId")
     @Mapping(target = "productOfferId", source = "productOfferId")
     @Mapping(target = "productOfferName", source = "productOfferName")
     @Mapping(target = "price", source = "price")
@@ -47,19 +47,25 @@ public interface OrderMapper {
     OrderItemCharValue orderItemCharValueFromCreateRequest(CreateOrderItemCharValueRequest req);
 
 
+
+
     List<OrderItemCharValue> orderItemCharValueListFromCreateRequestList(
             List<CreateOrderItemCharValueRequest> reqs
     );
 
 
-    @Mapping(target = "createdOrderItemResponses", source = "orderItems")
+    @Mapping(target = "createdOrderItem", source = "orderItems")
     CreatedOrderResponse createdOrderResponseFromOrder(Order order);
 
 
-    @Mapping(target = "createdOrderItemCharValueResponses", source = "orderItemCharValues") // 🔥 DOĞRU EŞLEŞME
+    @Mapping(target = "createdOrderItemCharValues", source = "orderItemCharValues") // 🔥 DOĞRU EŞLEŞME
     CreatedOrderItemResponse createdOrderItemResponseFromOrderItem(OrderItem item);
 
 
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "orderItemId", source = "orderItemId")
+    @Mapping(target = "characteristicName", source = "characteristicName")
+    @Mapping(target = "characteristicValue", source = "characteristicValue")
     CreatedOrderItemCharValueResponse createdOrderItemCharValueResponseFromOrderItemCharValue(
             OrderItemCharValue value
     );

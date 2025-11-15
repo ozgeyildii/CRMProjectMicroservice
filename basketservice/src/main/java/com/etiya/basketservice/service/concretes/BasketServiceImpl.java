@@ -209,7 +209,7 @@ public class BasketServiceImpl implements BasketService {
         if (basket == null) {
             GetBasketResponse empty = new GetBasketResponse();
             empty.setBillingAccId(billingAccountId);
-            empty.setTotalPrice(0);
+            empty.setTotalPrice(BigDecimal.ZERO);
             empty.setBasketItems(new ArrayList<>());
             return empty;
         }

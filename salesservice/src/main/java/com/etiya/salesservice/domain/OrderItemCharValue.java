@@ -6,15 +6,15 @@ import java.util.UUID;
 
 public class OrderItemCharValue {
 
-    @Field(name = "id")
+//    @Field(name = "id")
     private String id = UUID.randomUUID().toString();
 
-    @Field(name="orderItemId")
+//    @Field(name="orderItemId")
     private String orderItemId;         // Hangi OrderItem'a ait?
 
-    @Field(name="characteristicName")
+//    @Field(name="characteristicName")
     private String characteristicName;  // "Speed", "ModemBrand", "Username"
-    @Field(name = "characteristicValue")
+//    @Field(name = "characteristicValue")
     private String characteristicValue;
 
     public OrderItemCharValue() {
