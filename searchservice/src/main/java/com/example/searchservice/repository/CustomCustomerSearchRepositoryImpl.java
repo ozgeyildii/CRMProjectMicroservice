@@ -40,17 +40,17 @@ public class CustomCustomerSearchRepositoryImpl implements CustomCustomerSearchR
     ) {
         BoolQuery.Builder bool = QueryBuilders.bool();
 
-
         if (StringUtils.hasText(id)) {
             bool.must(m -> m.term(t -> t.field("id.keyword").value(id)));
         }
+
         if (StringUtils.hasText(customerNumber)) {
             bool.must(m -> m.term(t -> t.field("customerNumber.keyword").value(customerNumber)));
         }
+
         if (StringUtils.hasText(nationalId)) {
             bool.must(m -> m.term(t -> t.field("nationalId.keyword").value(nationalId)));
         }
-
 
         if (StringUtils.hasText(firstName)) {
             String originalLower = firstName.toLowerCase(Locale.ROOT);
@@ -66,7 +66,7 @@ public class CustomCustomerSearchRepositoryImpl implements CustomCustomerSearchR
 
             Query originalQuery = Query.of(q -> q
                     .wildcard(w -> w
-                            .field("firstName") // 🔥 artık keyword değil
+                            .field("firstName")
                             .caseInsensitive(true)
                             .value("*" + originalLower + "*")
                     )
@@ -74,7 +74,7 @@ public class CustomCustomerSearchRepositoryImpl implements CustomCustomerSearchR
 
             Query normalizedQuery = Query.of(q -> q
                     .wildcard(w -> w
-                            .field("firstName") // 🔥 keyword yok burada da
+                            .field("firstName")
                             .caseInsensitive(true)
                             .value("*" + normalized + "*")
                     )
@@ -84,7 +84,6 @@ public class CustomCustomerSearchRepositoryImpl implements CustomCustomerSearchR
 
             bool.must(m -> m.bool(b -> b.should(shouldQueries)));
         }
-
 
         if (StringUtils.hasText(lastName)) {
             String lowerLastName = lastName.toLowerCase();
@@ -96,8 +95,7 @@ public class CustomCustomerSearchRepositoryImpl implements CustomCustomerSearchR
         }
 
         if (StringUtils.hasText(accountNumber)) {
-            String upperAccountNumber = accountNumber.toUpperCase(); // Önceki öneriyi koruyarak büyük harf yapıyoruz
-
+            String upperAccountNumber = accountNumber.toUpperCase();
             bool.must(m -> m
                     .nested(n -> n
                             .path("billingAccounts")
@@ -110,7 +108,6 @@ public class CustomCustomerSearchRepositoryImpl implements CustomCustomerSearchR
                     )
             );
         }
-
 
         if (StringUtils.hasText(value)) {
             bool.must(m -> m.nested(n -> n

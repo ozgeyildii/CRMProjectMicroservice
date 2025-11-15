@@ -8,6 +8,7 @@ import java.util.Map;
 
 @Service
 public class OutboxServiceImpl implements OutboxService {
+
     private final OutboxEventRepository repo;
     private final ObjectMapper mapper;
 
@@ -26,13 +27,15 @@ public class OutboxServiceImpl implements OutboxService {
         e.setPayload(serialize(event));
         repo.save(e);
     }
-        private String serialize(Object event) {
-            try {
-                Map<String, Object> map = mapper.convertValue(event, Map.class);
-                map.put("eventType", event.getClass().getSimpleName());
-                return mapper.writeValueAsString(map);
-            } catch (Exception e) {
-                throw new IllegalStateException("❌ Failed to serialize event: " + event.getClass().getSimpleName(), e);
-            }
 
-    }}
+    private String serialize(Object event) {
+        try {
+            Map<String, Object> map = mapper.convertValue(event, Map.class);
+            map.put("eventType", event.getClass().getSimpleName());
+            return mapper.writeValueAsString(map);
+        } catch (Exception ex) {
+            throw new IllegalStateException(
+                    "Failed to serialize event: " + event.getClass().getSimpleName(), ex);
+        }
+    }
+}

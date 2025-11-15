@@ -2,6 +2,7 @@ package com.etiya.customerservice.service.concretes;
 
 import com.etiya.common.crosscuttingconcerns.exceptions.types.BusinessException;
 
+import com.etiya.common.events.customer.CreateCustomerEvent;
 import com.etiya.common.events.customer.DeleteCustomerEvent;
 import com.etiya.common.events.customer.UpdateCustomerEvent;
 import com.etiya.common.responses.CustomerResponse;
@@ -9,6 +10,7 @@ import com.etiya.common.responses.CustomerResponse;
 import com.etiya.customerservice.domain.entities.Customer;
 import com.etiya.customerservice.domain.entities.IndividualCustomer;
 
+import com.etiya.customerservice.infrastructure.OutboxService;
 import com.etiya.customerservice.repository.IndividualCustomerRepository;
 import com.etiya.customerservice.service.abstracts.IndividualCustomerService;
 import com.etiya.customerservice.service.mappings.IndividualCustomerMapper;
@@ -32,12 +34,14 @@ import java.util.UUID;
 public class IndividualCustomerServiceImpl implements IndividualCustomerService {
 
     private final IndividualCustomerRepository individualCustomerRepository;
+    private final OutboxService outboxService;
     private final IndividualCustomerBusinessRules individualCustomerBusinessRules;
     private final UpdateCustomerProducer updateCustomerProducer;
     private final DeleteCustomerProducer deleteCustomerProducer;
 
-    public IndividualCustomerServiceImpl(IndividualCustomerRepository individualCustomerRepository, IndividualCustomerBusinessRules individualCustomerBusinessRules, UpdateCustomerProducer updateCustomerProducer, DeleteCustomerProducer deleteCustomerProducer) {
+    public IndividualCustomerServiceImpl(IndividualCustomerRepository individualCustomerRepository, OutboxService outboxService, IndividualCustomerBusinessRules individualCustomerBusinessRules, UpdateCustomerProducer updateCustomerProducer, DeleteCustomerProducer deleteCustomerProducer) {
         this.individualCustomerRepository = individualCustomerRepository;
+        this.outboxService = outboxService;
         this.individualCustomerBusinessRules = individualCustomerBusinessRules;
         this.updateCustomerProducer = updateCustomerProducer;
         this.deleteCustomerProducer = deleteCustomerProducer;
@@ -47,11 +51,24 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
     public CreatedIndividualCustomerResponse add(CreateIndividualCustomerRequest request) {
         individualCustomerBusinessRules.checkIfIndividualCustomerExistsByIdentityNumber((request.getNationalId()));
         IndividualCustomer individualCustomer = IndividualCustomerMapper.INSTANCE.individualCustomerFromCreateIndividualCustomerRequest(request);
-        IndividualCustomer createdIndividualCustomer = individualCustomerRepository.save(individualCustomer);
+        IndividualCustomer created = individualCustomerRepository.save(individualCustomer);
 
-        CreatedIndividualCustomerResponse response =
-                IndividualCustomerMapper.INSTANCE.createdIndividualCustomerResponseFromIndividualCustomer(createdIndividualCustomer);
-        return response;
+        CreateCustomerEvent event = new CreateCustomerEvent(
+                created.getId(),
+                created.getCustomerNumber(),
+                created.getFirstName(),
+                created.getLastName(),
+                created.getNationalId(),
+                created.getDateOfBirth().toString(),
+                created.getMotherName(),
+                created.getFatherName(),
+                created.getGender()
+        );
+
+        outboxService.save(event, "CUSTOMER", created.getId().toString());
+
+        return IndividualCustomerMapper.INSTANCE
+                .createdIndividualCustomerResponseFromIndividualCustomer(created);
     }
 
 

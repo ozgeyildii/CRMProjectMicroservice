@@ -24,100 +24,41 @@ public class CustomerOrchestratorServiceImpl implements CustomerOrchestratorServ
     private final IndividualCustomerService individualCustomerService;
     private final AddressService addressService;
     private final ContactMediumService contactMediumService;
-    private final OutboxService outboxService;
 
     public CustomerOrchestratorServiceImpl(
             IndividualCustomerService individualCustomerService,
             AddressService addressService,
-            ContactMediumService contactMediumService, OutboxService outboxService) {
+            ContactMediumService contactMediumService) {
 
         this.individualCustomerService = individualCustomerService;
         this.addressService = addressService;
         this.contactMediumService = contactMediumService;
-        this.outboxService = outboxService;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public CreatedFullIndividualCustomerResponse createFullCustomer(CreateFullIndividualCustomerRequest request) {
-
-        // 1️ Individual Customer oluşturulur
         CreatedIndividualCustomerResponse createdCustomer =
                 individualCustomerService.add(request.getIndividualCustomer());
 
-        String customerId = createdCustomer.getId().toString();
-
-
-        // 2️ Address’ler functional şekilde işlenir (null-safe + map)
         List<CreatedAddressResponse> createdAddresses =
                 Optional.ofNullable(request.getAddresses())
                         .orElse(Collections.emptyList())
                         .stream()
                         .map(addr -> {
                             addr.setCustomerId(createdCustomer.getId());
-                            return addressService.add(addr);
-                        })
-                        .toList();
+                            return addressService.add(addr);   // EVENT BURADA service içinde üretilecek
+                        }).toList();
 
-        // 3️ Contact Medium’lar functional şekilde işlenir (null-safe + map)
         List<CreatedContactMediumResponse> createdContactMediums =
                 Optional.ofNullable(request.getContactMediums())
                         .orElse(Collections.emptyList())
                         .stream()
                         .map(cm -> {
                             cm.setCustomerId(createdCustomer.getId());
-                            return contactMediumService.add(cm);
-                        })
-                        .toList();
+                            return contactMediumService.add(cm); // EVENT BURADA service içinde üretilecek
+                        }).toList();
 
-        Stream.concat(
-                Stream.of(
-                        new CreateCustomerEvent(
-                                createdCustomer.getId(),
-                                createdCustomer.getCustomerNumber(),
-                                createdCustomer.getFirstName(),
-                                createdCustomer.getLastName(),
-                                createdCustomer.getNationalId(),
-                                createdCustomer.getDateOfBirth().toString(),
-                                createdCustomer.getMotherName(),
-                                createdCustomer.getFatherName(),
-                                createdCustomer.getGender()
-                        )
-                ),
-                Stream.concat(
-                        createdAddresses.stream().map(a -> new CreateAddressEvent(
-                                a.getId(),
-                                a.getStreet(),
-                                a.getHouseNumber(),
-                                a.getDescription(),
-                                a.isDefault(),
-                                a.getDistrictId(),
-                                a.getDistrictName(),
-                                a.getCityId(),
-                                a.getCityName(),
-                                createdCustomer.getId()
-                        )),
-                        createdContactMediums.stream().map(c -> new CreateContactMediumEvent(
-                                c.getId(),
-                                c.getType().toString(),
-                                c.getValue(),
-                                c.isPrimary(),
-                                createdCustomer.getId()
-                        ))
-                )
-        )  .map(event -> {
-                    String type;
-                    if (event instanceof CreateCustomerEvent) type = "CUSTOMER";
-                    else if (event instanceof CreateAddressEvent) type = "ADDRESS";
-                    else if (event instanceof CreateContactMediumEvent) type = "CONTACT_MEDIUM";
-                    else type = "UNKNOWN";
-                    outboxService.save(event, type, customerId);
-                    return event;
-                })
-                .toList();
-
-
-        // 4⃣ Response nesnesi immutable şekilde oluşturulur
         return new CreatedFullIndividualCustomerResponse(
                 createdCustomer,
                 createdAddresses,

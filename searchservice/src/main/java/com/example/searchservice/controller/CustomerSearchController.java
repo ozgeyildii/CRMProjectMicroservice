@@ -30,7 +30,6 @@ public class CustomerSearchController {
         return customerSearchService.getById(id);
     }
 
-
     @GetMapping("search")
     public List<CustomerSearch> search(
             @RequestParam(required = false) String id,

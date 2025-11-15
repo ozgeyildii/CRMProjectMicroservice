@@ -8,29 +8,26 @@ import com.example.searchservice.domain.ContactMedium;
 import com.example.searchservice.domain.CustomerSearch;
 import com.example.searchservice.service.CustomerSearchService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Map;
 import java.util.function.Consumer;
 
 @Configuration
 public class CreatedEventsDispatcher {
 
-    private static final Logger log = LoggerFactory.getLogger(CreatedEventsDispatcher.class);
     private final CustomerSearchService customerSearchService;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     public CreatedEventsDispatcher(CustomerSearchService customerSearchService) {
         this.customerSearchService = customerSearchService;
     }
 
     @Bean
-    public Consumer<byte[]> createdEvents() {
-        Map<String, RunnableWithPayload> handlers = Map.of(
+    public Consumer<String> createdEvents() {
+        Map<String, Consumer<String>> handlers = Map.of(
                 CreateCustomerEvent.class.getSimpleName(), json -> {
                     var e = read(json, CreateCustomerEvent.class);
                     customerSearchService.add(new CustomerSearch(
@@ -63,30 +60,22 @@ public class CreatedEventsDispatcher {
                 }
         );
 
-        return payload -> {
-            String json = new String(payload, StandardCharsets.UTF_8);
-            try {
-                var map = objectMapper.readValue(json, Map.class);
-                String type = (String) map.get("eventType");
-                var handler = handlers.get(type);
-                if (handler != null) handler.run(json);
-                else log.warn("⚠️ Unknown eventType: {}", type);
-            } catch (Exception e) {
-                log.error("❌ Failed to parse event payload: {}", e.getMessage(), e);
-            }
+        return base64Payload -> {
+            var json = decode(base64Payload);   // ★★★ EN KRİTİK SATIR
+            var map = read(json, Map.class);
+            String type = (String) map.get("eventType");
+            handlers.get(type).accept(json);
         };
+    }
+
+    private String decode(String base64) {
+        return new String(Base64.getDecoder().decode(base64));
     }
 
     private <T> T read(String json, Class<T> clazz) {
         try {
-            return objectMapper.readValue(json, clazz);
+            return mapper.readValue(json, clazz);
         } catch (Exception e) {
-            throw new IllegalStateException("❌ JSON parse failed for " + clazz.getSimpleName(), e);
+            throw new RuntimeException("JSON parsing error for: " + clazz.getSimpleName(), e);
         }
-    }
-
-    @FunctionalInterface
-    interface RunnableWithPayload {
-        void run(String payload);
-    }
-}
+    }}

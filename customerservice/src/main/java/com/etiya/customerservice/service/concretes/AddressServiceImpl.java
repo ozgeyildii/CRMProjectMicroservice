@@ -1,11 +1,13 @@
 package com.etiya.customerservice.service.concretes;
 
+import com.etiya.common.events.address.CreateAddressEvent;
 import com.etiya.common.events.address.DeleteAddressEvent;
 import com.etiya.common.events.address.SoftDeleteAddressEvent;
 import com.etiya.common.events.address.UpdateAddressEvent;
 import com.etiya.customerservice.domain.entities.Address;
 import com.etiya.customerservice.domain.entities.Customer;
 import com.etiya.customerservice.domain.entities.District;
+import com.etiya.customerservice.infrastructure.OutboxService;
 import com.etiya.customerservice.repository.AddressRepository;
 import com.etiya.customerservice.service.abstracts.AddressService;
 import com.etiya.customerservice.service.abstracts.CustomerService;
@@ -38,8 +40,9 @@ public class AddressServiceImpl implements AddressService {
     private final UpdateAddressProducer updateAddressProducer;
     private final DeleteAddressProducer deleteAddressProducer;
     private final SoftDeleteAddressProducer softDeleteAddressProducer;
+    private final OutboxService outboxService;
 
-    public AddressServiceImpl(AddressRepository addressRepository, CustomerService customerService, DistrictService districtService,  AddressBusinessRules addressBusinessRules,  UpdateAddressProducer updateAddressProducer, DeleteAddressProducer deleteAddressProducer, SoftDeleteAddressProducer softDeleteAddressProducer) {
+    public AddressServiceImpl(AddressRepository addressRepository, CustomerService customerService, DistrictService districtService, AddressBusinessRules addressBusinessRules, UpdateAddressProducer updateAddressProducer, DeleteAddressProducer deleteAddressProducer, SoftDeleteAddressProducer softDeleteAddressProducer, OutboxService outboxService) {
         this.districtService = districtService;
         this.customerService = customerService;
         this.addressBusinessRules  = addressBusinessRules;
@@ -47,6 +50,7 @@ public class AddressServiceImpl implements AddressService {
         this.updateAddressProducer = updateAddressProducer;
         this.deleteAddressProducer = deleteAddressProducer;
         this.softDeleteAddressProducer = softDeleteAddressProducer;
+        this.outboxService = outboxService;
     }
 
    // @Override
@@ -60,12 +64,26 @@ public class AddressServiceImpl implements AddressService {
             District district = districtService.getDistrictById(request.getDistrictId());
             Customer customer = customerService.getByEntityId(request.getCustomerId());
 
-
             Address address = AddressMapper.INSTANCE.addressFromCreateAddressRequest(request);
             address.setCustomer(customer);
             address.setDistrict(district);
 
             Address createdAddress = addressRepository.save(address);
+
+            CreateAddressEvent event = new CreateAddressEvent(
+                    createdAddress.getId(),
+                    createdAddress.getStreet(),
+                    createdAddress.getHouseNumber(),
+                    createdAddress.getDescription(),
+                    createdAddress.isDefault(),
+                    createdAddress.getDistrict().getId(),
+                    createdAddress.getDistrict().getName(),
+                    createdAddress.getDistrict().getCity().getId(),
+                    createdAddress.getDistrict().getCity().getName(),
+                    createdAddress.getCustomer().getId()
+            );
+
+            outboxService.save(event, "ADDRESS", createdAddress.getCustomer().getId().toString());
 
             return AddressMapper.INSTANCE.createdAddressResponseFromAddress(createdAddress);
         }

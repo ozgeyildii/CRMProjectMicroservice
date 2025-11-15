@@ -9,8 +9,7 @@ public class OutboxEvent {
 
     public enum Status {
         NEW,
-        PUBLISHED,
-        FAILED
+        PUBLISHED
     }
 
     @Id
@@ -18,17 +17,16 @@ public class OutboxEvent {
     private Long id;
 
     @Column(name = "aggregate_type", nullable = false)
-    private String aggregateType;
+    private String aggregateType; // CUSTOMER / ADDRESS / CONTACT_MEDIUM
 
     @Column(name = "aggregate_id", nullable = false)
-    private String aggregateId;
+    private String aggregateId;   // customerId
 
     @Column(name = "event_type", nullable = false)
-    private String eventType;
+    private String eventType;     // CreateCustomerEvent vs.
 
-    @Lob
-    @Column(nullable = false)
-    private String payload;
+    @Column(name = "payload", nullable = false, columnDefinition = "text")
+    private String payload;       // JSON string
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -36,10 +34,6 @@ public class OutboxEvent {
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
-
-    public OutboxEvent() {}
-
-    // --- Getters and Setters ---
 
     public Long getId() {
         return id;
