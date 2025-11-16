@@ -46,9 +46,6 @@ public interface OrderMapper {
     @Mapping(target = "characteristicValue", source = "characteristicValue")
     OrderItemCharValue orderItemCharValueFromCreateRequest(CreateOrderItemCharValueRequest req);
 
-
-
-
     List<OrderItemCharValue> orderItemCharValueListFromCreateRequestList(
             List<CreateOrderItemCharValueRequest> reqs
     );

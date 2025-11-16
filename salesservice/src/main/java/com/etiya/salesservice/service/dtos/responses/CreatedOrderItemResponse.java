@@ -13,6 +13,14 @@ public class CreatedOrderItemResponse {
 
     private String productOfferName;
 
+    private int productId;
+
+    private String productName;
+
+    private Integer campaignId;
+
+    private String campaignName;
+
     private BigDecimal price;
 
     private BigDecimal discountRate;
@@ -90,11 +98,43 @@ public class CreatedOrderItemResponse {
         this.sourceType = sourceType;
     }
 
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public Integer getCampaignId() {
+        return campaignId;
+    }
+
+    public void setCampaignId(Integer campaignId) {
+        this.campaignId = campaignId;
+    }
+
+    public String getCampaignName() {
+        return campaignName;
+    }
+
+    public void setCampaignName(String campaignName) {
+        this.campaignName = campaignName;
+    }
+
     public List<CreatedOrderItemCharValueResponse> getCreatedOrderItemCharValues() {
         return createdOrderItemCharValues;
     }
 
     public void setCreatedOrderItemCharValues(List<CreatedOrderItemCharValueResponse> createdOrderItemCharValues) {
         this.createdOrderItemCharValues = createdOrderItemCharValues;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 }

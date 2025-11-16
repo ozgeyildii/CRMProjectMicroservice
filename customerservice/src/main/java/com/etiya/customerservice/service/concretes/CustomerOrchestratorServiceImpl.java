@@ -1,9 +1,5 @@
 package com.etiya.customerservice.service.concretes;
 
-import com.etiya.common.events.address.CreateAddressEvent;
-import com.etiya.common.events.contactmedium.CreateContactMediumEvent;
-import com.etiya.common.events.customer.CreateCustomerEvent;
-import com.etiya.customerservice.infrastructure.OutboxService;
 import com.etiya.customerservice.service.abstracts.*;
 import com.etiya.customerservice.service.requests.individualcustomerorchestrator.CreateFullIndividualCustomerRequest;
 import com.etiya.customerservice.service.responses.address.CreatedAddressResponse;
@@ -16,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Service
 public class CustomerOrchestratorServiceImpl implements CustomerOrchestratorService {

@@ -22,7 +22,6 @@ import com.etiya.customerservice.service.responses.customer.FullCustomerResponse
 import com.etiya.customerservice.service.responses.individualcustomers.CreatedIndividualCustomerResponse;
 import com.etiya.customerservice.service.responses.individualcustomers.UpdatedIndividualCustomerResponse;
 import com.etiya.customerservice.service.rules.IndividualCustomerBusinessRules;
-import com.etiya.customerservice.transport.kafka.producer.customer.CreateCustomerProducer;
 import com.etiya.customerservice.transport.kafka.producer.customer.DeleteCustomerProducer;
 import com.etiya.customerservice.transport.kafka.producer.customer.UpdateCustomerProducer;
 import org.springframework.stereotype.Service;
