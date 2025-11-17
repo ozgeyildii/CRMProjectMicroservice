@@ -1,6 +1,5 @@
 package com.etiya.customerservice.service.concretes;
 
-import com.etiya.customerservice.domain.entities.City;
 import com.etiya.customerservice.domain.entities.District;
 import com.etiya.customerservice.repository.DistrictRepository;
 import com.etiya.customerservice.service.abstracts.CityService;
@@ -62,7 +61,6 @@ public class DistrictServiceImpl implements DistrictService {
         UpdatedDistrictResponse response = DistrictMapper.INSTANCE.updatedDistrictResponseFromDistrict(updatedDistrict);
         return response;
     }
-
 
 
     @Override

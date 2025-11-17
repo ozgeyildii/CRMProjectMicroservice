@@ -1,5 +1,7 @@
 package com.etiya.customerservice.infrastructure;
 
+import com.etiya.common.crosscuttingconcerns.exceptions.constants.ExceptionMessages;
+import com.etiya.common.crosscuttingconcerns.exceptions.types.InternalServerException;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -30,9 +32,8 @@ public class OutboxRelay {
                 bridge.send("createdEvents-out-0", e.getPayload());
                 e.setStatus(OutboxEvent.Status.PUBLISHED);
             } catch (Exception ex) {
-                throw new RuntimeException("Outbox publish failed: " + e.getId(), ex);
-            }
-        });
+                throw new InternalServerException(ExceptionMessages.OUTBOX_SERIALIZATION_ERROR);
+            }});
     }
 
     @Scheduled(cron = "0 0 3 * * *")

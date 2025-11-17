@@ -42,7 +42,7 @@ public class CustomerOrchestratorServiceImpl implements CustomerOrchestratorServ
                         .stream()
                         .map(addr -> {
                             addr.setCustomerId(createdCustomer.getId());
-                            return addressService.add(addr);   // EVENT BURADA service içinde üretilecek
+                            return addressService.add(addr);
                         }).toList();
 
         List<CreatedContactMediumResponse> createdContactMediums =
@@ -51,7 +51,7 @@ public class CustomerOrchestratorServiceImpl implements CustomerOrchestratorServ
                         .stream()
                         .map(cm -> {
                             cm.setCustomerId(createdCustomer.getId());
-                            return contactMediumService.add(cm); // EVENT BURADA service içinde üretilecek
+                            return contactMediumService.add(cm);
                         }).toList();
 
         return new CreatedFullIndividualCustomerResponse(

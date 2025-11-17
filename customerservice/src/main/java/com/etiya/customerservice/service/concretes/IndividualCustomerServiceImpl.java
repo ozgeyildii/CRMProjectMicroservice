@@ -100,7 +100,6 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
     }
 
 
-
     @Override
     public Customer findById(UUID id) {
         return individualCustomerRepository.findById(id)
@@ -111,23 +110,22 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
     public void delete(UUID id) {
         IndividualCustomer individualCustomer = individualCustomerRepository.findById(id).orElseThrow(() -> new RuntimeException("Individual Customer not found"));
         individualCustomerRepository.delete(individualCustomer);
-        DeleteCustomerEvent event=new DeleteCustomerEvent(id);
+        DeleteCustomerEvent event = new DeleteCustomerEvent(id);
         deleteCustomerProducer.produceCustomerDeleted(event);
     }
 
 
-
     @Override
     public CustomerResponse getById(UUID id) {
-        return individualCustomerRepository.findById(id).stream().map(this::mapToResponse).findFirst().orElseThrow(()->new BusinessException("Customer Not Found"));
+        return individualCustomerRepository.findById(id).stream().map(this::mapToResponse).findFirst().orElseThrow(() -> new BusinessException("Customer Not Found"));
     }
 
     @Override
     public boolean existsByNationalId(String nationalId) {
-       return individualCustomerRepository.existsByNationalId((nationalId));
+        return individualCustomerRepository.existsByNationalId((nationalId));
     }
 
-    private CustomerResponse mapToResponse(Customer customer){
+    private CustomerResponse mapToResponse(Customer customer) {
         CustomerResponse response = new CustomerResponse();
         response.setId(customer.getId());
         return response;

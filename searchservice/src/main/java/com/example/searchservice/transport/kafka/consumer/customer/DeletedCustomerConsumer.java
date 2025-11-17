@@ -22,6 +22,5 @@ public class DeletedCustomerConsumer {
             customerSearchService.deleteCustomer(event.customerId());
             LOGGER.info(String.format("Consumed Customer Medium (deleted) => %s"));
         };
-
     }
 }

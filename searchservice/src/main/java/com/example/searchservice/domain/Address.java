@@ -1,4 +1,5 @@
 package com.example.searchservice.domain;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,7 +16,7 @@ public class Address {
     private int cityId;
     private String cityName;
     private String customerId;
-    private String deletedDate=null;
+    private String deletedDate = null;
 
     public int getId() {
         return id;

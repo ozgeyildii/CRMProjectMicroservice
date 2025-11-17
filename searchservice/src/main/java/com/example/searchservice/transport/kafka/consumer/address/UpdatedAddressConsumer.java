@@ -38,21 +38,4 @@ public class UpdatedAddressConsumer {
             LOGGER.info(String.format("Consumed Address (updated) => %s", event.id()));
         };
     }
-
-
-
-   /* @KafkaListener(topics = "update-address", groupId = "update-address-group")
-    public void consume(UpdateAddressEvent event) {
-        LOGGER.info(String.format("Consumed Address => %s", event.id()));
-        Address address = new Address(
-                event.id(),
-                event.houseNumber(),
-                event.description(),
-                event.street(),
-                event.isDefault(),
-                event.districtId()
-        );
-        customerSearchService.updateAddress(address, event.customerId());
-
-    }*/
 }

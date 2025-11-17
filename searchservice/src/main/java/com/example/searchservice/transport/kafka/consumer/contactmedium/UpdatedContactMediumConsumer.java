@@ -22,27 +22,16 @@ public class UpdatedContactMediumConsumer {
 
     @Bean
     public Consumer<UpdateContactMediumEvent> contactUpdated() {
-        return event->{ContactMedium contactMedium = new ContactMedium(
-                event.id(),
-                event.type(),
-                event.value(),
-                event.isPrimary(),
-                event.customerId().toString()
-        );
-        LOGGER.info(String.format("Consumed Contact Medium (updated) => %s", event.id()));
-        customerSearchService.updateContactMedium(contactMedium);
-        };}
-/*
-    @KafkaListener(topics = "update-contactmedium", groupId = "update-contactmedium-group")
-    public void consume(UpdateContactMediumEvent event) {
-        LOGGER.info(String.format("Consumed Contact Medium => %s", event.id()));
-        ContactMedium contactMedium = new ContactMedium(
-                event.id(),
-                event.type(),
-                event.value(),
-                event.isPrimary()
-        );
-        customerSearchService.updateContactMedium(contactMedium, event.customerId());
-
-    }*/
+        return event -> {
+            ContactMedium contactMedium = new ContactMedium(
+                    event.id(),
+                    event.type(),
+                    event.value(),
+                    event.isPrimary(),
+                    event.customerId().toString()
+            );
+            LOGGER.info(String.format("Consumed Contact Medium (updated) => %s", event.id()));
+            customerSearchService.updateContactMedium(contactMedium);
+        };
+    }
 }

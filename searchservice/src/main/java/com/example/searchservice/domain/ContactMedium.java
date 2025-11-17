@@ -12,7 +12,7 @@ public class ContactMedium {
     @JsonProperty("isPrimary")
     private boolean primaryValue;
     private String customerId;
-    private String deletedDate=null;
+    private String deletedDate = null;
 
     public int getId() {
         return id;

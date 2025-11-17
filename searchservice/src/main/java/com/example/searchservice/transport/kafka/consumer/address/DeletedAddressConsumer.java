@@ -25,12 +25,4 @@ public Consumer<DeleteAddressEvent> addressDeleted() {
     LOGGER.info(String.format("Consumed Address (deleted) => %s", event.id()));
 };
 }
-
-
-   /* @KafkaListener(topics = "delete-address", groupId = "delete-address-group")
-    public void consume(DeleteAddressEvent event) {
-        LOGGER.info(String.format("Consumed Address => %s", event.id()));
-        customerSearchService.deleteAddress(event.id(),event.customerId());
-
-    }*/
 }

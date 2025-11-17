@@ -26,10 +26,4 @@ public class DeletedContactMediumConsumer {
         };
 
     }
-   /* @KafkaListener(topics = "delete-contactmedium", groupId = "delete-contactmedium-group")
-    public void consume(DeleteContactMediumEvent event) {
-        LOGGER.info(String.format("Consumed Contact Medium => %s", event.id()));
-        customerSearchService.deleteContactMedium(event.id(),event.customerId());
-
-    }*/
 }

@@ -27,11 +27,4 @@ public class SoftDeletedAddressConsumer {
             LOGGER.info(String.format("Consumed Address (soft-deleted)=> %s", event.id()));
         };
     }
-
-   /* @KafkaListener(topics = "soft-delete-address", groupId = "delete-address-group")
-    public void consume(SoftDeleteAddressEvent event) {
-        LOGGER.info(String.format("Consumed Address => %s", event.id()));
-        customerSearchService.softDeleteAddress(event.id(),event.customerId());
-
-    }*/
 }

@@ -46,7 +46,7 @@ public class AddressServiceImpl implements AddressService {
     public AddressServiceImpl(AddressRepository addressRepository, CustomerService customerService, DistrictService districtService, AddressBusinessRules addressBusinessRules, UpdateAddressProducer updateAddressProducer, DeleteAddressProducer deleteAddressProducer, SoftDeleteAddressProducer softDeleteAddressProducer, OutboxService outboxService) {
         this.districtService = districtService;
         this.customerService = customerService;
-        this.addressBusinessRules  = addressBusinessRules;
+        this.addressBusinessRules = addressBusinessRules;
         this.addressRepository = addressRepository;
         this.updateAddressProducer = updateAddressProducer;
         this.deleteAddressProducer = deleteAddressProducer;
@@ -54,41 +54,35 @@ public class AddressServiceImpl implements AddressService {
         this.outboxService = outboxService;
     }
 
-   // @Override
-   // public void add(Address address) {
-   //     addressRepository.save(address);
-   // }
 
+    @Override
+    public CreatedAddressResponse add(CreateAddressRequest request) {
+        District district = districtService.getDistrictById(request.getDistrictId());
+        Customer customer = customerService.getByEntityId(request.getCustomerId());
 
-        @Override
-        public CreatedAddressResponse add(CreateAddressRequest request) {
-            District district = districtService.getDistrictById(request.getDistrictId());
-            Customer customer = customerService.getByEntityId(request.getCustomerId());
+        Address address = AddressMapper.INSTANCE.addressFromCreateAddressRequest(request);
+        address.setCustomer(customer);
+        address.setDistrict(district);
 
-            Address address = AddressMapper.INSTANCE.addressFromCreateAddressRequest(request);
-            address.setCustomer(customer);
-            address.setDistrict(district);
+        Address createdAddress = addressRepository.save(address);
 
-            Address createdAddress = addressRepository.save(address);
+        CreateAddressEvent event = new CreateAddressEvent(
+                createdAddress.getId(),
+                createdAddress.getStreet(),
+                createdAddress.getHouseNumber(),
+                createdAddress.getDescription(),
+                createdAddress.isDefault(),
+                createdAddress.getDistrict().getId(),
+                createdAddress.getDistrict().getName(),
+                createdAddress.getDistrict().getCity().getId(),
+                createdAddress.getDistrict().getCity().getName(),
+                createdAddress.getCustomer().getId()
+        );
 
-            CreateAddressEvent event = new CreateAddressEvent(
-                    createdAddress.getId(),
-                    createdAddress.getStreet(),
-                    createdAddress.getHouseNumber(),
-                    createdAddress.getDescription(),
-                    createdAddress.isDefault(),
-                    createdAddress.getDistrict().getId(),
-                    createdAddress.getDistrict().getName(),
-                    createdAddress.getDistrict().getCity().getId(),
-                    createdAddress.getDistrict().getCity().getName(),
-                    createdAddress.getCustomer().getId()
-            );
+        outboxService.save(event, "ADDRESS", createdAddress.getCustomer().getId().toString());
 
-            outboxService.save(event, "ADDRESS", createdAddress.getCustomer().getId().toString());
-
-            return AddressMapper.INSTANCE.createdAddressResponseFromAddress(createdAddress);
-        }
-
+        return AddressMapper.INSTANCE.createdAddressResponseFromAddress(createdAddress);
+    }
 
 
     @Override
@@ -99,58 +93,28 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public void delete(int id) { //kalıcı silme- hard delete
-        Address address = addressRepository.findById(id).orElseThrow(() -> new RuntimeException("Address not found"));
+    public void delete(int id) {
+        Address address = addressBusinessRules.getAddressOrThrowException(id);
         addressBusinessRules.checkIfPrimaryAddressExists(id);
         addressBusinessRules.checkIfBillingAccountExists(id);
         addressRepository.deleteById(id);
-        DeleteAddressEvent event=new DeleteAddressEvent(id, address.getCustomer().getId());
+        DeleteAddressEvent event = new DeleteAddressEvent(id, address.getCustomer().getId());
         deleteAddressProducer.produceAddressDeleted(event);
     }
 
     @Override
     public void softDelete(int id) {
-        Address address = addressRepository.findById(id).orElseThrow(() -> new RuntimeException("Address not found"));
+        Address address = addressBusinessRules.getAddressOrThrowException(id);
         address.setDeletedDate(LocalDateTime.now());
         addressRepository.save(address);
-        SoftDeleteAddressEvent event=new SoftDeleteAddressEvent(id, address.getCustomer().getId(),address.getDeletedDate().toString());
+        SoftDeleteAddressEvent event = new SoftDeleteAddressEvent(id, address.getCustomer().getId(), address.getDeletedDate().toString());
         softDeleteAddressProducer.produceAddressSoftDeleted(event);
     }
-
-
-//    @Override
-//    public UpdatedAddressResponse update(UpdateAddressRequest request) {
-//        Address oldAddress = addressRepository.findById(request.getId())
-//                .orElseThrow(() -> new RuntimeException("Address not found"));
-//
-//        Address address = AddressMapper.INSTANCE.addressFromUpdateAddressRequest(request, oldAddress);
-//        Address updatedAddress = addressRepository.save(address);
-//
-//        UpdateAddressEvent event = new UpdateAddressEvent(
-//                updatedAddress.getId(),
-//                updatedAddress.getStreet(),
-//                updatedAddress.getHouseNumber(),
-//                updatedAddress.getDescription(),
-//                updatedAddress.isDefault(),
-//                updatedAddress.getDistrict().getId(),
-//                updatedAddress.getDistrict().getName(),
-//                updatedAddress.getDistrict().getCity().getId(),
-//                updatedAddress.getDistrict().getCity().getName(),
-//                updatedAddress.getCustomer().getId()
-//        );
-//
-//        updateAddressProducer.produceAddressUpdated(event);
-//
-//        UpdatedAddressResponse response =
-//                AddressMapper.INSTANCE.updatedAddressResponseFromAddress(updatedAddress);
-//
-//        return response;
-//    }
 
     @Override
     public UpdatedAddressResponse update(UpdateAddressRequest request) {
         Address oldAddress = addressRepository.findById(request.getId()).orElseThrow(() -> new RuntimeException("Address not found"));
-        Address address =  AddressMapper.INSTANCE.addressFromUpdateAddressRequest(request,oldAddress);
+        Address address = AddressMapper.INSTANCE.addressFromUpdateAddressRequest(request, oldAddress);
 
         District district = districtService.getDistrictById(request.getDistrictId());
         address.setDistrict(district);
@@ -179,7 +143,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public GetByIdAddressResponse getById(int id) {
-        Address address = addressRepository.findById(id).orElseThrow(() -> new RuntimeException("Address not found"));
+        Address address = addressBusinessRules.getAddressOrThrowException(id);
         GetByIdAddressResponse response = AddressMapper.INSTANCE.getAddressResponseFromAddress(address);
         return response;
     }
@@ -195,8 +159,7 @@ public class AddressServiceImpl implements AddressService {
     @Transactional
     public void setPrimaryAddress(int id) {
 
-        Address selectedAddress = addressRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Address not found"));
+        Address selectedAddress = addressBusinessRules.getAddressOrThrowException(id);
 
         List<Address> updatedAddresses = addressRepository
                 .findByCustomer_Id(selectedAddress.getCustomer().getId())
@@ -210,11 +173,10 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public GetAddressResponse getAddressById(int id) {
-        Address address = addressRepository.findById(id).orElseThrow(() -> new RuntimeException("Address not found"));
+        Address address = addressBusinessRules.getAddressOrThrowException(id);
 
         return AddressMapper.INSTANCE.addressToGetAddressResponse(address);
     }
-
 
 /*
     @Override

@@ -57,7 +57,7 @@ public class ContactMediumServiceImpl implements ContactMediumService {
         contactMedium.setCustomer(customer);
         contactMediumBusinessRules.checkIsPrimaryOnlyOne(contactMedium);
         customerService.existsById(request.getCustomerId());
-        ContactMedium created =  contactMediumRepository.save(contactMedium);
+        ContactMedium created = contactMediumRepository.save(contactMedium);
 
         CreateContactMediumEvent event = new CreateContactMediumEvent(
                 created.getId(),
@@ -79,7 +79,7 @@ public class ContactMediumServiceImpl implements ContactMediumService {
 
         ContactMedium contactMedium = ContactMediumMapper.INSTANCE.contactMediumFromUpdateContactMediumRequest(request, contactMediumOld);
         ContactMedium updated = contactMediumRepository.save(contactMedium);
-        UpdateContactMediumEvent event= new UpdateContactMediumEvent(
+        UpdateContactMediumEvent event = new UpdateContactMediumEvent(
                 updated.getId(),
                 updated.getType().name(),
                 updated.getValue(),
@@ -153,7 +153,7 @@ public class ContactMediumServiceImpl implements ContactMediumService {
         contactMediumBusinessRules.checkIsPrimary(contactMedium);
         contactMedium.setDeletedDate(LocalDateTime.now());
         contactMediumRepository.save(contactMedium);
-        SoftDeleteContactMediumEvent event = new SoftDeleteContactMediumEvent(id, contactMedium.getCustomer().getId(),contactMedium.getDeletedDate().toString());
+        SoftDeleteContactMediumEvent event = new SoftDeleteContactMediumEvent(id, contactMedium.getCustomer().getId(), contactMedium.getDeletedDate().toString());
         softDeleteContactMediumProducer.produceAddressSoftDeleted(event);
     }
 
@@ -183,8 +183,8 @@ public class ContactMediumServiceImpl implements ContactMediumService {
 
     @Override
     public List<GetListContactMediumResponse> getListByCustomerId(int id) {
-        ContactMedium contactMedium= contactMediumRepository.findById(id).orElseThrow(()->new RuntimeException("Contact medium does not exist"));
-        List<ContactMedium> contactMediums=contactMediumRepository.findByCustomerId(contactMedium.getCustomer().getId());
+        ContactMedium contactMedium = contactMediumRepository.findById(id).orElseThrow(() -> new RuntimeException("Contact medium does not exist"));
+        List<ContactMedium> contactMediums = contactMediumRepository.findByCustomerId(contactMedium.getCustomer().getId());
         List<GetListContactMediumResponse> responses = ContactMediumMapper.INSTANCE.getListContactMediumResponsesFromContactMedium(contactMediums);
         return responses;
     }

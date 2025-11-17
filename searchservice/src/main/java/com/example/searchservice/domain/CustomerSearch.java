@@ -31,13 +31,13 @@ public class CustomerSearch {
     private String gender;
 
     @Field(type = FieldType.Nested, includeInParent = true)
-    private List<Address> addresses=new ArrayList<>();
+    private List<Address> addresses = new ArrayList<>();
 
     @Field(type = FieldType.Nested, includeInParent = true)
-    private List<ContactMedium> contactMediums= new ArrayList<>();
+    private List<ContactMedium> contactMediums = new ArrayList<>();
 
     @Field(type = FieldType.Nested, includeInParent = true)
-    private List<BillingAccount> billingAccounts= new ArrayList<>();
+    private List<BillingAccount> billingAccounts = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -147,7 +147,8 @@ public class CustomerSearch {
         this.gender = gender;
     }
 
-    public CustomerSearch(){}
+    public CustomerSearch() {
+    }
 
 }
 

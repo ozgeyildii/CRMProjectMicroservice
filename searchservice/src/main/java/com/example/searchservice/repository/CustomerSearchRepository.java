@@ -5,24 +5,23 @@ import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
-public interface CustomerSearchRepository extends ElasticsearchRepository<CustomerSearch,String>, CustomCustomerSearchRepository{
+public interface CustomerSearchRepository extends ElasticsearchRepository<CustomerSearch, String>, CustomCustomerSearchRepository {
 
     Optional<CustomerSearch> findById(String id);
+
     @Query("""
-        {
-          "bool": {
-            "must": [
-              { "term": { "nationalId.keyword": "?0" } }
-            ]
-          }
-        }
-        """)
+            {
+              "bool": {
+                "must": [
+                  { "term": { "nationalId.keyword": "?0" } }
+                ]
+              }
+            }
+            """)
     List<CustomerSearch> findByNationalIdExact(String nationalId);
 
 
@@ -33,7 +32,8 @@ public interface CustomerSearchRepository extends ElasticsearchRepository<Custom
             "fields":["firstName","lastName","nationalId","customerNumber"]
             }
             }
-            """)    List<CustomerSearch> searchAllFields(String keyword);
+            """)
+    List<CustomerSearch> searchAllFields(String keyword);
 
     @Query("""
             {
@@ -41,7 +41,8 @@ public interface CustomerSearchRepository extends ElasticsearchRepository<Custom
                "firstName":"?0"
                 }
             }
-            """)List<CustomerSearch> findByFirstNameMatch(String name);
+            """)
+    List<CustomerSearch> findByFirstNameMatch(String name);
 
     @Query("""
             {
@@ -51,7 +52,8 @@ public interface CustomerSearchRepository extends ElasticsearchRepository<Custom
                     }
                 }
             }
-            """)List<CustomerSearch> findByExactValue(String nationalId);
+            """)
+    List<CustomerSearch> findByExactValue(String nationalId);
 
     @Query("""
             {
@@ -62,7 +64,8 @@ public interface CustomerSearchRepository extends ElasticsearchRepository<Custom
                      }
                 }
             }
-            """)List<CustomerSearch> findBySimilarName(String name);
+            """)
+    List<CustomerSearch> findBySimilarName(String name);
 
     @Query("""
             {
@@ -73,19 +76,20 @@ public interface CustomerSearchRepository extends ElasticsearchRepository<Custom
                     }
                 }
             }
-            """)List<CustomerSearch> findByDateRange(String start, String end);
+            """)
+    List<CustomerSearch> findByDateRange(String start, String end);
 
 
     @Query("""
-    {
-        "bool": {
-        "must": [
-             { "match": { "firstName": "?0" }},
-             { "match": { "gender": "?1" }}
-                ]
-         }
-    }
-    """)
+            {
+                "bool": {
+                "must": [
+                     { "match": { "firstName": "?0" }},
+                     { "match": { "gender": "?1" }}
+                        ]
+                 }
+            }
+            """)
     List<CustomerSearch> findFirstNameAndGender(String firstName, String gender);
 
 

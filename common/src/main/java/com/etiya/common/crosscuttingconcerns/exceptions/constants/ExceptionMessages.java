@@ -20,4 +20,7 @@ public class ExceptionMessages {
 
     public static final String AUTHENTICATION_ERROR="Authentication Error";
     public static final String TYPE_AUTHENTICATION = "https://example.com/probs/authentication";
+
+    public static final String OUTBOX_SERIALIZATION_ERROR = "Outbox Event Serialization Error";
+    public static final String EVENT_TYPE_FIELD = "eventType";
 }

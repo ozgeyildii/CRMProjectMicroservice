@@ -1,6 +1,5 @@
 package com.etiya.customerservice.service.concretes;
 
-
 import com.etiya.customerservice.domain.entities.City;
 import com.etiya.customerservice.repository.CityRepository;
 import com.etiya.customerservice.service.abstracts.CityService;
@@ -34,17 +33,17 @@ public class CityServiceImpl implements CityService {
         cityBusinessRules.checkCityNameAlreadyExists(request.getName());
         City city = CityMapper.INSTANCE.cityFromCreateCityRequest(request);
         City createdCity = cityRepository.save(city);
-        CreatedCityResponse response=CityMapper.INSTANCE.createdCityResponseFromCity(createdCity);
+        CreatedCityResponse response = CityMapper.INSTANCE.createdCityResponseFromCity(createdCity);
         return response;
     }
 
     @Override
     public UpdatedCityResponse update(UpdateCityRequest request) {
         cityBusinessRules.checkCityNameAlreadyExists(request.getName());
-        City city =cityRepository.findById(request.getId()).orElseThrow(()->new RuntimeException("City not found"));
+        City city = cityRepository.findById(request.getId()).orElseThrow(() -> new RuntimeException("City not found"));
         City mappedCity = CityMapper.INSTANCE.cityFromUpdateCityRequest(request, city);
-        City updatedCity=cityRepository.save(mappedCity);
-        UpdatedCityResponse response=CityMapper.INSTANCE.updatedCityResponseFromCity(updatedCity);
+        City updatedCity = cityRepository.save(mappedCity);
+        UpdatedCityResponse response = CityMapper.INSTANCE.updatedCityResponseFromCity(updatedCity);
         return response;
     }
 
@@ -57,35 +56,35 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public GetByIdCityResponse getById(int id) {
-        City city = cityRepository.findById(id).orElseThrow(()->new RuntimeException("City not found"));
-        GetByIdCityResponse response=CityMapper.INSTANCE.getByIdCityResponseFromCity(city);
+        City city = cityRepository.findById(id).orElseThrow(() -> new RuntimeException("City not found"));
+        GetByIdCityResponse response = CityMapper.INSTANCE.getByIdCityResponseFromCity(city);
         return response;
     }
 
     @Override
     public City getCityById(int id) {
-        City city = cityRepository.findById(id).orElseThrow(()->new RuntimeException("City not found"));
+        City city = cityRepository.findById(id).orElseThrow(() -> new RuntimeException("City not found"));
         return city;
     }
 
     @Override
     public List<GetListCityResponse> findByCreatedDateBiggerThanParameter(LocalDateTime parameter) {
-        List<City> cities=cityRepository.findByCreatedDateBiggerThanParameter(parameter);
-        List<GetListCityResponse> responses=CityMapper.INSTANCE.getListCityResponseFromCity(cities);
-        return  responses;
-    }
-
-    @Override
-    public List<GetListCityResponse> findByCreatedDateBiggerThanParameterNative(LocalDateTime parameter) {
-        List<City> cities=cityRepository.findByCreatedDateBiggerThanParameterNative(parameter);
-        List<GetListCityResponse> responses=CityMapper.INSTANCE.getListCityResponseFromCity(cities);
+        List<City> cities = cityRepository.findByCreatedDateBiggerThanParameter(parameter);
+        List<GetListCityResponse> responses = CityMapper.INSTANCE.getListCityResponseFromCity(cities);
         return responses;
     }
 
     @Override
-    public List<GetListCityResponse> findByCreatedDate(LocalDateTime  createdDate) {
-        List<City> cities=cityRepository.findByCreatedDate(createdDate);
-        List<GetListCityResponse> responses=CityMapper.INSTANCE.getListCityResponseFromCity(cities);
+    public List<GetListCityResponse> findByCreatedDateBiggerThanParameterNative(LocalDateTime parameter) {
+        List<City> cities = cityRepository.findByCreatedDateBiggerThanParameterNative(parameter);
+        List<GetListCityResponse> responses = CityMapper.INSTANCE.getListCityResponseFromCity(cities);
+        return responses;
+    }
+
+    @Override
+    public List<GetListCityResponse> findByCreatedDate(LocalDateTime createdDate) {
+        List<City> cities = cityRepository.findByCreatedDate(createdDate);
+        List<GetListCityResponse> responses = CityMapper.INSTANCE.getListCityResponseFromCity(cities);
         return responses;
     }
 

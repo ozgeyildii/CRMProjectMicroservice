@@ -14,7 +14,6 @@ public interface CustomerSearchService {
     List<CustomerSearch> findAll();
     CustomerSearch getById(String id);
     void delete(String id);
-    //CustomerSearch getCustomerSearchById(UUID id);
 
     void updateCustomer(CustomerSearch customerSearch);
     void deleteCustomer(UUID id);

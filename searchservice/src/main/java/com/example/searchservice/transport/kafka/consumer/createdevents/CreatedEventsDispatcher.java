@@ -78,4 +78,5 @@ public class CreatedEventsDispatcher {
         } catch (Exception e) {
             throw new RuntimeException("JSON parsing error for: " + clazz.getSimpleName(), e);
         }
-    }}
+    }
+}
