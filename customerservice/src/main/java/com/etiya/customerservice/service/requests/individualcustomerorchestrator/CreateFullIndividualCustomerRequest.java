@@ -4,16 +4,21 @@ import com.etiya.customerservice.service.requests.address.CreateAddressRequest;
 import com.etiya.customerservice.service.requests.individualcustomers.CreateIndividualCustomerRequest;
 import com.etiya.customerservice.service.requests.contactmedium.CreateContactMediumRequest;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
 public class CreateFullIndividualCustomerRequest {
 
     @JsonUnwrapped
+    @NotNull
     private CreateIndividualCustomerRequest individualCustomer;
 
+    @NotEmpty
     private List<CreateAddressRequest> addresses;
 
+    @NotEmpty
     private List<CreateContactMediumRequest> contactMediums;
 
     public CreateIndividualCustomerRequest getIndividualCustomer() { return individualCustomer; }

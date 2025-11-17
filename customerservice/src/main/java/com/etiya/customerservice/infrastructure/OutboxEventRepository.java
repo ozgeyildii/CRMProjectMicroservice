@@ -1,7 +1,9 @@
 package com.etiya.customerservice.infrastructure;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,11 @@ import java.util.List;
         )
         List<OutboxEvent> findAndLockNewEvents();
 
-        int deleteAllByStatusAndCreatedAtBefore(OutboxEvent.Status status, LocalDateTime cutoff);
+        @Modifying
+        @Query("DELETE FROM OutboxEvent e WHERE e.status = :status AND e.createdAt < :cutoff")
+        int deleteOlderPublished(@Param("status") OutboxEvent.Status status,
+                                 @Param("cutoff") LocalDateTime cutoff);
+
+        List<OutboxEvent> findAllByStatus(OutboxEvent.Status status);
 
     }

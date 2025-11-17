@@ -1,5 +1,7 @@
 package com.etiya.customerservice.infrastructure;
 
+import com.etiya.common.crosscuttingconcerns.exceptions.constants.ExceptionMessages;
+import com.etiya.common.crosscuttingconcerns.exceptions.types.InternalServerException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,9 +35,8 @@ public class OutboxServiceImpl implements OutboxService {
             Map<String, Object> map = mapper.convertValue(event, Map.class);
             map.put("eventType", event.getClass().getSimpleName());
             return mapper.writeValueAsString(map);
-        } catch (Exception ex) {
-            throw new IllegalStateException(
-                    "Failed to serialize event: " + event.getClass().getSimpleName(), ex);
+        } catch (Exception e) {
+            throw new InternalServerException(ExceptionMessages.OUTBOX_SERIALIZATION_ERROR,e);
         }
     }
 }

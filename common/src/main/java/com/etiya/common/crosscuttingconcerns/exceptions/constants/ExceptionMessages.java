@@ -11,8 +11,9 @@ public class ExceptionMessages {
     public static final String TYPE_EXCEPTION = "https://example.com/probs/exception";
 
     //Internal server messages
-
     public static final String INTERNAL_ERROR = "Internal Server Error";
+    public static final String OUTBOX_SERIALIZATION_ERROR = "Outbox Event Serialization Error";
+    public static final String OUTBOX_PUBLISH_FAILED = "Failed to publish Outbox event";
 
     //Validation Messages
     public static final String VALIDATION_ERROR = "Validation Rule Violation";
@@ -21,6 +22,7 @@ public class ExceptionMessages {
     public static final String AUTHENTICATION_ERROR="Authentication Error";
     public static final String TYPE_AUTHENTICATION = "https://example.com/probs/authentication";
 
-    public static final String OUTBOX_SERIALIZATION_ERROR = "Outbox Event Serialization Error";
-    public static final String EVENT_TYPE_FIELD = "eventType";
+    public static final String EVENT_PARSING_ERROR = "JSON parsing error for event type: %s";
+
+
 }

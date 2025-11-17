@@ -1,5 +1,7 @@
 package com.example.searchservice.transport.kafka.consumer.createdevents;
 
+import com.etiya.common.crosscuttingconcerns.exceptions.constants.ExceptionMessages;
+import com.etiya.common.crosscuttingconcerns.exceptions.types.EventParsingException;
 import com.etiya.common.events.address.CreateAddressEvent;
 import com.etiya.common.events.contactmedium.CreateContactMediumEvent;
 import com.etiya.common.events.customer.CreateCustomerEvent;
@@ -61,7 +63,7 @@ public class CreatedEventsDispatcher {
         );
 
         return base64Payload -> {
-            var json = decode(base64Payload);   // ★★★ EN KRİTİK SATIR
+            var json = decode(base64Payload);
             var map = read(json, Map.class);
             String type = (String) map.get("eventType");
             handlers.get(type).accept(json);
@@ -72,11 +74,13 @@ public class CreatedEventsDispatcher {
         return new String(Base64.getDecoder().decode(base64));
     }
 
-    private <T> T read(String json, Class<T> clazz) {
+    private <T> T read(String json, Class<T> targetType) {
         try {
-            return mapper.readValue(json, clazz);
+            return mapper.readValue(json, targetType);
         } catch (Exception e) {
-            throw new RuntimeException("JSON parsing error for: " + clazz.getSimpleName(), e);
+            throw new EventParsingException(
+                    ExceptionMessages.EVENT_PARSING_ERROR.formatted(targetType.getSimpleName()), e
+            );
         }
     }
 }

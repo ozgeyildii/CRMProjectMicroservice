@@ -8,10 +8,7 @@ import com.etiya.customerservice.service.responses.individualcustomerorchestrato
 import com.etiya.customerservice.service.responses.individualcustomers.CreatedIndividualCustomerResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CustomerOrchestratorServiceImpl implements CustomerOrchestratorService {
@@ -33,12 +30,12 @@ public class CustomerOrchestratorServiceImpl implements CustomerOrchestratorServ
     @Override
     @Transactional(rollbackFor = Exception.class)
     public CreatedFullIndividualCustomerResponse createFullCustomer(CreateFullIndividualCustomerRequest request) {
+
         CreatedIndividualCustomerResponse createdCustomer =
                 individualCustomerService.add(request.getIndividualCustomer());
 
         List<CreatedAddressResponse> createdAddresses =
-                Optional.ofNullable(request.getAddresses())
-                        .orElse(Collections.emptyList())
+                request.getAddresses()
                         .stream()
                         .map(addr -> {
                             addr.setCustomerId(createdCustomer.getId());
@@ -46,8 +43,7 @@ public class CustomerOrchestratorServiceImpl implements CustomerOrchestratorServ
                         }).toList();
 
         List<CreatedContactMediumResponse> createdContactMediums =
-                Optional.ofNullable(request.getContactMediums())
-                        .orElse(Collections.emptyList())
+                request.getContactMediums()
                         .stream()
                         .map(cm -> {
                             cm.setCustomerId(createdCustomer.getId());

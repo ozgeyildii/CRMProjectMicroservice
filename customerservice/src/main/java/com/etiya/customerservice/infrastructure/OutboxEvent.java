@@ -9,7 +9,8 @@ public class OutboxEvent {
 
     public enum Status {
         NEW,
-        PUBLISHED
+        PUBLISHED,
+        FAILED
     }
 
     @Id
