@@ -1,10 +1,14 @@
 package com.etiya.customerservice.service.concretes;
 
+import com.etiya.common.crosscuttingconcerns.exceptions.types.BusinessException;
+import com.etiya.common.localization.LocalizationService;
+import com.etiya.customerservice.domain.entities.City;
 import com.etiya.customerservice.domain.entities.District;
 import com.etiya.customerservice.repository.DistrictRepository;
 import com.etiya.customerservice.service.abstracts.CityService;
 import com.etiya.customerservice.service.abstracts.DistrictService;
 import com.etiya.customerservice.service.mappings.DistrictMapper;
+import com.etiya.customerservice.service.messages.Messages;
 import com.etiya.customerservice.service.requests.district.CreateDistrictRequest;
 import com.etiya.customerservice.service.requests.district.UpdateDistrictRequest;
 import com.etiya.customerservice.service.responses.district.CreatedDistrictResponse;
@@ -22,11 +26,13 @@ public class DistrictServiceImpl implements DistrictService {
     private final DistrictRepository districtRepository;
     private final DistrictBusinessRules districtBusinessRules;
     private final CityService cityService;
+    private final LocalizationService localizationService;
 
-    public DistrictServiceImpl(DistrictRepository districtRepository, DistrictBusinessRules districtBusinessRules, CityService cityService) {
+    public DistrictServiceImpl(DistrictRepository districtRepository, DistrictBusinessRules districtBusinessRules, CityService cityService, LocalizationService localizationService) {
         this.districtRepository = districtRepository;
         this.districtBusinessRules = districtBusinessRules;
         this.cityService = cityService;
+        this.localizationService = localizationService;
     }
 
     @Override
@@ -53,7 +59,7 @@ public class DistrictServiceImpl implements DistrictService {
 
     @Override
     public UpdatedDistrictResponse update(UpdateDistrictRequest request) {
-        District oldDistrict = districtRepository.findById(request.getId()).orElseThrow(() -> new RuntimeException("Address not found"));
+        District oldDistrict = districtRepository.findById(request.getId()).orElseThrow(() -> new BusinessException(localizationService.getMessage(Messages.AddressNotExist)));
 
         District district = DistrictMapper.INSTANCE.districtFromUpdateDistrictRequest(request, oldDistrict);
         District updatedDistrict = districtRepository.save(district);
@@ -63,16 +69,17 @@ public class DistrictServiceImpl implements DistrictService {
     }
 
 
+
     @Override
     public GetByIdDistrictResponse getById(int id) {
-        District district = districtRepository.findById(id).orElseThrow(() -> new RuntimeException("District not found"));
+        District district = districtRepository.findById(id).orElseThrow(() -> new BusinessException(localizationService.getMessage(Messages.DistrictNotExist)));
         GetByIdDistrictResponse response = DistrictMapper.INSTANCE.getDistrictResponseFromDistrict(district);
         return response;
     }
 
     @Override
     public District getDistrictById(int id) {
-        District district = districtRepository.findById(id).orElseThrow(() -> new RuntimeException("District not found"));
+        District district = districtRepository.findById(id).orElseThrow(() -> new BusinessException(localizationService.getMessage(Messages.DistrictNotExist)));
         return district;
     }
 

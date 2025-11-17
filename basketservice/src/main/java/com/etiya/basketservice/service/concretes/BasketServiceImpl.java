@@ -9,6 +9,9 @@ import com.etiya.basketservice.service.abstracts.BasketService;
 import com.etiya.basketservice.service.dto.request.AddBasketItemRequest;
 import com.etiya.basketservice.service.dto.response.CreatedBasketItemResponse;
 import com.etiya.basketservice.service.mapping.BasketMapper;
+import com.etiya.basketservice.service.messages.Messages;
+import com.etiya.common.crosscuttingconcerns.exceptions.types.BusinessException;
+import com.etiya.common.localization.LocalizationService;
 import com.etiya.common.responses.CampaignProductOfferResponse;
 import com.etiya.common.responses.GetBasketResponse;
 import org.springframework.stereotype.Service;
@@ -23,13 +26,15 @@ public class BasketServiceImpl implements BasketService {
     private final BasketRepository basketRepository;
     private final CustomerServiceClient customerServiceClient;
     private final CatalogServiceClient catalogServiceClient;
+    private final LocalizationService  localizationService;
 
     public BasketServiceImpl(BasketRepository basketRepository,
                              CustomerServiceClient customerServiceClient,
-                             CatalogServiceClient catalogServiceClient) {
+                             CatalogServiceClient catalogServiceClient, LocalizationService localizationService) {
         this.basketRepository = basketRepository;
         this.customerServiceClient = customerServiceClient;
         this.catalogServiceClient = catalogServiceClient;
+        this.localizationService = localizationService;
     }
 
     @Override
@@ -37,7 +42,7 @@ public class BasketServiceImpl implements BasketService {
 
         var billingAccount = customerServiceClient.getBillingAccountById(billingAccountId);
         if (billingAccount == null) {
-            throw new RuntimeException("Billing account not found.");
+            throw new BusinessException(localizationService.getMessage(Messages.BillingAccountNotFound));
         }
 
         // 🧺 Mevcut sepeti getir
@@ -61,7 +66,7 @@ public class BasketServiceImpl implements BasketService {
                     .filter(o -> o.getId() == request.getId())
                     .findFirst()
                     .orElseThrow(() ->
-                            new RuntimeException("Campaign offer not found: " + request.getId()));
+                            new BusinessException(localizationService.getMessage(Messages.CampaignOfferNotFound)));
 
             // 3) Mapper’a TEK elemanı gönder
             basketItem = BasketMapper.INSTANCE.fromCampaignProductOfferResponse(selectedOffer);
@@ -135,7 +140,7 @@ public class BasketServiceImpl implements BasketService {
         return basketRepository.getAll().values().stream()
                 .filter(basket -> basket.getId().equals(basketId))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Basket not found with id: " + basketId));
+                .orElseThrow(() -> new BusinessException(localizationService.getMessage(Messages.BasketNotFound)));
     }
 
     @Override
@@ -162,7 +167,7 @@ public class BasketServiceImpl implements BasketService {
         }
 
         if (!updated) {
-            throw new RuntimeException("Item not found in basket: " + item.getId());
+            throw new BusinessException(localizationService.getMessage(Messages.ItemNotFound));
         }
 
         updateTotal(basket);

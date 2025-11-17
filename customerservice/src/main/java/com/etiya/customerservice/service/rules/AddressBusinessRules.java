@@ -25,12 +25,6 @@ public class AddressBusinessRules {
     }
 
 
-//    public void checkIfAddressExists(int id) {
-//        if(addressRepository.existsById(id)){
-//            throw new BusinessException("Address with id " + id + " doesnt exists");
-//        }
-//    }
-
     public void checkIfBillingAccountExists(int id) {
         Address address = addressRepository.findById(id).orElseThrow(() -> new BusinessException(localizationService.getMessage(Messages.AddressNotExist)));
         if (!address.billingAccounts.isEmpty()) {

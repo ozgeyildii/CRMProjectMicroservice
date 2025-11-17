@@ -8,6 +8,9 @@ import com.etiya.catalogservice.service.dtos.requests.productoffer.CreateProduct
 import com.etiya.catalogservice.service.dtos.responses.productoffer.CreatedProductOfferResponse;
 import com.etiya.catalogservice.service.dtos.responses.productoffer.GetListProductOfferResponse;
 import com.etiya.catalogservice.service.mappings.ProductOfferMapper;
+import com.etiya.catalogservice.service.messages.Messages;
+import com.etiya.common.crosscuttingconcerns.exceptions.types.BusinessException;
+import com.etiya.common.localization.LocalizationService;
 import com.etiya.common.responses.ProductOfferResponse;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +21,13 @@ public class ProductOfferServiceImpl implements ProductOfferService {
 
     private final ProductOfferRepository productOfferRepository;
     private final ProductService productService;
+    private final LocalizationService localizationService;
 
     public ProductOfferServiceImpl(ProductOfferRepository productOfferRepository,
-                                   ProductService productService) {
+                                   ProductService productService, LocalizationService localizationService) {
         this.productOfferRepository = productOfferRepository;
         this.productService = productService;
+        this.localizationService = localizationService;
     }
 
     @Override
@@ -42,13 +47,13 @@ public class ProductOfferServiceImpl implements ProductOfferService {
     @Override
     public ProductOfferResponse getById(int id) {
 
-         ProductOffer productOffer = productOfferRepository.findById(id).orElseThrow(() -> new RuntimeException("Product Offer Not Found"));
+         ProductOffer productOffer = productOfferRepository.findById(id).orElseThrow(() -> new BusinessException(localizationService.getMessage(Messages.ProductOfferNotFound)));
          return ProductOfferMapper.INSTANCE.productOfferResponseFromProductOffer(productOffer);
     }
 
     @Override
     public ProductOffer getByEntityId(int id) {
-        return productOfferRepository.findById(id).orElseThrow(() -> new RuntimeException("Product Offer Not Found"));
+        return productOfferRepository.findById(id).orElseThrow(() -> new BusinessException(localizationService.getMessage(Messages.ProductOfferNotFound)));
     }
 
 }

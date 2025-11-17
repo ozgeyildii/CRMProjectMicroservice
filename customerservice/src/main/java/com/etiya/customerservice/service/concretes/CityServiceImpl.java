@@ -1,9 +1,13 @@
 package com.etiya.customerservice.service.concretes;
 
+
+import com.etiya.common.crosscuttingconcerns.exceptions.types.BusinessException;
+import com.etiya.common.localization.LocalizationService;
 import com.etiya.customerservice.domain.entities.City;
 import com.etiya.customerservice.repository.CityRepository;
 import com.etiya.customerservice.service.abstracts.CityService;
 import com.etiya.customerservice.service.mappings.CityMapper;
+import com.etiya.customerservice.service.messages.Messages;
 import com.etiya.customerservice.service.requests.city.CreateCityRequest;
 import com.etiya.customerservice.service.requests.city.UpdateCityRequest;
 import com.etiya.customerservice.service.responses.city.CreatedCityResponse;
@@ -21,10 +25,12 @@ public class CityServiceImpl implements CityService {
 
     private final CityRepository cityRepository;
     private final CityBusinessRules cityBusinessRules;
+    private final LocalizationService localizationService;
 
-    public CityServiceImpl(CityRepository cityRepository, CityBusinessRules cityBusinessRules) {
+    public CityServiceImpl(CityRepository cityRepository, CityBusinessRules cityBusinessRules, LocalizationService localizationService) {
         this.cityRepository = cityRepository;
         this.cityBusinessRules = cityBusinessRules;
+        this.localizationService = localizationService;
     }
 
 
@@ -33,17 +39,17 @@ public class CityServiceImpl implements CityService {
         cityBusinessRules.checkCityNameAlreadyExists(request.getName());
         City city = CityMapper.INSTANCE.cityFromCreateCityRequest(request);
         City createdCity = cityRepository.save(city);
-        CreatedCityResponse response = CityMapper.INSTANCE.createdCityResponseFromCity(createdCity);
+        CreatedCityResponse response=CityMapper.INSTANCE.createdCityResponseFromCity(createdCity);
         return response;
     }
 
     @Override
     public UpdatedCityResponse update(UpdateCityRequest request) {
         cityBusinessRules.checkCityNameAlreadyExists(request.getName());
-        City city = cityRepository.findById(request.getId()).orElseThrow(() -> new RuntimeException("City not found"));
+        City city =cityRepository.findById(request.getId()).orElseThrow(()->new BusinessException(localizationService.getMessage(Messages.CityNotExist)));
         City mappedCity = CityMapper.INSTANCE.cityFromUpdateCityRequest(request, city);
-        City updatedCity = cityRepository.save(mappedCity);
-        UpdatedCityResponse response = CityMapper.INSTANCE.updatedCityResponseFromCity(updatedCity);
+        City updatedCity=cityRepository.save(mappedCity);
+        UpdatedCityResponse response=CityMapper.INSTANCE.updatedCityResponseFromCity(updatedCity);
         return response;
     }
 
@@ -56,35 +62,35 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public GetByIdCityResponse getById(int id) {
-        City city = cityRepository.findById(id).orElseThrow(() -> new RuntimeException("City not found"));
-        GetByIdCityResponse response = CityMapper.INSTANCE.getByIdCityResponseFromCity(city);
+        City city = cityRepository.findById(id).orElseThrow(()->new BusinessException(localizationService.getMessage(Messages.CityNotExist)));
+        GetByIdCityResponse response=CityMapper.INSTANCE.getByIdCityResponseFromCity(city);
         return response;
     }
 
     @Override
     public City getCityById(int id) {
-        City city = cityRepository.findById(id).orElseThrow(() -> new RuntimeException("City not found"));
+        City city = cityRepository.findById(id).orElseThrow(()->new BusinessException(localizationService.getMessage(Messages.CityNotExist)));
         return city;
     }
 
     @Override
     public List<GetListCityResponse> findByCreatedDateBiggerThanParameter(LocalDateTime parameter) {
-        List<City> cities = cityRepository.findByCreatedDateBiggerThanParameter(parameter);
-        List<GetListCityResponse> responses = CityMapper.INSTANCE.getListCityResponseFromCity(cities);
-        return responses;
+        List<City> cities=cityRepository.findByCreatedDateBiggerThanParameter(parameter);
+        List<GetListCityResponse> responses=CityMapper.INSTANCE.getListCityResponseFromCity(cities);
+        return  responses;
     }
 
     @Override
     public List<GetListCityResponse> findByCreatedDateBiggerThanParameterNative(LocalDateTime parameter) {
-        List<City> cities = cityRepository.findByCreatedDateBiggerThanParameterNative(parameter);
-        List<GetListCityResponse> responses = CityMapper.INSTANCE.getListCityResponseFromCity(cities);
+        List<City> cities=cityRepository.findByCreatedDateBiggerThanParameterNative(parameter);
+        List<GetListCityResponse> responses=CityMapper.INSTANCE.getListCityResponseFromCity(cities);
         return responses;
     }
 
     @Override
-    public List<GetListCityResponse> findByCreatedDate(LocalDateTime createdDate) {
-        List<City> cities = cityRepository.findByCreatedDate(createdDate);
-        List<GetListCityResponse> responses = CityMapper.INSTANCE.getListCityResponseFromCity(cities);
+    public List<GetListCityResponse> findByCreatedDate(LocalDateTime  createdDate) {
+        List<City> cities=cityRepository.findByCreatedDate(createdDate);
+        List<GetListCityResponse> responses=CityMapper.INSTANCE.getListCityResponseFromCity(cities);
         return responses;
     }
 
@@ -93,12 +99,4 @@ public class CityServiceImpl implements CityService {
         cityBusinessRules.checkIfCityExistsById(id);
         return cityRepository.findById(id).get();
     }
-
-/*
-    @Override
-    public void add(City city) {
-        cityRepository.save(city);
-    }*/
-
-
 }

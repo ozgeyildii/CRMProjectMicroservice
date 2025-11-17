@@ -7,6 +7,9 @@ import com.etiya.catalogservice.service.dtos.requests.catalog.CreateCatalogReque
 import com.etiya.catalogservice.service.dtos.responses.catalog.CreatedCatalogResponse;
 import com.etiya.catalogservice.service.dtos.responses.catalog.GetListCatalogResponse;
 import com.etiya.catalogservice.service.mappings.CatalogMapper;
+import com.etiya.catalogservice.service.messages.Messages;
+import com.etiya.common.crosscuttingconcerns.exceptions.types.BusinessException;
+import com.etiya.common.localization.LocalizationService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +18,11 @@ import java.util.List;
 public class CatalogServiceImpl implements CatalogService {
 
     private final CatalogRepository catalogRepository;
+    private final LocalizationService  localizationService;
 
-    public CatalogServiceImpl(CatalogRepository catalogRepository) {
+    public CatalogServiceImpl(CatalogRepository catalogRepository, LocalizationService localizationService) {
         this.catalogRepository = catalogRepository;
+        this.localizationService = localizationService;
     }
 
     @Override
@@ -25,7 +30,7 @@ public class CatalogServiceImpl implements CatalogService {
         Catalog catalog = CatalogMapper.INSTANCE.catalogFromCreateCatalogRequest(request);
 
         Catalog parent = catalogRepository.findById(request.getParentId())
-                .orElseThrow(() -> new RuntimeException("Parent catalog not found"));
+                .orElseThrow(() -> new BusinessException(localizationService.getMessage(Messages.ParentCatalogNotFound)));
         catalog.setParent(parent);
 
 
@@ -35,7 +40,7 @@ public class CatalogServiceImpl implements CatalogService {
 
     @Override
     public Catalog getById(int id) {
-        return catalogRepository.findById(id).orElseThrow(() -> new RuntimeException("Catalog Not Found"));
+        return catalogRepository.findById(id).orElseThrow(() -> new BusinessException(localizationService.getMessage(Messages.CatalogNotFound)));
     }
 
     @Override

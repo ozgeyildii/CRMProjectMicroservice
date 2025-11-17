@@ -1,12 +1,19 @@
 package com.etiya.customerservice.service.concretes;
+
+
 import com.etiya.common.crosscuttingconcerns.exceptions.types.BusinessException;
 import com.etiya.common.events.billingaccount.CreateBillingAccountEvent;
+import com.etiya.common.localization.LocalizationService;
 import com.etiya.common.responses.BillingAccountResponse;
+import com.etiya.common.responses.CustomerResponse;
 import com.etiya.customerservice.domain.entities.BillingAccount;
+import com.etiya.customerservice.domain.entities.Customer;
 import com.etiya.customerservice.domain.enums.BillingAccountStatus;
 import com.etiya.customerservice.repository.BillingAccountRepository;
 import com.etiya.customerservice.service.abstracts.BillingAccountService;
 import com.etiya.customerservice.service.mappings.BillingAccountMapper;
+import com.etiya.customerservice.service.mappings.BillingAccountMapperImpl;
+import com.etiya.customerservice.service.messages.Messages;
 import com.etiya.customerservice.service.requests.billingaccount.CreateBillingAccountRequest;
 import com.etiya.customerservice.service.requests.billingaccount.UpdateBillingAccountRequest;
 import com.etiya.customerservice.service.responses.billingAccount.CreatedBillingAccountResponse;
@@ -27,14 +34,15 @@ import java.util.UUID;
 public class BillingAccountServiceImpl implements BillingAccountService {
     private final BillingAccountRepository billingAccountRepository;
     private final BillingAccountBusinessRules billingAccountBusinessRules;
-    private final CreateBillingAccountProducer createBillingAccountProducer;
+    private final CreateBillingAccountProducer  createBillingAccountProducer;
+    private final LocalizationService localizationService;
 
-    public BillingAccountServiceImpl(BillingAccountRepository billingAccountRepository, BillingAccountBusinessRules billingAccountBusinessRules, CreateBillingAccountProducer createBillingAccountProducer) {
+    public BillingAccountServiceImpl(BillingAccountRepository billingAccountRepository, BillingAccountBusinessRules billingAccountBusinessRules, CreateBillingAccountProducer createBillingAccountProducer, LocalizationService localizationService) {
         this.billingAccountRepository = billingAccountRepository;
         this.billingAccountBusinessRules = billingAccountBusinessRules;
         this.createBillingAccountProducer = createBillingAccountProducer;
+        this.localizationService = localizationService;
     }
-
     @Override
     public CreatedBillingAccountResponse add(CreateBillingAccountRequest request) {
         billingAccountBusinessRules.checkIfCustomerHasAddress(request.getCustomerId());
@@ -70,7 +78,7 @@ public class BillingAccountServiceImpl implements BillingAccountService {
     @Override
     public UpdatedBillingAccountResponse update(UpdateBillingAccountRequest request) {
         BillingAccount billingAccount = billingAccountRepository.findById(request.getId())
-                .orElseThrow(() -> new RuntimeException("Billing Account not found"));
+                .orElseThrow(() -> new BusinessException(localizationService.getMessage(Messages.BillingNotExist)));
 
         billingAccountBusinessRules.checkIfTypeCanBeChanged(request.getId(), request.getType());
 
@@ -98,7 +106,7 @@ public class BillingAccountServiceImpl implements BillingAccountService {
 
     @Override
     public List<GetListBillingAccountResponse> getList() {
-        return billingAccountRepository.findAll().stream().map(billingAccount -> {
+        return billingAccountRepository.findAll().stream().map( billingAccount -> {
             GetListBillingAccountResponse response = new GetListBillingAccountResponse();
             response.setId(billingAccount.getId());
             response.setAccountName(billingAccount.getAccountName());
@@ -108,36 +116,36 @@ public class BillingAccountServiceImpl implements BillingAccountService {
             response.setStatus(billingAccount.getStatus());
             response.setType(billingAccount.getType());
             return response;
-        }).toList();
+    }).toList();
     }
 
     @Override
     public Page<GetListBillingAccountResponse> getListByCustomerId(UUID customerId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<BillingAccount> billingAccounts = billingAccountRepository.findByCustomer_Id(customerId, pageable);
+        Page<BillingAccount> billingAccounts = billingAccountRepository.findByCustomer_Id(customerId,pageable);
         return billingAccounts.map(BillingAccountMapper.INSTANCE::getListBillingAccountResponsesFromBillingAccounts);
     }
 
     @Override
     public void delete(int id) {
         billingAccountBusinessRules.checkIfBillingAccountCanBeDeleted(id);
-        BillingAccount billingAccount = billingAccountRepository.findById(id).orElseThrow(() -> new RuntimeException("Billing Account not found"));
+        BillingAccount billingAccount = billingAccountRepository.findById(id).orElseThrow(() -> new BusinessException(localizationService.getMessage(Messages.BillingNotExist)));
         billingAccountRepository.delete(billingAccount);
     }
 
     @Override
     public void softDelete(int id) {
-        BillingAccount billingAccount = billingAccountRepository.findById(id).orElseThrow(() -> new RuntimeException("Billing Account not found"));
+        BillingAccount billingAccount = billingAccountRepository.findById(id).orElseThrow(() -> new BusinessException(localizationService.getMessage(Messages.BillingNotExist)));
         billingAccount.setDeletedDate(LocalDateTime.now());
         billingAccountRepository.save(billingAccount);
     }
 
     @Override
     public BillingAccountResponse getById(int id) {
-        return billingAccountRepository.findById(id).stream().map(this::mapToResponse).findFirst().orElseThrow(() -> new BusinessException("Billing account Not Found"));
+        return billingAccountRepository.findById(id).stream().map(this::mapToResponse).findFirst().orElseThrow(()->new BusinessException(localizationService.getMessage(Messages.BillingNotExist)));
     }
 
-    private BillingAccountResponse mapToResponse(BillingAccount billingAccount) {
+    private BillingAccountResponse mapToResponse(BillingAccount billingAccount){
         BillingAccountResponse response = new BillingAccountResponse();
         response.setId(billingAccount.getId());
         return response;
