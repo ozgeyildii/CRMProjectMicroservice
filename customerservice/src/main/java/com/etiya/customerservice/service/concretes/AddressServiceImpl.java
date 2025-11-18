@@ -113,7 +113,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public UpdatedAddressResponse update(UpdateAddressRequest request) {
-        Address oldAddress = addressRepository.findById(request.getId()).orElseThrow(() -> new RuntimeException("Address not found"));
+        Address oldAddress = addressBusinessRules.getAddressOrThrowException(request.getId());
         Address address = AddressMapper.INSTANCE.addressFromUpdateAddressRequest(request, oldAddress);
 
         District district = districtService.getDistrictById(request.getDistrictId());

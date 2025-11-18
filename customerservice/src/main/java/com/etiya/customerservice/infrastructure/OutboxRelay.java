@@ -20,7 +20,7 @@ public class OutboxRelay {
         this.bridge = bridge;
     }
 
-    @Scheduled(fixedDelay = 2000)
+    @Scheduled(fixedDelay = 3000)
     @Transactional
     public void relay() {
 

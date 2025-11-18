@@ -45,7 +45,7 @@ public class CustomCustomerSearchRepositoryImpl implements CustomCustomerSearchR
         addExactTerm(bool, "nationalId.keyword", nationalId);
 
         addWildcardForFirstName(bool, firstName);
-        addWildcard(bool, "lastName.keyword", lastName);
+        addWildcardForLastName(bool, lastName);
 
         addNestedTerm(bool, "billingAccounts", "billingAccounts.accountNumber", accountNumber);
         addPhoneValue(bool, value);
@@ -69,17 +69,6 @@ public class CustomCustomerSearchRepositoryImpl implements CustomCustomerSearchR
         }
     }
 
-    private void addWildcard(BoolQuery.Builder bool, String field, String value) {
-        if (StringUtils.hasText(value)) {
-            String normalized = normalize(value);
-            bool.must(m -> m.wildcard(w -> w
-                    .field(field)
-                    .caseInsensitive(true)
-                    .value("*" + normalized + "*")
-            ));
-        }
-    }
-
     private void addWildcardForFirstName(BoolQuery.Builder bool, String value) {
         if (!StringUtils.hasText(value)) return;
 
@@ -90,6 +79,20 @@ public class CustomCustomerSearchRepositoryImpl implements CustomCustomerSearchR
                 List.of(
                         wildcard("firstName", original),
                         wildcard("firstName", normalized)
+                )
+        )));
+    }
+
+    private void addWildcardForLastName(BoolQuery.Builder bool, String value) {
+        if (!StringUtils.hasText(value)) return;
+
+        String original = value.toLowerCase(Locale.ROOT);
+        String normalized = normalize(value);
+
+        bool.must(m -> m.bool(b -> b.should(
+                List.of(
+                        wildcard("lastName", original),
+                        wildcard("lastName", normalized)
                 )
         )));
     }
